@@ -7,7 +7,7 @@ var uid = "2718443117";
 var opt = {
   host: 'api.weibo.com',
   port: 80,
-  path: 'https:api.weibo.com/2/users/show.json?access_token='+token+'&uid='+uid
+  path: 'https://api.weibo.com/2/users/show.json?access_token='+token+'&uid='+uid
 };
 
 
