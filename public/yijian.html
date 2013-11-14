@@ -1,0 +1,1120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>意见领袖分析调试工具</title>
+	<link rel="Shortcut Icon" href="http://www.bshare.cn/favicon.ico" type="image/x-icon"/>
+	<link href="http://test.buzzinate.com/ceshi/jstest/debug.css" rel="stylesheet" />
+	<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+	<script type="text/javascript" src="http://test.buzzinate.com/ceshi/lib/md5.js"></script>
+<head>
+
+<style>
+.zu{
+  margin-top:20px ;
+
+  margin-bottom:20px;
+
+}
+.zu label{
+  cursor: text; 
+  padding-right: 10px;
+  display:-moz-inline-box;
+  display:inline-block;
+  width:100px;
+}
+.tips{
+	margin-right:5px;
+}
+</style>
+<body onload='init();'>
+
+
+	<div class="wrap">
+		<div class="header">
+
+		<h1>buzzads广告API测试工具</h1>
+
+
+    <div class="zu" style="float:right;margin-right:10px;">
+  
+     <select name="" id="typeId" onchange="changeToX()" onkeyup="this.blur();this.focus();">
+      <option value="-1">请选择切换的环境</option>
+      <option name="type" value="0">切换到正式服务器</option>
+      <option name="type" value="1">切换到测试服务器</option>
+     </select>
+     </div>
+		</div>
+
+<div class="tip_warn">此工具旨在帮助测试人员调试API测试系统:  <a href="http://qa.buzzinate.com/ceshi/apiadmin/login.php" target="_blank">bShareAPI测试系统</a>。
+</div>
+<div class="remark c_tx3">
+           <p> 使用说明：<br/></p>
+           <p>（1）点击按钮，即可获取相应验证结果。<br/></p>
+           <p>（2）临时API测试系统的参数调整<br/></p>
+           <p id="p1" style="margin-top:10px;display:none;">
+            &nbsp;&nbsp;<span style="margin-left:10px;">测试UUID:</span><span style="margin-left:10px;">3f215a23-5dfe-4820-b746-847239dc8b02</span>
+            <br/>
+            &nbsp;&nbsp;<span style="margin-left:10px;">测试SECRET:</span><span style="margin-left:10px;">86d23e03-e8ba-429f-948d-d021cadf3a94</span>
+            <br/>
+            </p>
+            <p id="p2" style="margin-top:10px;display:none;">
+
+            &nbsp;&nbsp;<span style="margin-left:10px;">正式UUID:</span><span style="margin-left:10px;">f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b</span>
+            <br/>
+            &nbsp;&nbsp;<span style="margin-left:10px;">正式SECRET:</span><span style="margin-left:10px;">e181947b-d8bf-4e94-b43f-8da9789248a3</span>
+            <br/>
+            </p>
+
+</div>
+ <div class="zu">
+  
+     <select name="" id="APIId" onchange="runApi()" onkeyup="this.blur();this.focus();">
+      <option value="-1">请选择测试的API</option>
+      <option name="type" value="updateAds">创建更新广告组</option>
+      <option name="type" value="updateAd">创建更新广告</option>
+      <option name="type" value="audience">Audience</option>
+      <option name="type" value="setAppkey">设置APPKEY</option>
+      <option name="type" value="yali">随机调用设置APPKEY API</option>
+      <option name="type" value="yijian_user">意见领袖用户数据API</option>
+      <option name="type" value="yijian_platform">意见领袖平台数据API</option>
+     </select>
+ </div>
+
+<div id="yali" style="display:none;">
+<div class="zu" >
+<label class="tips">调用频率： </label>
+<input type="text" style="width:200px;" id="numHz"/>
+<label class="tips">次/秒（max：1000） </label>
+</div>
+
+<div class="zu" >
+<label class="tips">调用总次数： </label>
+<input type="text" style="width:200px;" id="numTal"/>
+<label class="tips">次</label>
+</div>
+
+<div class="zu" >
+<label class="tips">开放中： </label>
+<input type="text" style="width:200px;" id="nums1"/>
+</div>
+</div>
+
+
+
+<h3>调用参数列表：</h3>
+<div style="color:green;font-size:12px;margin:10px 10px;" id="paras">
+
+</div>
+
+
+<div class="zu">	
+	<input class="button" style="cursor: pointer;" type="reset" value="清空" onclick='de()'>
+	<input class="button" type="submit" value="提交" id="submit_check_req" />
+	<span id ="info" style="color:red;font-size:12px;">测试中...</span>
+</div>
+
+<div class="zu" id="info_link">
+  
+  <label class="tips">请求链接：</label>
+  <div style="width:70%; word-wrap:break-word;" > 
+  <a href="#" target="_blank" id="links"></a>
+  </div>
+</div>
+
+<div class="zu">
+	<div class="textarea_wrap">
+	<label class="tips">反馈信息：</label><br/>
+	<textarea name="" cols="150" rows="10" id='text' ></textarea><br />
+	</div>
+</div>
+
+
+
+<div class="zu" >
+
+  <h3>验证结果如下</h3>
+  <div class="tip_info" id="check_show_info">
+
+   </div>
+</div>
+
+
+
+
+</div>
+
+<div class="lay_foot">
+	<p class="copyright_en">Copyright &copy; 2009 - 2012 buzzinate All Rights Reserved.</p>
+	<p class="copyright">擘纳（上海）信息科技有限公司，版权所有</p>
+</div>
+
+<script type="text/javascript">
+
+var s = screen, d = document, u = d.location ,w =window ,total = 1;
+var num =Math.floor(Math.random()*10+1);
+
+//getConfig('f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b');
+
+
+var UUIDPOOL = {
+       "uuid0": "3f215a23-5dfe-4820-b746-847239dc8b02",
+       "secret0": "86d23e03-e8ba-429f-948d-d021cadf3a94",
+       "uuid1": "f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b",
+       "secret1": "e181947b-d8bf-4e94-b43f-8da9789248a3",
+       "ADID":"166131",
+       "ADIDSECRET":"f0ddd7b4-e62e-4d70-b1ad-0b62a67268a8",
+       "ADID1":"2713394",
+       "ADIDSECRET1":"287f5e62-9d94-4a58-9192-0d0b7cae1bc4"
+
+        };
+
+
+var APIPOOL = {
+       "setAppkey": "http://www.bshare.cn/api/publisher/setapp.json",
+       "websiteCustom": "http://www.bshare.cn/websiteCustomizeEmbed",
+       "updateAds":"http://www.buzzads.com/api/ads/order/update",
+       "updateAd":"http://www.buzzads.com/api/ads/entry/update",
+       "audience":"http://www.buzzads.com/api/uq/notify/audience",
+       "yijian_platform":"",
+       "yijian_user":""
+        };
+
+
+var APIPARAM = {
+    "setAppkey1":"site=sinaminiblog&appkey=2616620035&appsecret=431f3c4f072a53c1daebf4df74956181",
+    "setAppkey2":"site=qqmb&appkey=dcba10cb2d574a48a16f24c9b6af610c&appsecret=97a211d13cf6447efab0ad289d3cbb5e",
+    "setAppkey3":"site=kaixin001&appkey=842605380987347bb8764440079df078&appsecret=431f3c4f072a53c1daebf4df74956181",
+    "setAppkey4":"site=sohuminiblog&appkey=GTnImhxM56&appsecret=6!zDtNtPZr9XyHRi8T)Q$SepCAEZFX",
+    "setAppkey5":"site=neteasemb&appkey=6MmaR9i6myPLNEOX&appsecret=ZpTy2cdAhL5OmC2KMkAEuYOeJ2Zytb7S",
+    "setAppkey6":"site=tianya&appkey=63e2cd0fd94669848c60cabd4606335e04f547fc8&appsecret=057f0027e95a3a97d0ed7b424cfa7e6c",
+    "setAppkey7":"site=sinaminiblog&appkey=2788964267&appsecret=35281668cf7038b28bf4ae631dac7af1",
+    "setAppkey8":"site=sinaminiblog&appkey=3096999500&appsecret=00b7fef37c182dbe8ca7aee28f9bc9d3",
+
+    "setAppkey9":"site=sinaminiblog&appkey=1548997549&appsecret=b857a6ee0be123a3a1d77e86acdf0be7",
+    "setAppkey10":"site=sinaminiblog&appkey=2616620035&appsecret=431f3c4f072a53c1daebf4df74956181",
+    "websiteCustom1":"email=xinjun91@yahoo.com.cn&password=niu520",
+    "websiteCustom2":"email=xinjun91@yahoo.com.cn&password=niu520",
+    "updateAds1":"name=nihao",
+    "updateAds2":"name=nihao&orderId=79&network=all&bidType=CPC&bidPrice=100&maxBudgetDay=150&maxBudgetTotal=260&frequencyCap=12&CapType=Order&keywords=time&channels=http://test.buzzinate.com/&startDate=2013-05-12&endDate=2013-06-02",
+    "updateAd1":"name=nihao&orderId=79&link=http://www.bshare.cn/",
+    "updateAd2":"name=nihao&orderId=79&link=http://www.bshare.cn/&entryId=95&imageUrl=http://static.bshare.cn/repository/pointsImage/banner/8/8INyvqOE0H3ZB3e3.jpg&flashUrl=http://qa.buzzinate.com/ceshi/calli.swf&size=300&title=你好测试&description=你好，这是测试广告的描述文字&displayUrl=http://www.bshare.cn",
+    "audience1":"l=http://qa.buzzinate.com/ceshi/xin/doris.json",
+    "audience2":"l=http://qa.buzzinate.com/ceshi/xin/doris.json"
+
+};
+
+function init(){
+   changeToX();
+   runApi();
+
+
+}
+
+function runApi(){
+
+    var APIId = document.getElementById('APIId').value;
+    var parent= document.getElementById('paras');
+    delChildNodes(parent);
+    document.getElementById("yali").style.display = "none";
+    document.getElementById("links").innerHTML="";
+    document.getElementById("links").href="#";
+    switch (APIId) {
+      
+        case 'updateAds':
+        {
+         
+          var bb = strToArr(APIPARAM[APIId+'2']);
+          var aa = addParamsDiv(bb);
+          document.getElementById("paras").appendChild(aa);
+          document.getElementById("submit_check_req").onclick = runads;
+         
+        }
+          break;
+        case 'updateAd':
+        {
+
+           var bb = strToArr(APIPARAM[APIId+'2']);
+           var aa = addParamsDiv(bb);
+           document.getElementById("paras").appendChild(aa);
+           document.getElementById("submit_check_req").onclick = runads;
+        }
+        break;
+        case 'setAppkey':
+        {
+           var bb = strToArr(APIPARAM[APIId+'2']);
+           var aa = addParamsDiv(bb);
+           document.getElementById("paras").appendChild(aa);
+           document.getElementById("submit_check_req").onclick = runSetAppkey;
+        }
+      break;
+        case 'yali':
+        {
+         document.getElementById("yali").style.display = "block";
+         document.getElementById("submit_check_req").onclick = runap;
+        }
+        break;
+
+        case 'audience':
+        {
+           var bb = strToArr(APIPARAM[APIId+'2']);
+           var aa = addParamsDiv(bb);
+           document.getElementById("paras").appendChild(aa);
+         document.getElementById("submit_check_req").onclick = runads;
+        }
+        break;
+
+        case 'yijian':
+        {
+           var bb = strToArr(APIPARAM[APIId+'2']);
+           var aa = addParamsDiv(bb);
+           document.getElementById("paras").appendChild(aa);
+         document.getElementById("submit_check_req").onclick = runads;
+        }
+        break;
+        
+        case 'share':
+        {
+         
+
+            var wrap = document.getElementById('wrap'),
+                inputs = wrap.getElementsByTagName('input');
+             
+            for (var i = 0, l = inputs.length; i < l; i++) {
+                (function (cur) {
+                    inputs[cur].onclick = function () {
+                        alert(cur);
+                    }
+                })(i)
+            }
+
+
+            var wrap = document.getElementById('wrap'),
+                inputs = wrap.getElementsByTagName('input');
+             
+            wrap.onclick = function (ev) {
+                var ev = ev || window.event,
+                target = ev.target || ev.srcElement;
+                for (var i = 0, l = inputs.length; i < l; i++) {
+                    if (inputs[i] === target) {
+                        alert(i)
+                    }
+                }
+            }
+         
+        }
+        break;
+
+
+
+
+       }
+
+}
+
+
+
+function changeToX(){
+   var typeId=document.getElementById('typeId').value;
+   var surl='';
+	 if(typeId==0){
+
+  	  surl = "http://qa.buzzinate.com/ceshi/change.php?type=formal";
+     // sendData(surl);
+      document.getElementById("p2").style.display = "block";
+      document.getElementById("p1").style.display = "none";
+      document.getElementById("check_show_info").innerHTML= "切换到正式服务成功!"; 
+   
+
+
+	}
+	if(typeId==1){
+	   surl = "http://qa.buzzinate.com/ceshi/change.php?type=test";
+    // sendData(surl);
+     document.getElementById("p1").style.display = "block";
+     document.getElementById("p2").style.display = "none";
+     document.getElementById("check_show_info").innerHTML= "切换到测试服务成功!"; 
+
+	}
+
+
+}
+
+function isTest(){
+   var typeId=document.getElementById('typeId').value;
+   if(typeId==0 ){return false;}else{return true;}
+}
+
+
+function runap(){
+    var hz = document.getElementById('numHz').value;
+    var nums = Math.floor(1000/hz)>=0? Math.floor(1000/hz): 1 ;
+    var numTal = document.getElementById('numTal').value;
+    var i = 1;
+	  var info = setInterval(function () {
+    	  if (i>=numTal) {
+    		    clearInterval(info);
+            setTimeout("document.getElementById('info').innerHTML='已完成！';", 1000);
+            }
+
+           // testAppkey('f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b','e181947b-d8bf-4e94-b43f-8da9789248a3','sinaminiblog','2616620035','431f3c4f072a53c1daebf4df74956181');
+            // var surl = "http://www.bshare.cn";
+            // sendData(surl);
+            // request(surl);
+        var num =Math.floor(Math.random()*10+1);
+        if(num>8){
+           testIframe(APIPOOL['websiteCustom'],APIPARAM['websiteCustom'+(num-8)]);
+          }else{
+
+           testAPI(APIPOOL['setAppkey'],APIPARAM['setAppkey'+num]);
+          }
+
+        document.getElementById('info').innerHTML='已完成'+i+'个';
+        i++;
+
+    }, nums);
+
+
+
+}
+
+
+
+
+function getConfig(tUuid){
+
+    var surl1 = 'http://lzplugin.bshare.cn/plugin/siteConfig?uuid='+tUuid;
+
+    var surl = 'http://www.bshare.cn/api/feeds/trending.json?uuid='+tUuid;
+    request(surl); 
+    //sendData(surl);
+}
+
+
+var sanford = window.sanford ={
+  
+callback: function (result) {
+        // alert('hello!');
+        var ss = JSON.stringify(result);
+
+        document.getElementById('check_show_info').value=ss;
+
+        }
+
+  
+}
+
+
+function addParamsDiv(params){
+
+       var ParamsDivs = document.createElement("div");
+        params = params || {};
+        for(var key in params) {       
+        var ParamsDiv = document.createElement("div");
+        ParamsDiv.setAttribute("class", "zu"); 
+        var label = createLabel('vl_'+key, key, key);
+        var input = createInput('vi_'+key, key, params[key], 'text', '300', '20', null);
+        ParamsDiv.appendChild(label);
+        ParamsDiv.appendChild(input);       
+        ParamsDivs.appendChild(ParamsDiv);
+        }
+    document.body.appendChild(ParamsDivs);
+    return ParamsDivs ;
+}
+
+function delChildNodes(elem){
+
+    var childs = elem.childNodes;
+    for(var i = childs.length - 1; i >= 0; i--) {  
+    //alert(childs[i].nodeName);  
+    elem.removeChild(childs[i]);  
+    }  
+
+      /*
+      while(elem.firstChild!=null)
+      {
+        elem.removeChild(elem.firstChild);
+      }
+      或者
+
+      if(elem)
+      {
+      while(elem.firstChild!=null)
+      {
+      elem.removeChild(elem.firstChild);
+      }
+      }
+      */
+
+}
+
+
+
+function getParamsData(params){
+     var pa='';
+      for(var key in params) {  
+         // alert(document.getElementById('vi_'+key).value);
+        // pa[key] = document.getElementById('vi_'+key).value;
+        // pa+="&"+key+"="+Url.encode(document.getElementById('vi_'+key).value);
+        pa+="&"+key+"="+encodeURIComponent(document.getElementById('vi_'+key).value); 
+        }
+   return pa;
+}
+
+function testAPI(tg_url,tparams){
+
+	 var times = new Date().valueOf().toString() ,tscret='';
+   if(isTest()){
+        tparams+="&publisherUuid="+UUIDPOOL["uuid0"];
+        tscret = UUIDPOOL["secret0"];
+   }else{
+        tparams+="&publisherUuid="+UUIDPOOL["uuid1"];
+        tscret = UUIDPOOL["secret1"];
+   }
+
+
+
+  // var idex1 = tparams.lastIndexOf('&');
+  // var idex2 = tparams.lastIndexOf('=');
+  // var tscret =  trimStr(tparams.substring(idex2+1)); 
+
+   var params = tparams+"&ts="+Url.encode(times);
+
+	/* params+="&ref="+Url.encode("http://lzplugin.bshare.cn/referer");//页面的Referrer  
+	 params+="&h="+Url.encode("250");//广告框的高度
+	 params+="&w="+Url.encode("160");//广告框的宽度
+	 params+="&rt="+Url.encode("0");//广告类型，0 - 任意（默认）1 - 图片2 - 文字3 - Flash
+	 params+="&mk="+Url.encode("你好,测试关键字");//页面的Meta Keywords
+	 params+="&md="+Url.encode("你好我在测试页面的Description");//页面的Meta Description
+	 params+="&ge="+Url.encode("0");//性别，以下值可选：0 - 未知（默认）1 - 男2 - 女
+	 params+="&bd="+Url.encode("1980-12-07");//出生日期，格式：YYYY-MM-DD
+	 params+="&na="+Url.encode("15");//名族代码
+	 params+="&lo="+Url.encode("上海市长宁区");//上网地址
+	 params+="&nw="+Url.encode("lezhi");//来源
+	  // 'callback'=>'callbacknihao',//回调函数
+
+*/
+ var ttparams = strToArr(params);
+ var sign = addSign(ttparams,tscret);
+  //alert(sign);
+ var tempss = [];
+ for( var p in ttparams ){
+     tempss.push(p + '=' + (ttparams[p] || '' ) )
+    }
+ var surl=tg_url+"?"+tempss.join('&')+"&sig="+sign;
+
+// sendData(surl);
+  request(surl);
+
+}
+
+
+function testIframe(tg_url,tparams){
+   
+
+ if(isTest()){
+        tparams+="&uuid="+UUIDPOOL["uuid0"];
+       
+   }else{
+        tparams+="&uuid="+UUIDPOOL["uuid1"];
+        
+   }
+   var surl=tg_url+"?"+tparams;
+
+  sendData(surl);
+
+ // request(surl);
+
+}
+
+
+function sendData(surl){
+	var frame = document.createElement("iframe");
+       frame.style.display = 'none';
+       frame.src = surl;
+  if (frame.attachEvent){
+      frame.attachEvent("onload", function(){
+      //  alert("Local iframe is now loaded.");
+      document.getElementById('text').value='已发起'+total+'个请求！';
+      total++;
+      });
+  } else {
+    frame.onload = function(){
+      //  alert("Local iframe is now loaded.");
+      document.getElementById('text').value='已发起'+total+'个请求！';
+      total++;
+    };
+  }
+
+   document.body.appendChild(frame);
+    // frame.contentWindow.document.write('');
+     //frame.contentWindow.close();
+    // this.document.body.removeChild(frame);
+
+     //frame.parentNode.removeChild(frame); 
+
+   /* 
+    $.ajax({
+		url: surl,
+		dataType:'jsonp',
+		error:function(textStatus){
+              alert("网络有点慢，任务失败了,再来一次吧~"); 
+        }, 
+		success:function(data,textStatus){ //处理数据 data指向的是返回来的JSON数据
+			alert(textStatus);
+			alert("恭喜您切换服务器hosts成功！");	
+        } 
+   	
+	});
+
+ */
+
+
+}
+
+
+
+function de(){
+   var elems = document.getElementsByTagName("input");
+   for (var i = elems.length - 1; i >= 0; i--) {
+        if(elems[i].type=='text'){
+           elems[i].value = '';
+        }
+        
+     };
+	 document.getElementById("typeId").value="-1";
+	 document.getElementById("APIId").value="-1";
+
+   d.getElementById("info").innerHTML="清空成功！";
+  setTimeout("d.getElementById('info').innerHTML='';", 1000);
+}
+
+
+var Url = {
+ 
+        // public method for url encoding
+        encode : function (string) {
+                return escape(this._utf8_encode(string));
+        },
+ 
+        // public method for url decoding
+        decode : function (string) {
+                return this._utf8_decode(unescape(string));
+        },
+ 
+        // private method for UTF-8 encoding
+        _utf8_encode : function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+ 
+                for (var n = 0; n < string.length; n++) {
+ 
+                        var c = string.charCodeAt(n);
+ 
+                        if (c < 128) {
+                                utftext += String.fromCharCode(c);
+                        }
+                        else if((c > 127) && (c < 2048)) {
+                                utftext += String.fromCharCode((c >> 6) | 192);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+                        else {
+                                utftext += String.fromCharCode((c >> 12) | 224);
+                                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+ 
+                }
+ 
+                return utftext;
+        },
+ 
+        // private method for UTF-8 decoding
+        _utf8_decode : function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+ 
+                while ( i < utftext.length ) {
+ 
+                        c = utftext.charCodeAt(i);
+ 
+                        if (c < 128) {
+                                string += String.fromCharCode(c);
+                                i++;
+                        }
+                        else if((c > 191) && (c < 224)) {
+                                c2 = utftext.charCodeAt(i+1);
+                                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                                i += 2;
+                        }
+                        else {
+                                c2 = utftext.charCodeAt(i+1);
+                                c3 = utftext.charCodeAt(i+2);
+                                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                                i += 3;
+                        }
+ 
+                }
+ 
+                return string;
+        }
+ 
+}
+
+
+
+
+function addSign(aa,secret){
+    var tem = [];
+    for(var a in aa){
+    tem.push(a);
+    }
+    tem.sort();
+     var temp = '';
+     var ts ='';
+     for(var p in tem){
+          ts = tem[p];
+         temp += (ts + '=' + Url.decode(aa[ts]));
+     }
+    temp += secret; 
+   // alert(temp);
+     return hex_md5(temp);
+ }
+
+function request(url) {
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.charset = "utf-8";
+        js.src = url;
+       document.getElementsByTagName("head")[0].appendChild(js);
+
+       js.onload = js.onreadystatechange = function() {
+               if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') { 
+               // callback在此处执行
+                document.getElementById('text').value='已成功发起'+total+'个请求！';
+                total++;
+
+                js.onload = js.onreadystatechange = null;
+
+                 } 
+
+            };
+
+
+
+    }
+
+
+function strToArr(str){
+  var temps = new Array();
+  if(!empty(str)){
+    var ttparams = str.split("&");
+    for(var a in ttparams){
+    var s = ttparams[a].split("=");
+    var aa = s[0].toString();
+      //temps[aa] = Url.decode(s[1]);   
+      temps[aa] = s[1];  
+     }  
+  }  
+  return temps ;
+}
+
+
+
+function ArrToStr(Arr){
+
+  var temps=[],strs='';
+  if(!empty(str)){
+    for(var p in Arr){
+     temps.push(p + '=' + (Arr[p] || '' ) )
+    }
+   strs = temps.join('&');
+     
+  }  
+  return strs;
+}
+
+
+
+function post_to_url(path, params, method) { 
+        params = params || {};
+        method = method || "post"; 
+        var form = document.createElement("form");
+         //Move the submit function to another variable 
+         //so that it doesn't get overwritten. 
+         form._submit_function_ = form.submit; 
+         form.setAttribute("method", method); 
+         form.setAttribute("action", path); 
+         form.setAttribute("style", "display: none;"); 
+         form.setAttribute("accept-charset", "utf-8");
+         for(var key in params) { 
+             var hiddenField = document.createElement("input");
+             hiddenField.setAttribute("type", "hidden");
+             hiddenField.setAttribute("name", key);
+             hiddenField.setAttribute("value", params[key]);
+             form.appendChild(hiddenField);
+        } 
+        document.body.appendChild(form);
+        form._submit_function_(); //Call the renamed function. 
+        document.body.removeChild(form);
+      } 
+     // post_to_url("http://google.com/", { submit: "submit" } ); //Works! 
+
+
+  function postQ(method,surl,QueryString){
+
+   var xmlHttpReq = false; 
+   var self = this;
+  // Mozilla/Safari 
+   if (window.XMLHttpRequest) {
+    self.xmlHttpReq = new XMLHttpRequest();
+     } // IE
+     else if (window.ActiveXObject) { 
+         self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+          } 
+    if(xmlHttpReq){
+      self.xmlHttpReq.onreadystatechange=state_Change;;      
+      self.xmlHttpReq.open(method, surl, true); 
+      self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'); 
+      self.xmlHttpReq.setRequestHeader("Content-length", QueryString.length); 
+      self.xmlHttpReq.send("?"+QueryString); 
+
+     }else{
+       alert("Your browser does not support XMLHTTP.");
+      }
+    } 
+
+function state_Change(){
+if (xmlhttp.readyState==4){// 4 = "loaded"
+  if (xmlhttp.status==200){// 200 = OK
+    
+    document.getElementById('text').value='已成功发起'+total+'个请求！';
+    total++;
+
+    // ...our code here...
+    }else{
+    alert("Problem retrieving XML data");
+    }
+  }
+}
+
+
+
+function empty(v){ 
+	switch (typeof v){ 
+		case 'undefined' : return true; break;
+		case 'string' : if(trimStr(v).length == 0) return true; break; 
+		case 'boolean' : if(!v) return true; break; 
+		case 'number' : if(0 === v) return true; break; 
+		case 'object' : {
+                if(null === v) return true; 
+		            if(undefined !== v.length && v.length==0) return true; 
+		            for(var k in v){return false;} return true;} break; 
+		            } 
+	return false; 
+}
+
+
+
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+
+
+
+function DelNewLine(str){
+     str=str.replace(/\r/g,'');
+     str=str.replace(/\n/g,'');
+     str=str.replace(/ /g,'');
+     return str;
+     }
+
+
+var createLabel = function(id, name, value) {
+    var label_var = document.createElement("label");
+ 
+    var label_id = document.createAttribute("id");
+        label_id.nodeValue = id;
+ 
+    var label_text = document.createTextNode(value);
+        label_var.setAttributeNode(label_id);
+    var label_css = document.createAttribute("class");
+    label_css.nodeValue = "select_css";
+    label_var.setAttributeNode(label_css);
+    label_var.appendChild(label_text);
+ 
+    return label_var;
+}
+ 
+ 
+//*************************************//
+//定义方法创建input标签（主要为Text）
+//id,name,value,type 分别代表创建标签的id,
+//   名称（name），值（value），类型（type）
+//  绑定Input方法事件，绑定方式如下（可以同时绑定多个事件方法）：
+//  "onchange==alert('This Value is change success !');|onblur==alert('This value is the beautiful one !');"
+//*************************************//
+var createInput = function(id, name, value, type, width, height, event) {
+    var var_input = null;
+    var input_event_attr_IE = "";
+    if (event != null && event != "") {
+        var event_array_IE = event.toString().split('|');
+        for (var i = 0; i < event_array_IE.length; i++) {
+            var event_IE = event_array_IE[i].split('==');
+            input_event_attr_IE += " " + event_IE[0] + "='' ";
+        }
+    }
+    try {//定义变量实现IE6.0和IE7.0兼容。
+        var_input = document.createElement("<input " + input_event_attr_IE + ">");
+    } catch (e) {
+        var_input = document.createElement("input");
+    }
+ 
+    var input_id = document.createAttribute("id");
+    input_id.nodeValue = id;
+    var input_name = document.createAttribute("name");
+    input_name.nodeValue = name;
+    var input_type = document.createAttribute("type");
+    input_type.nodeValue = type;
+    var_input.value = value ;
+    //var input_value = document.createAttribute("value");
+   // input_value.nodeValue = value;
+    var input_style = document.createAttribute("style");
+    var input_style_str = "";
+ 
+    if (width != null && width != "") {
+        input_style_str += "width:" + width + "px;";
+    } else {
+        input_style_str += "width:30px;";
+    }
+    if (height != null && height != "") {
+        input_style_str += "height:" + height + "px;";
+    }
+ 
+    if (event != null && event != "") {
+        var event_array = event.toString().split('|');
+        for (var i = 0; i < event_array.length; i++) {
+            var events = event_array[i].split('==');
+            var input_event = document.createAttribute(events[0]);
+            input_event.nodeValue = events[1];
+            var_input.setAttributeNode(input_event);
+        }
+    }
+ 
+    var_input.setAttributeNode(input_type);
+    input_style.nodeValue = input_style_str;
+    try {
+        var_input.setAttributeNode(input_style);
+    } catch (e) {
+        width = (width == null || width == "") ? "30" : width;
+        var_input.setAttribute("width", width);
+        if (height != null && height != "") {
+            var_input.setAttribute("height", height);
+        }
+    }
+//    if (readonly != "") {
+//        var input_readonly = document.createAttribute("readonly");
+//        input_readonly.nodeValue = "readonly";
+//        var_input.setAttributeNode(input_readonly);
+//    }
+ 
+    var_input.setAttributeNode(input_id);
+    var_input.setAttributeNode(input_name);
+   // var_input.setAttributeNode(input_value);
+ 
+    return var_input;
+}
+ 
+ 
+//******************************************************************//
+//定义方法创建一个Select选择框的标签；
+//*****   id   表示标签的标识id
+//*****   name 表示标签的名称name
+//*****   options表示标签要绑定的选择项（例如："0231A563-专业类服务|02312177-维保类服务|……")
+//*****   splitstr表示用来分割options的字符（如：'|')
+//*****   splitchar表示分割键值对的分隔符（如：'-'）
+//*****   event 表示此标签对应的事件（当event==null时此标签不绑定事件）
+//******************************************************************//
+var createSelect = function(id, name, options, splitstr, splitchar, event, selectedValue) {
+    var var_select = null;
+    try {//处理IE6.0和IE7.0的兼容问题。
+        var_select = document.createElement("<select onchange='' >");
+    } catch (e) {
+        var_select = document.createElement("select");
+    }
+ 
+    var select_id = document.createAttribute("id");
+    select_id.nodeValue = id;
+    var select_name = document.createAttribute("name");
+    select_name.nodeValue = name;
+ 
+    if (event != null && event != undefined && event != "") {
+        var select_change = document.createAttribute("onchange");
+        select_change.nodeValue = event;
+        var_select.setAttributeNode(select_change);
+    }
+    var_select.setAttributeNode(select_id);
+    var_select.setAttributeNode(select_name);
+    try {
+        var_select.setAttribute("width", "100px");
+    } catch (e) {
+        var select_css = document.createAttribute("class");
+        select_css.nodeValue = "select_css";
+        var_select.setAttributeNode(select_css);
+    }
+ 
+    splitstr = (splitstr == "" || splitstr == null) ? "|" : splitstr;
+    splitchar = (splitchar == "" || splitchar == null) ? "-" : splitchar;
+ 
+    if (options != null && options != undefined && options.toString() != "") {
+        options = (options.toString().lastIndexOf(splitstr) + 1 == options.toString().length) ? options.toString().substr(0, options.toString().length - 1) : options;
+        var arrayOption = options.toString().split(splitstr);
+        for (var i = 0; i < arrayOption.length; i++) {
+            var temp_value = arrayOption[i].split(splitchar);
+            var option = document.createElement("option");
+            var option_value = document.createAttribute("value");
+            option_value.nodeValue = temp_value[0];
+            var option_text = document.createTextNode(temp_value[1]);
+            option.setAttributeNode(option_value);
+            option.appendChild(option_text);
+ 
+            var_select.appendChild(option);
+            if (selectedValue != null && selectedValue != "") {
+                if (temp_value[0] == selectedValue || temp_value[1] == selectedValue) {
+                    var_select.options[i].selected = true;
+                }
+            }
+        }
+    }
+    return var_select;
+}
+ 
+//***************************************************//
+//定义方法创建一个<a>标签；
+//*****   id表示标签唯一表示id
+//*****   name表示标签的名称name
+//*****   value表示标签对应显示的文字（名称）
+//*****   event表示标签对应的事件（当event==null时事件不绑定）
+//*****   href表示标签的链接属性
+//***************************************************//
+var createA = function(id, name, value, event, href, target) {
+    var var_a = null;
+    try {
+        var_a = document.createElement("<a onclick='' target='_blank'>");  //这里创建必须为"<a onclick='alert()'>"这种形式来创建否者不支持IE6.0和IE7.0
+    } catch (e) {
+        var_a = document.createElement("a");
+    }
+    var a_id = document.createAttribute("id");
+    a_id.nodeValue = id;
+    var a_name = document.createAttribute("name");
+    a_name.nodeValue = name;
+    href = (href == null || href == "") ? ("javascript:void(0);" || "#") : href;
+    var a_href = document.createAttribute("href");
+    a_href.nodeValue = href;
+ 
+    var a_Text = document.createTextNode(value);
+ 
+    var_a.setAttributeNode(a_href);
+    var_a.setAttributeNode(a_id);
+    var_a.setAttributeNode(a_name);
+    if (target != null) {
+        var target_href = document.createAttribute("target");
+        target_href.nodeValue = "_blank";
+        var_a.setAttributeNode(target_href);
+    }
+ 
+    if (event != "" && event != null && event != undefined) {
+        var a_click = document.createAttribute("onclick");
+        a_click.nodeValue = event;
+        var_a.setAttributeNode(a_click);
+    }
+    var_a.appendChild(a_Text); //注意这个值绑定顺序，只能放在最后去绑定（不然不支持IE6.0和IE7.0）
+ 
+    return var_a;
+}
+
+
+function runSetAppkey(){
+
+   var APIId = document.getElementById('APIId').value;
+   var bb = strToArr(APIPARAM[APIId+'2']);
+   var tg_url = APIPOOL[APIId];
+   var tparams = getParamsData(bb);
+   var times = new Date().valueOf().toString() ,tscret='';
+   if(isTest()){
+        tparams+="&publisherUuid="+UUIDPOOL["uuid0"];
+        tscret = UUIDPOOL["secret0"];
+   }else{
+        tparams+="&publisherUuid="+UUIDPOOL["uuid1"];
+        tscret = UUIDPOOL["secret1"];
+   }
+  var params = "ts="+Url.encode(times)+tparams;   
+  var sign = addSign(strToArr(params),tscret);
+  //alert(sign);
+  var surl=tg_url+"?"+params+"&sig="+sign;
+
+  document.getElementById('links').href=surl;
+  document.getElementById('links').innerHTML=surl;
+  // sendData(surl);
+  request(surl);
+}
+
+
+
+function runads(){
+  var APIId = document.getElementById('APIId').value;
+
+   var bb = strToArr(APIPARAM[APIId+'2']);
+   var tg_url = APIPOOL[APIId];
+   var tparams = getParamsData(bb);
+   var times =new Date().valueOf().toString(),tscret='';
+
+   //
+//此处注意加密字符串之前已经有&符号
+   var signparam = strToArr(APIPARAM[APIId+'1']);
+   
+   signparam = getParamsData(signparam);
+  
+   if(isTest()){
+        tparams+="&advertiserId="+UUIDPOOL["ADID"];
+        signparam+="&advertiserId="+UUIDPOOL["ADID"];
+        tscret = UUIDPOOL["ADIDSECRET"];
+   }else{
+        tparams+="&advertiserId="+UUIDPOOL["ADID1"];
+        signparam+="&advertiserId="+UUIDPOOL["ADID1"];
+        tscret = UUIDPOOL["ADIDSECRET1"];
+   }
+
+  // var params = "ts="+Url.encode(times)+tparams;
+   var params = "ts="+encodeURIComponent(times)+tparams;
+    signparam = "ts="+encodeURIComponent(times)+signparam;
+    
+  var sign = addSign(strToArr(signparam),tscret);
+
+ // alert(sign);
+
+  var surl = tg_url+"?"+params+"&sig="+sign;
+
+document.getElementById('links').href=surl;
+document.getElementById('links').innerHTML=surl;
+
+// sendData(surl);
+request(surl);
+
+
+
+}
+
+</script>
+
+
+
+</body>
+</html>
+
+
+
+

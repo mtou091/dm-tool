@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>bShare_API调试工具</title>
+	<link rel="Shortcut Icon" href="http://www.bshare.cn/favicon.ico" type="image/x-icon"/>
+	<link href="http://test.buzzinate.com/ceshi/jstest/debug.css" rel="stylesheet" />
+	<script type="text/javascript" src="http://test.buzzinate.com/ceshi/lib/md5.js"></script>
+<head>
+
+<style>
+.zu{
+  margin-top:20px ;
+
+  margin-bottom:20px;
+
+}
+.zu label{
+  cursor: text; 
+  padding-right: 10px;
+  display:-moz-inline-box;
+  display:inline-block;
+  width:100px;
+}
+.tips{
+	margin-right:5px;
+}
+
+</style>
+
+
+
+
+
+<script type="text/javascript">
+
+var UUIDPOOL = {
+       "uuid1": "f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b",
+       "secret1": "e181947b-d8bf-4e94-b43f-8da9789248a3"
+        };
+
+var USER ={
+      'email':'xinjun91@yahoo.com.cn',/*用户在bshare注册的邮箱名称(必选)*/
+      'password':'niu520'/*用户在bshare注册的邮箱名称(必选)*/
+    }
+
+
+
+
+var bsyncparam = {
+
+        ts:new Date().valueOf().toString(), /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+        url:'http://www.bshare.cn/',/*分享的url(必选)*/
+        publisherUuid:UUIDPOOL['uuid1'], /*站长uuid(必选)*/
+        title:'testShareBsyncV2',/*分享的标题（必选）*/
+     // summary:'sharesummary',/*分享的摘要(可选)*/
+      //pic:'http://static.bshare.cn/images/banners/banner-bsync2.jpg',/*分享图片的url路径(可选)*/
+        email:USER['email'],/*用户在bshare注册的邮箱名称(必选)*/
+        password:USER['password'] /*用户在bshare注册的邮箱名称(必选)*/
+       
+    }
+
+var bsyncCustom = {
+
+     ts:new Date().valueOf().toString(), /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+     uuid : UUIDPOOL['uuid1'], /*站长uuid(必选)*/
+     email : USER['email'] /*用户在bshare注册的邮箱名称(必选)*/
+}
+
+
+
+function Init(){
+
+  var tscret = UUIDPOOL["secret1"];
+  var sign = addSign(bsyncCustom,tscret);
+   var temp = [];
+   for(var p in bsyncCustom){
+     temp.push(p + '=' + encodeURIComponent(bsyncCustom[p] || ''))
+    }
+
+  var surl= 'http://www.bshare.cn/bsyncCustomizeEmbed?' + temp.join('&')+'&sig='+sign;
+
+  document.getElementById('bsyncId').src = surl ;
+  document.getElementById('bsyncUrl').href = surl ;
+
+}
+
+function submit(){
+   
+   var tscret = UUIDPOOL["secret1"];
+   var sign = addSign(bsyncparam,tscret);
+   // alert(sign);
+   var temp = [];
+   for(var p in bsyncparam){
+     temp.push(p + '=' + encodeURIComponent(bsyncparam[p] || ''))
+    }
+
+  var surl= 'http://www.bshare.cn/api/share/bsync.json?' + temp.join('&')+'&sig='+sign;
+
+  document.getElementById('links').href=surl;
+  document.getElementById('links').innerHTML=surl;
+
+  request(surl);
+  
+}
+
+function addSign(aa,secret){
+      var tem = [];
+    for(var a in aa){
+    tem.push(a);
+    }
+    tem.sort();
+     var temp = '';
+     var ts ='';
+     for(var p in tem){
+          ts = tem[p];
+         temp += (ts + '=' + aa[ts]);
+     }
+    temp += secret; 
+    //alert(temp);
+    return hex_md5(temp);
+ }
+
+
+function request(url) {
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.charset = "utf-8";
+        js.src = url;
+       document.getElementsByTagName("head")[0].appendChild(js);
+
+       js.onload = js.onreadystatechange = function() {
+               if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') { 
+
+               // callback在此处执行
+                document.getElementById('check_show_info').innerHTML="已成功发起请求!";
+                js.onload = js.onreadystatechange = null;
+
+                 } 
+            };
+    }
+
+</script>
+
+<body onload='Init()'>
+  <div class="wrap">
+    <div class="header">
+
+    <h1>bShare_API测试工具</h1>
+    </div>
+
+<div class="zu">  
+<h5>设定好参数后点击下面按钮：</h5>
+  <input class="button" type="submit" value="测试" id="submit_check_req" onclick="submit()" />
+</div>
+
+<div class="zu" id="info_link"> 
+  <label class="tips">请求链接：</label>
+  <div style="width:70%; word-wrap:break-word;" > 
+  <a href="#" target="_blank" id="links"></a>
+  </div>
+</div>
+
+<div class="zu" >
+
+  <h3>验证结果如下：</h3>
+  <div class="tip_info" id="check_show_info">
+
+   </div>
+</div>
+
+<div class="zu" >
+
+  <h3><a id="bsyncUrl" href="#" target="_blank" >bshare一键通账号授权使用</a>：</h3>
+
+ <iframe src='#' id='bsyncId' name="bshare" scrolling='no' style="width: 900px; height: 625px; border: 0px;" />
+
+ </div>
+
+
+
+</div>
+
+<div class="lay_foot">
+  <p class="copyright_en">Copyright &copy; 2009 - 2013 buzzinate All Rights Reserved.</p>
+  <p class="copyright">擘纳（上海）信息科技有限公司，版权所有 by &nbsp; <a href="http://www.weibo.com/mtou091" target="_blank">sanford</a></p>
+</div>
+
+</body>
+</html>
+
+
+
+

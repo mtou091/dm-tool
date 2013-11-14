@@ -1,0 +1,2286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>猫扑乐+</title>
+<link rel="shortcut icon" type="image/x-icon"  href="http://mopimg.cn/favicon.ico" />
+<link rel="icon" type="image/x-icon"   href="http://mopimg.cn/favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="http://mopimg.cn/www/happy/css/common.css?version=20130626184336" />
+<link rel="stylesheet" type="text/css" href="http://mopimg.cn/www/happy/css/main.css?version=20130626184336" />
+<script type="text/javascript" src="http://mopimg.cn/www/happy/js/jquery.js?version=20130626184336"></script>
+<script type="text/javascript" src="http://mopimg.cn/www/happy/js/common.js?version=20130626184336"></script>
+<script type="text/javascript" src="http://mopimg.cn/www/happy/js/happymop.js?version=20130626184336"></script>
+<script type="text/javascript" src="http://mopimg.cn/www/happy/js/happy-web.js?version=20130626184336"></script>
+</head>
+<body>
+<!--header-->
+
+
+
+<style>
+.white_content {
+ display: none;
+ position: absolute;
+ top: 25%;
+ left: 25%;
+ z-index:1002;
+}
+.black_overlay {
+ display: none;
+ position: absolute;
+ top: 0%;
+ left: 0%;
+ width: 100%;
+ height: 100%;
+ background-color:#f5f5f5;
+ z-index:1001;
+ -moz-opacity: 0.8;
+ opacity:.80;
+ filter: alpha(opacity=80);
+}
+.close a {
+ color:#333;
+ text-decoration:none;
+ font-size:14px;
+ font-weight:700
+}
+.con {
+ /*text-indent:1.5pc;*/
+ line-height:21px
+}
+ /*登录*/
+.loginH{font-size:12px;width:280px;height:330px;color:#000;padding:7px 7px 7px 193px;background:url(http://mopimg.cn/tt/images/bg_login.png) 0 0 no-repeat;overflow:hidden;}
+.loginH *{padding:0;margin:0;}
+.loginH a{font-size:12px;}
+.loginH ul, .loginH ul li{list-style:none;}
+.loginH .title, .loginH .content{clear:both;overflow:hidden;}
+.loginH .title{padding:0 0 0 15px;height:33px;}
+.loginH .title h2{float:left;display:block;text-indent:-9999px;width:106px;height:15px;margin-top:10px;background:url(http://mopimg.cn/www/happy/images/bg_dlh2.gif) 0 0 no-repeat;overflow:hidden;}
+.loginH .moreC{float:right;padding:9px 3px 0 0;}
+.loginH .btn_close{float: right;display: block;text-indent: -9999px;width: 17px;height: 16px;margin-right: 3px;background:url(http://mopimg.cn/tt/images/btn_login.gif) 0 -92px no-repeat;overflow: hidden;}
+.loginH a.btn_close:hover{background-position:0 -112px;}
+.loginH a.btn_close:active{background-position:0 -132px;}
+.loginH .content{padding:0 25px;}
+.loginH .option{height:220px;padding-top:18px;}
+.loginH .option li{float:left;width:100%;}
+.loginH .option .tsP label{float:left;font-size:14px;height:23px;line-height:23px;}
+.loginH .option .tsP a{float:right;text-decoration:underline;margin-top:5px;}
+.loginH .option .tsP a:hover{text-decoration:none;}
+.loginH .bdP{padding-bottom:10px;}
+.loginH .inputC{font-size:12px;color:#ccc;width:216px;height:16px;padding:6px;
+ *height:14px;
+ %padding-top:8px;border:1px solid #ccc;}
+.loginH .inputC2{color:#666;}
+.loginH .checkP, .loginH .checkP .checkboxC{font-family:Tahoma;vertical-align:middle;}
+.loginH .btnP{padding:30px 150px;}
+.loginH .btn_login{display:inline-block;font-size:14px;font-weight:bold;color:#fff;width:80px;height:28px;line-height:28px;text-align:center;
+ *line-height:30px;vertical-align:middle;margin-right:10px;background:url(http://mopimg.cn/tt/images/btn_login.gif) 0 0 no-repeat;border:none;overflow:hidden;cursor:pointer;}
+.loginH .btn_login2{color:#D2FDFF;background:url(http://mopimg.cn/tt/images/btn_login.gif) 0 -29px no-repeat;}
+.loginH .btn_login3{color:#D2FDFF;background:url(http://mopimg.cn/tt/images/btn_login.gif) 0 -58px no-repeat;}
+.loginH .btnP .dlts{color:#EC4406;}
+.loginH .renren{padding:20px 0;}
+.loginH .renren span{float:left;display:block;width:56px;padding-top:3px;
+ *padding-top:4px;}
+.loginH .renren a{display:inline-block;color:#0082CC;padding:0 4px 0 21px;height:16px;line-height:17px;
+*line-height:18px;font-size:12px;background:url(http://mopimg.cn/tt/images/bg_logomin.gif) 0 0 no-repeat;overflow:hidden;font-family:"宋体";text-decoration:none;}
+.loginH .renren a:hover{text-decoration:underline;}
+.loginH .renren a.ico_dlbd{background-position:0 -20px;}
+.loginH .renren a.ico_dlqq{background-position:0 -40px;}
+.loginH .renren a.ico_dlxl{background-position:0 -60px;}
+</style>
+<script>
+/* function postSubject(type){
+	var id = getMopidFromCookie();
+	if(id>0){
+        window.location.href="/subject/postinit.do?aid=&cid=&flag="+type;
+	}else{
+		show('light',"http://le.mop.com/happy/1/postSubject.html");
+	}
+}
+ */
+function show(tag,callbackUrl){
+ var light=document.getElementById(tag);
+ var fade=document.getElementById('fade');
+ light.style.display='block';
+ fade.style.display='block';
+ $('#J_CallBackUrl').val(callbackUrl);
+ }
+function hide(tag){
+ var light=document.getElementById(tag);
+ var fade=document.getElementById('fade');
+ light.style.display='none';
+ fade.style.display='none';
+}
+function loginn(){
+	 var sourceName = "昵称/手机号/Email";
+	 var uname = jQuery("#user_name").val();
+	 var pw = jQuery("#pw").val();
+	 var autologin = jQuery("#autologin");
+	 if( jQuery.trim(uname) == null || jQuery.trim(uname) == "" || jQuery.trim(uname) == sourceName ){
+			alert("请输入登录名！");
+			jQuery("#uname").focus();
+			jQuery("#uname").val("");
+			return false;
+	 }
+	 if( jQuery.trim(pw) == null || jQuery.trim(pw) == ""){ 
+			alert("密码不能为空！");
+			jQuery("#pw").focus();
+			return;
+	 }
+	 if( autologin.attr("checked") ){
+			autologin = "on";
+		}else{
+			autologin = "off";
+	 }
+	 jQuery.post("/happy/user/Login.do",{userName:uname,password:pw,autologin:autologin},function(data){
+         if(data =="1"){
+        	 alert("登录成功 ！");
+             var callBackUrl= $('#J_CallBackUrl').val();
+             if(callBackUrl!=null && callBackUrl!="" && callBackUrl!='undefined'){
+                 window.location.href=callBackUrl;
+             }else{
+                 window.location.reload();
+             }
+         }else{
+        	 alert("登录失败");
+         }
+ });
+	}
+$(function(){
+	$("input[name=password]").keydown(function(e){
+		var curKey = e.which;
+		if(curKey == 13){
+			loginn();
+		    return false;
+		   }
+		});
+});
+	
+</script> 
+<div id="light" class="white_content">
+<div id="loginPop" class="loginH" style="position:absolute; z-index:9999; top:20%; left:%;">
+	<div class="title">
+		<h2>登录猫扑乐+</h2>
+		<span class="moreC"><a href="javascript:hide('light');" id="closelogin" class="btn_close"></a></span></div>
+	<div class="content">
+	<!-- <form name=login onsubmit="loginn();" method="post"> -->
+        <input type="hidden" id="J_CallBackUrl" value="" />
+		<ul class="option">
+			<li class="tsP">
+				<label>登录名</label>
+				<a href="http://passport.mop.com/register?url=http://le.mop.com/" target="_blank">注册新用户</a></li>
+			<li class="bdP">
+				<input type="text" class="inputC inputC2" id="user_name" name="user_name" value="昵称/手机号/Email" tabindex="1" onclick="if(this.value='昵称/手机号/Email'){this.value=''}">
+			</li>
+			<li class="tsP">
+				<label>密码</label>
+				<a href="http://passport.mop.com/Common.do?m=forgetPassword" target="_blank">忘记密码了？</a></li>
+			<li class="bdP">
+				<input type="password" class="inputC inputC2" id="pw" name="password" tabindex="2">
+			</li>
+			<li class="checkP">
+				<input type="checkbox" class="checkboxC" id="autologin" name="auto_login" tabindex="3">
+				在这台电脑上记住我</li>
+			<li class="btnP">
+				<input type="button" class="btn_login" onclick="loginn();" id="login" value="登录" tabindex="4">
+				<span class="dlts" id="loginmsg"></span></li>
+		</ul>
+		<!--  </form> -->
+		<!-- <div class="renren"> <span mopcon='renren'></span> <span mopcon='baidu'></span> <span mopcon='tencentconnector'></span> <span mopcon='weibo'></span></div> -->
+	</div>
+</div>
+</div>
+<div id="fade" class="black_overlay"></div>
+ <!-- baidu_tc block_end -->
+
+
+<div class="header">
+	<div class="inn">
+		<div class="logo">
+			<h1>猫扑乐+</h1>
+			<a href="http://le.mop.com" title="猫扑乐+">
+                <img src="http://mopimg.cn/www/happy/images/logo.png" width="105" height="50" alt="猫扑乐+">
+            </a>
+        </div>
+		<div class="fl">
+			<ul class="nav" id="headnav">
+                
+                    <li class="on"><a href="/">热门</a></li>
+                
+                
+                
+                
+                    <li><a href="/happy/subject/latest/1.html">最新</a></li>
+                
+                
+                
+                    <li ><a href="/happy/subject/type/2/1.html">涂鸦</a></li>
+                
+                
+                
+                    <li ><a href="/happy/subject/rank/0/7/1.html">乐+榜</a></li>
+                
+                
+                
+                    <li ><a href="/happy/user/talent/1.html">乐+达人</a></li>
+                
+			</ul>
+			<a href="javascript:void(0)" id="postSubject"  class="an_fbls">发表乐事</a></div>
+		<div class="fr"> 
+			<!--登录-->
+			<div class="loginC">
+				<div class="t_dlq">
+					<ul>
+						<li><a href="javascript:void(0)" class="h_login" id="J_Login">登录</a></li>
+						<li><a href="javascript:void(0)" id="J_Register">注册</a></li>
+					</ul>
+				</div>
+				<div class="t_dlh" style="display:none;">
+					<ul>
+						<li><span class="fontl"></span><a href="/happy/post/user//1.html" id="rUserName"></a></li>
+						<li><a href="http://passport.mop.com/Logout?backUrl=http://le.mop.com" class="h_exit">退出</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--center-->
+<div class="center index">
+	<div class="area">
+		<div class="s1">
+		    <div class="nrP" id="subjects">
+		        
+
+
+<script type=text/javascript charset=utf-8 src="http://static.bshare.cn/b/buttonLite.js#style=-1&uuid=d720be40-1d57-461f-a00c-efaca40c5ce2&ssc=true&pophcol=2&lang=zh"></script>
+
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="697" />
+            <!-- a href="#697" name="697"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">你们是合伙来玩我的吧！</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				     
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/42/2013062613722428133101576750732_167_350.jpg');">
+				        <img width="167" src="http://image1.mop.com/happy/project1/2013/6/26/18/42/2013062613722428133101576750732_167_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,697);">
+							<span>顶（</span><span id="top_697">0</span>）
+							<i class="i_d1" id="add_top_697"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,697);">踩（<span
+							id="stamp_697">0</span>）
+							<i class="i_c1" id="add_stamp_697"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,697);">收藏（<span
+							id="collect_697">0</span>）
+							<i class="i_d1" id="add_collect_697"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_697">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_697"
+								onfocus="MOP.MS.focusCommentInput(0,697);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,697);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_697">
+						<li class="whf02"><textarea id="comment_input_hide_697" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_697" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_697" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,697);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,697);" id="J-show_697">展开回复（<span
+							id="comment_show_697">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,697);" id="J-hide_697">收起回复（<span
+							id="comment_hide_697">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_697"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="696" />
+            <!-- a href="#696" name="696"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">喵的~~吃完晚饭，该出去溜小猫了~~</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				     
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/7/201306261372242747199466981385.gif');">
+				        <img width="333" src="http://image1.mop.com/happy/project1/2013/6/26/18/7/201306261372242747199466981385.gif" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/62/可爱萌宠/1.html">可爱萌宠</a>
+						
+							<a href="/happy/tag/70/搞笑动态图/1.html">搞笑动态图</a>
+						
+							<a href="/happy/tag/63/各种萌/1.html">各种萌</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,696);">
+							<span>顶（</span><span id="top_696">0</span>）
+							<i class="i_d1" id="add_top_696"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,696);">踩（<span
+							id="stamp_696">0</span>）
+							<i class="i_c1" id="add_stamp_696"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,696);">收藏（<span
+							id="collect_696">0</span>）
+							<i class="i_d1" id="add_collect_696"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_696">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_696"
+								onfocus="MOP.MS.focusCommentInput(0,696);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,696);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_696">
+						<li class="whf02"><textarea id="comment_input_hide_696" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_696" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_696" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,696);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,696);" id="J-show_696">展开回复（<span
+							id="comment_show_696">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,696);" id="J-hide_696">收起回复（<span
+							id="comment_hide_696">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_696"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="695" />
+            <!-- a href="#695" name="695"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">你等我一会，我回来之后你再弹我。</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;耶稣和释迦牟尼猜拳，输了就让对方弹一下脑袋，结果耶稣总是赢，释迦牟尼就被弹得满头包。最后终于，释迦牟尼赢了一回，耶稣一看自己输了，就说：“你等我一会，我回来之后你再弹我。” 　结果耶稣就再也没回来，所以几千年来，释迦牟尼的一只手就一直保持着那个准备弹耶稣脑袋的姿势。 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/46/笑话/1.html">笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,695);">
+							<span>顶（</span><span id="top_695">0</span>）
+							<i class="i_d1" id="add_top_695"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,695);">踩（<span
+							id="stamp_695">0</span>）
+							<i class="i_c1" id="add_stamp_695"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,695);">收藏（<span
+							id="collect_695">0</span>）
+							<i class="i_d1" id="add_collect_695"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_695">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_695"
+								onfocus="MOP.MS.focusCommentInput(0,695);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,695);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_695">
+						<li class="whf02"><textarea id="comment_input_hide_695" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_695" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_695" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,695);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,695);" id="J-show_695">展开回复（<span
+							id="comment_show_695">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,695);" id="J-hide_695">收起回复（<span
+							id="comment_hide_695">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_695"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="694" />
+            <!-- a href="#694" name="694"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">你才是马呢，你全家都是马！</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;没见过用海飞丝的狗狗啊！！ 
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/11/2013062613722426652141665957041_292_350.jpg');">
+				        <img width="292" src="http://image1.mop.com/happy/project1/2013/6/26/18/11/2013062613722426652141665957041_292_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,694);">
+							<span>顶（</span><span id="top_694">0</span>）
+							<i class="i_d1" id="add_top_694"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,694);">踩（<span
+							id="stamp_694">0</span>）
+							<i class="i_c1" id="add_stamp_694"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,694);">收藏（<span
+							id="collect_694">0</span>）
+							<i class="i_d1" id="add_collect_694"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_694">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_694"
+								onfocus="MOP.MS.focusCommentInput(0,694);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,694);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_694">
+						<li class="whf02"><textarea id="comment_input_hide_694" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_694" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_694" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,694);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,694);" id="J-show_694">展开回复（<span
+							id="comment_show_694">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,694);" id="J-hide_694">收起回复（<span
+							id="comment_hide_694">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_694"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="693" />
+            <!-- a href="#693" name="693"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">好贱啊。。人家小朋友只是来踢垃圾玩的吧。。。</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				     
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/87/2013062613722425534731113333273.gif');">
+				        <img width="402" src="http://image1.mop.com/happy/project1/2013/6/26/18/87/2013062613722425534731113333273.gif" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/70/搞笑动态图/1.html">搞笑动态图</a>
+						
+							<a href="/happy/tag/36/搞笑gif/1.html">搞笑gif</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,693);">
+							<span>顶（</span><span id="top_693">0</span>）
+							<i class="i_d1" id="add_top_693"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,693);">踩（<span
+							id="stamp_693">0</span>）
+							<i class="i_c1" id="add_stamp_693"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,693);">收藏（<span
+							id="collect_693">0</span>）
+							<i class="i_d1" id="add_collect_693"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_693">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_693"
+								onfocus="MOP.MS.focusCommentInput(0,693);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,693);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_693">
+						<li class="whf02"><textarea id="comment_input_hide_693" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_693" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_693" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,693);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,693);" id="J-show_693">展开回复（<span
+							id="comment_show_693">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,693);" id="J-hide_693">收起回复（<span
+							id="comment_hide_693">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_693"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442172720/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/16/49/tiny_WQGQ_147p039149.jpg" width="50" height="50" alt="以后请叫我十一" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="692" />
+            <!-- a href="#692" name="692"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442172720/1.html" target="_blank">以后请叫我十一</a></li>
+				<li class="wz01">
+					<div class="cap">要是不印时刻表的话，你就无法说出火车究竟误点多久了，对吗？</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;　　里列本火车站挤满了回家的旅客。一列又一列的火车不是误点，就是被取消。终于一位愤怒的旅客对车站职员说：“我不明白英国铁路公司干吗要印时刻表！” 　　车站职员说：“我也不知道，不过，要是不印时刻表的话，你就无法说出火车究竟误点多久了，对吗？” 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/125/误点/1.html">误点</a>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/46/笑话/1.html">笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,692);">
+							<span>顶（</span><span id="top_692">0</span>）
+							<i class="i_d1" id="add_top_692"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,692);">踩（<span
+							id="stamp_692">0</span>）
+							<i class="i_c1" id="add_stamp_692"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,692);">收藏（<span
+							id="collect_692">0</span>）
+							<i class="i_d1" id="add_collect_692"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_692">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_692"
+								onfocus="MOP.MS.focusCommentInput(0,692);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,692);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_692">
+						<li class="whf02"><textarea id="comment_input_hide_692" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_692" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_692" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,692);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,692);" id="J-show_692">展开回复（<span
+							id="comment_show_692">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,692);" id="J-hide_692">收起回复（<span
+							id="comment_hide_692">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_692"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="691" />
+            <!-- a href="#691" name="691"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">老​婆​快​看​，​我​给​你​表​演​松​鼠​跳！哈哈</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				     
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/47/201306261372242416879216983301.gif');">
+				        <img width="234" src="http://image1.mop.com/happy/project1/2013/6/26/18/47/201306261372242416879216983301.gif" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/62/可爱萌宠/1.html">可爱萌宠</a>
+						
+							<a href="/happy/tag/69/汪星人/1.html">汪星人</a>
+						
+							<a href="/happy/tag/36/搞笑gif/1.html">搞笑gif</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,691);">
+							<span>顶（</span><span id="top_691">0</span>）
+							<i class="i_d1" id="add_top_691"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,691);">踩（<span
+							id="stamp_691">0</span>）
+							<i class="i_c1" id="add_stamp_691"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,691);">收藏（<span
+							id="collect_691">0</span>）
+							<i class="i_d1" id="add_collect_691"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_691">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_691"
+								onfocus="MOP.MS.focusCommentInput(0,691);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,691);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_691">
+						<li class="whf02"><textarea id="comment_input_hide_691" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_691" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_691" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,691);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,691);" id="J-show_691">展开回复（<span
+							id="comment_show_691">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,691);" id="J-hide_691">收起回复（<span
+							id="comment_hide_691">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_691"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="690" />
+            <!-- a href="#690" name="690"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">小弟你是要闹哪样？ </div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;谁教你这么喝水的呢？！ 
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/35/2013062613722423067052034578614_370_350.jpg');">
+				        <img width="370" src="http://image1.mop.com/happy/project1/2013/6/26/18/35/2013062613722423067052034578614_370_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/71/熊孩子/1.html">熊孩子</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,690);">
+							<span>顶（</span><span id="top_690">0</span>）
+							<i class="i_d1" id="add_top_690"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,690);">踩（<span
+							id="stamp_690">0</span>）
+							<i class="i_c1" id="add_stamp_690"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,690);">收藏（<span
+							id="collect_690">0</span>）
+							<i class="i_d1" id="add_collect_690"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_690">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_690"
+								onfocus="MOP.MS.focusCommentInput(0,690);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,690);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_690">
+						<li class="whf02"><textarea id="comment_input_hide_690" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_690" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_690" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,690);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,690);" id="J-show_690">展开回复（<span
+							id="comment_show_690">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,690);" id="J-hide_690">收起回复（<span
+							id="comment_hide_690">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_690"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="688" />
+            <!-- a href="#688" name="688"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">你23岁都没有谈恋爱实在是明智的决定啊</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;昨天14岁的侄女跟我在QQ上哭诉，昨晚与交往三周的男友分手。痛不欲生，并劝戒我：小姨，原来爱情这么伤！还感叹道：问世间情为何物,直叫人生死相许！然后接着说：你23岁都没有谈恋爱实在是明智的决定啊。 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/123/谈恋爱/1.html">谈恋爱</a>
+						
+							<a href="/happy/tag/45/亲子笑话/1.html">亲子笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,688);">
+							<span>顶（</span><span id="top_688">0</span>）
+							<i class="i_d1" id="add_top_688"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,688);">踩（<span
+							id="stamp_688">0</span>）
+							<i class="i_c1" id="add_stamp_688"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,688);">收藏（<span
+							id="collect_688">0</span>）
+							<i class="i_d1" id="add_collect_688"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_688">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_688"
+								onfocus="MOP.MS.focusCommentInput(0,688);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,688);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_688">
+						<li class="whf02"><textarea id="comment_input_hide_688" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_688" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_688" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,688);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,688);" id="J-show_688">展开回复（<span
+							id="comment_show_688">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,688);" id="J-hide_688">收起回复（<span
+							id="comment_hide_688">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_688"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="687" />
+            <!-- a href="#687" name="687"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">哥们，你真是太能吃了！</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;本人妹子，割男朋友的！乍一看，好能吃。细看是我一高中同学！ 
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/96/2013062613722422210541859898529_373_350.jpg');">
+				        <img width="373" src="http://image1.mop.com/happy/project1/2013/6/26/18/96/2013062613722422210541859898529_373_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,687);">
+							<span>顶（</span><span id="top_687">0</span>）
+							<i class="i_d1" id="add_top_687"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,687);">踩（<span
+							id="stamp_687">0</span>）
+							<i class="i_c1" id="add_stamp_687"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,687);">收藏（<span
+							id="collect_687">0</span>）
+							<i class="i_d1" id="add_collect_687"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_687">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_687"
+								onfocus="MOP.MS.focusCommentInput(0,687);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,687);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_687">
+						<li class="whf02"><textarea id="comment_input_hide_687" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_687" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_687" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,687);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,687);" id="J-show_687">展开回复（<span
+							id="comment_show_687">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,687);" id="J-hide_687">收起回复（<span
+							id="comment_hide_687">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_687"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442172720/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/16/49/tiny_WQGQ_147p039149.jpg" width="50" height="50" alt="以后请叫我十一" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="686" />
+            <!-- a href="#686" name="686"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442172720/1.html" target="_blank">以后请叫我十一</a></li>
+				<li class="wz01">
+					<div class="cap">不怪妹纸坑，怪我们眼斜啊。。</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;昨晚和基友去网吧开黑LOL，不久一妹纸坐旁边，问我们哪个区的要在一起玩，我俩果断点头，结果一晚上就特么没赢过啊。。不怪妹纸坑，怪我们眼斜啊。。妹纸的大白腿看的我都冲动了，基友转头和我说。。他。。硬。。了。。。 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/39/内涵/1.html">内涵</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,686);">
+							<span>顶（</span><span id="top_686">0</span>）
+							<i class="i_d1" id="add_top_686"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,686);">踩（<span
+							id="stamp_686">0</span>）
+							<i class="i_c1" id="add_stamp_686"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,686);">收藏（<span
+							id="collect_686">0</span>）
+							<i class="i_d1" id="add_collect_686"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_686">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_686"
+								onfocus="MOP.MS.focusCommentInput(0,686);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,686);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_686">
+						<li class="whf02"><textarea id="comment_input_hide_686" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_686" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_686" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,686);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,686);" id="J-show_686">展开回复（<span
+							id="comment_show_686">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,686);" id="J-hide_686">收起回复（<span
+							id="comment_hide_686">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_686"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="685" />
+            <!-- a href="#685" name="685"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">一启动 尼玛甩我一脸油漆</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;看有人把电风扇的扇叶染上颜色，一启动起来视觉效果特棒，割了那个发帖的… LZ在单位库房折腾半天终于弄好了，一启动 尼玛甩我一脸油漆… &nbsp; &nbsp; 
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/32/2013062613722421212252022257725_285_350.jpg');">
+				        <img width="285" src="http://image1.mop.com/happy/project1/2013/6/26/18/32/2013062613722421212252022257725_285_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,685);">
+							<span>顶（</span><span id="top_685">0</span>）
+							<i class="i_d1" id="add_top_685"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,685);">踩（<span
+							id="stamp_685">0</span>）
+							<i class="i_c1" id="add_stamp_685"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,685);">收藏（<span
+							id="collect_685">0</span>）
+							<i class="i_d1" id="add_collect_685"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_685">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_685"
+								onfocus="MOP.MS.focusCommentInput(0,685);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,685);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_685">
+						<li class="whf02"><textarea id="comment_input_hide_685" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_685" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_685" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,685);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,685);" id="J-show_685">展开回复（<span
+							id="comment_show_685">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,685);" id="J-hide_685">收起回复（<span
+							id="comment_hide_685">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_685"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="684" />
+            <!-- a href="#684" name="684"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">我妈没打死我证明我是亲生的</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;我妈有一枚价值四位数的钻戒。由于我家都比较节约，所以我一直认为我妈的戒指是假的。就在前几天，我有一件镶着水钻的衣服掉了几颗钻，闲着无聊便想找几颗钻粘回去。所以我把我妈戒指上的钻全抠了，粘到了我的衣服上……我的后果就是晚上不能开空调和电扇，我的那件衣服上的钻全被我妈抠了拿去首饰店检验了。。。我妈没打死我证明我是亲生的。。。o(╯□╰)o 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/45/亲子笑话/1.html">亲子笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,684);">
+							<span>顶（</span><span id="top_684">0</span>）
+							<i class="i_d1" id="add_top_684"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,684);">踩（<span
+							id="stamp_684">0</span>）
+							<i class="i_c1" id="add_stamp_684"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,684);">收藏（<span
+							id="collect_684">0</span>）
+							<i class="i_d1" id="add_collect_684"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_684">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_684"
+								onfocus="MOP.MS.focusCommentInput(0,684);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,684);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_684">
+						<li class="whf02"><textarea id="comment_input_hide_684" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_684" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_684" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,684);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,684);" id="J-show_684">展开回复（<span
+							id="comment_show_684">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,684);" id="J-hide_684">收起回复（<span
+							id="comment_hide_684">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_684"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="683" />
+            <!-- a href="#683" name="683"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">伟大的交警抓了抢包贼！</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;如果你也在辽宁 盘锦。一定知道伟大的交警抓了抢包贼！男人 爷们！ 
+				    
+				        <div class="xc_aa"><a href="javascript:;" onclick="MOP.MS.viewOriginalImg('http://image1.mop.com/happy/project1/2013/6/26/18/0/201306261372242020529406022149_279_350.jpg');">
+				        <img width="279" src="http://image1.mop.com/happy/project1/2013/6/26/18/0/201306261372242020529406022149_279_350.jpg" alt="1" /></a>
+				        </div>	        
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,683);">
+							<span>顶（</span><span id="top_683">0</span>）
+							<i class="i_d1" id="add_top_683"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,683);">踩（<span
+							id="stamp_683">0</span>）
+							<i class="i_c1" id="add_stamp_683"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,683);">收藏（<span
+							id="collect_683">0</span>）
+							<i class="i_d1" id="add_collect_683"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_683">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_683"
+								onfocus="MOP.MS.focusCommentInput(0,683);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,683);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_683">
+						<li class="whf02"><textarea id="comment_input_hide_683" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_683" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_683" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,683);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,683);" id="J-show_683">展开回复（<span
+							id="comment_show_683">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,683);" id="J-hide_683">收起回复（<span
+							id="comment_hide_683">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_683"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442501555/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130626/18/17/tiny_DrDY_217f039149.jpg" width="50" height="50" alt="哎aaaaa" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="682" />
+            <!-- a href="#682" name="682"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442501555/1.html" target="_blank">哎aaaaa</a></li>
+				<li class="wz01">
+					<div class="cap">睡了吧他？我先喝点水去你等我哈······</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;昨天老公出差刚回来，晚上两人色性大发蠢蠢欲动，无奈五岁的儿子缠着我讲睡前故事，讲了N个这小孩还精神烁烁，老公在旁边五脊六兽辗转反侧&middot;&middot;&middot;&middot;&middot;&middot;过了好久世界终于安静了~~~老公轻声问我：“睡了吧他？我先喝点水去你等我哈&middot;&middot;&middot;&middot;&middot;&middot;”还未等我回答，一个脆生生的童音在我耳边响起：“快去吧快去吧我等你！”等你&middot;&middot;&middot;&middot;&middot;&middot;你&middot;&middot;&middot;&middot;&middot;&middot; 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/45/亲子笑话/1.html">亲子笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,682);">
+							<span>顶（</span><span id="top_682">0</span>）
+							<i class="i_d1" id="add_top_682"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,682);">踩（<span
+							id="stamp_682">0</span>）
+							<i class="i_c1" id="add_stamp_682"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,682);">收藏（<span
+							id="collect_682">0</span>）
+							<i class="i_d1" id="add_collect_682"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_682">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_682"
+								onfocus="MOP.MS.focusCommentInput(0,682);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,682);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_682">
+						<li class="whf02"><textarea id="comment_input_hide_682" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_682" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_682" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,682);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,682);" id="J-show_682">展开回复（<span
+							id="comment_show_682">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,682);" id="J-hide_682">收起回复（<span
+							id="comment_hide_682">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_682"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="681" />
+            <!-- a href="#681" name="681"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">这人好神奇啊，按一下就醒了，搞得跟手机开机似得</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;LZ女，在屈臣氏上班，不会GGG，武汉夏天很热，大家都知道，可是我们店的空调就是不肯开。有天一个同事直接昏倒了，大家将她抬到休息室，另一学医的同事用力掐她人中，过了一会醒了，其中一奇葩同事说道：“这人好神奇啊，按一下就醒了，搞得跟手机开机似得。”MBD，笑得LZ眼泪直飞，全场雷靐倒。 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/48/雷人囧事/1.html">雷人囧事</a>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/42/奇葩/1.html">奇葩</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,681);">
+							<span>顶（</span><span id="top_681">0</span>）
+							<i class="i_d1" id="add_top_681"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,681);">踩（<span
+							id="stamp_681">0</span>）
+							<i class="i_c1" id="add_stamp_681"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,681);">收藏（<span
+							id="collect_681">0</span>）
+							<i class="i_d1" id="add_collect_681"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_681">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_681"
+								onfocus="MOP.MS.focusCommentInput(0,681);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,681);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_681">
+						<li class="whf02"><textarea id="comment_input_hide_681" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_681" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_681" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,681);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,681);" id="J-show_681">展开回复（<span
+							id="comment_show_681">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,681);" id="J-hide_681">收起回复（<span
+							id="comment_hide_681">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_681"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442277620/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130619/14/44/tiny_AwrF_118j039149.jpg" width="50" height="50" alt="青莲不够妖" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="680" />
+            <!-- a href="#680" name="680"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442277620/1.html" target="_blank">青莲不够妖</a></li>
+				<li class="wz01">
+					<div class="cap">大学毕业了~校园里各种奇葩搞笑事，基情分手戏等等，PS：马赛克男又来捣蛋了~</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				     
+				    
+				     
+					
+					    <div class="xcP" style="text-align:center;">
+						    
+						        <embed width="450" height="400" wmode="opaque" allowfullscreen="true"
+						             allowscriptaccess="always" type="application/x-shockwave-flash" 
+						             src="http://player.youku.com/player.php/Type/Folder/Fid/17627218/Ob/1/sid/XNTc1NDkxMzEy/v.swf"></embed>
+						         
+						</div>
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/57/搞笑视频/1.html">搞笑视频</a>
+						
+							<a href="/happy/tag/54/疯狂恶搞/1.html">疯狂恶搞</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,680);">
+							<span>顶（</span><span id="top_680">0</span>）
+							<i class="i_d1" id="add_top_680"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,680);">踩（<span
+							id="stamp_680">0</span>）
+							<i class="i_c1" id="add_stamp_680"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,680);">收藏（<span
+							id="collect_680">0</span>）
+							<i class="i_d1" id="add_collect_680"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_680">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_680"
+								onfocus="MOP.MS.focusCommentInput(0,680);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,680);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_680">
+						<li class="whf02"><textarea id="comment_input_hide_680" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_680" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_680" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,680);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,680);" id="J-show_680">展开回复（<span
+							id="comment_show_680">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,680);" id="J-hide_680">收起回复（<span
+							id="comment_hide_680">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_680"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442118678/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130618/15/20/tiny_HmTN_122g039149.jpg" width="50" height="50" alt="猫猫没有影" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="679" />
+            <!-- a href="#679" name="679"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442118678/1.html" target="_blank">猫猫没有影</a></li>
+				<li class="wz01">
+					<div class="cap">太内涵了，不忍说出真相</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://pic.xxhh.net/images/15975/5c11b97f5a078f0c3b038aa566776625.jpg" /> 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/24/内涵图/1.html">内涵图</a>
+						
+							<a href="/happy/tag/74/搞笑图片/1.html">搞笑图片</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,679);">
+							<span>顶（</span><span id="top_679">0</span>）
+							<i class="i_d1" id="add_top_679"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,679);">踩（<span
+							id="stamp_679">0</span>）
+							<i class="i_c1" id="add_stamp_679"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,679);">收藏（<span
+							id="collect_679">0</span>）
+							<i class="i_d1" id="add_collect_679"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_679">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_679"
+								onfocus="MOP.MS.focusCommentInput(0,679);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,679);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_679">
+						<li class="whf02"><textarea id="comment_input_hide_679" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_679" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_679" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,679);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,679);" id="J-show_679">展开回复（<span
+							id="comment_show_679">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,679);" id="J-hide_679">收起回复（<span
+							id="comment_hide_679">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_679"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+    <div class="twC">
+		<div class="pic">
+		    <a href="/happy/user/442118678/1.html" target="_blank"><img src="http://hdn001.i.mop.com/photos/hdn001/20130618/15/20/tiny_HmTN_122g039149.jpg" width="50" height="50" alt="猫猫没有影" /></a>
+		</div>
+		<div class="text">
+            <input type="hidden" value="678" />
+            <!-- a href="#678" name="678"></a-->
+			<ul class="wzC">
+				<li><a href="/happy/user/442118678/1.html" target="_blank">猫猫没有影</a></li>
+				<li class="wz01">
+					<div class="cap">关键是：尿没有憋住!”</div>
+					<div class="bshare-custom share">
+					    <span>分享到：</span>
+					    <a class="bshare-qzone" title="分享到QQ空间"></a>
+					    <a class="bshare-sinaminiblog" title="分享到新浪微博"></a>
+					    <a class="bshare-renren" title="分享到人人网"></a>
+					    <a class="bshare-qqmb" title="分享到腾讯微博"></a>
+					    <!-- a class="bshare-neteasemb" title="分享到网易微博"></a-->
+					    <a class="bshare-more bshare-more-icon more-style-addthis" title="更多平台"></a>
+					    <span class="bshare_count bshare-share-count">0</span>
+					</div>
+				</li>
+				<li class="wz02">
+				    &nbsp;&nbsp;&nbsp;&nbsp;早上老公赖床，用被子把自己裹了好几层。小丽一气就用皮带拦腰给他绑被子里，然后去上班了。下午回来，看见老公保持着早上的造型，眼神幽怨的看着小丽。他说：“饿了一天不是关键，没空调热死了不是关键，明天怎么去单位解释没上班而且不接电话也不是关键，关键是：尿没有憋住!” 
+				    
+				     
+					
+				</li>
+				<li class="wz03">
+					<div class="fl">
+						<b>标签：</b>
+						
+							<a href="/happy/tag/23/搞笑段子/1.html">搞笑段子</a>
+						
+							<a href="/happy/tag/51/恋人笑话/1.html">恋人笑话</a>
+						
+					</div>
+					<div class="fr">
+						<a href="javascript:;"
+							onclick="MOP.MS.addTop(0,678);">
+							<span>顶（</span><span id="top_678">0</span>）
+							<i class="i_d1" id="add_top_678"
+							style="display: none;"></i>
+						</a> <a href="javascript:;"
+							onclick="MOP.MS.addStamp(0,678);">踩（<span
+							id="stamp_678">0</span>）
+							<i class="i_c1" id="add_stamp_678"
+							style="display: none;"></i></a> <a href="javascript:;"
+							onclick="MOP.MS.addCollect(0,678);">收藏（<span
+							id="collect_678">0</span>）
+							<i class="i_d1" id="add_collect_678"
+							style="display: none;"></i></a>
+					</div>
+				</li>
+				<li class="wz04">
+					<ul class="whfC" id="logined_678">
+						<li class="whf01"><textarea class="textareaC"
+								id="comment_input_show_678"
+								onfocus="MOP.MS.focusCommentInput(0,678);"></textarea>
+							<a href="javascript:;"
+							onclick="MOP.MS.addComment(0,678);"
+							class="anC">提交回复</a></li>
+					</ul>
+					<ul class="whfC" style="display: none;"
+						id="notlogin_678">
+						<li class="whf02"><textarea id="comment_input_hide_678" class="textareaC2"></textarea></li>
+						<li class="whf03">
+							<div class="whf_dl">
+								<label>昵称：</label> <input type="text" id="userName_678" class="inputC" /> <label>密码：</label>
+								<input type="password" id="password_678" class="inputC" /> 
+								<a href="javascript:;" onclick="MOP.MS.addComment(0,678);"
+									class="anC">提交回复</a>
+							</div> <a href="http://passport.mop.com/register" target="_blank" class="fcR">没有账号，马上注册&gt;&gt;</a>
+						</li>
+					</ul>
+					<div class="fr">
+						<a href="javascript:;" class="an_wpl"
+							onclick="MOP.MS.showComments(this,678);" id="J-show_678">展开回复（<span
+							id="comment_show_678">0</span>）
+						</a> <a href="javascript:;" class="an_wpl" style="display: none;"
+							onclick="MOP.MS.hideComments(this,678);" id="J-hide_678">收起回复（<span
+							id="comment_hide_678">0</span>）
+						</a>
+					</div>
+				</li>
+				<!-- 评论区域-->
+				<li class="wz05" id="comments_678"
+					style="display: none;"></li>
+			</ul>
+		</div>
+	</div>
+	
+    
+
+
+
+
+
+ 
+		    </div>
+		    <div class="page" id="page"><div class='pginfo'>共&nbsp;39&nbsp;个主题，当前21-39条</div><div class='inner' id='subjectPages'><a href='/happy/1.html' class='' title='首页'>首页</a><a href='/happy/1.html' class='first' title='上一页'>&lt;</a><a href='/happy/1.html'>1</a><a href='/happy/2.html' class='on'>2</a></div></div>		    
+		</div>
+        
+
+<div class="s2">
+    
+    <div class="box ljgc" style="display:none;">
+        <div class="hd">
+            <h2>关注</h2>
+        </div>
+        <div class="bd" style="display:none;">
+            <ul class="twC3">
+                <li class="pic"><a href="#"><img src="http://mopimg.cn/www/happy/images/img2wm.jpg" alt="" width="108" height="108" /></a></li>
+                <li class="text">
+                    <p>
+                    <iframe frameborder="0" scrolling="no"  marginheight="0" marginwidth="0" allowtransparency="true" width="136" height="24"  src="http://mopimg.cn/www/happy/wb_sina.html"></iframe>
+                    </p>
+                    <p>
+                    <!--iframe frameborder="0" scrolling="no" marginwidth="0" marginheight="0" allowtransparency="true" width="178" height="24"  src="http://follow.v.t.qq.com/index.php?c=follow&a=quick&name=gaoang000001&style=5&t=1367809183773&f=1" ></iframe-->
+                    <iframe frameborder="0" scrolling="no" marginwidth="0" marginheight="0" allowtransparency="true" width="178" height="24"  src="http://follow.v.t.qq.com/index.php?c=follow&a=quick&name=gaoang000001&style=5&t=1396705275&f=1" ></iframe>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="fgx"></div>
+    <div class="box ljbq">
+        <div class="hd">
+            <h2>标签</h2>
+        </div>
+        <div class="bd">
+            <div class="htC">
+                
+                    
+                    
+                    
+                        <a href="/happy/tag/23/搞笑段子/1.html"  class="fcH" >搞笑段子</a>
+                    
+                
+                    
+                        <a href="/happy/tag/24/内涵图/1.html"  class="fcR2" >内涵图</a>
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                        <a href="/happy/tag/74/搞笑图片/1.html"  class="fcH" >搞笑图片</a>
+                    
+                
+                    
+                    
+                        <a href="/happy/tag/46/笑话/1.html"  class="fcL" >笑话</a>
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/57/搞笑视频/1.html"  class="fcR2" >搞笑视频</a>
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                        <a href="/happy/tag/62/可爱萌宠/1.html"  class="fcH" >可爱萌宠</a>
+                    
+                
+                    
+                        <a href="/happy/tag/54/疯狂恶搞/1.html"  class="fcR2" >疯狂恶搞</a>
+                    
+                    
+                    
+                
+                    
+                    
+                        <a href="/happy/tag/49/爆笑趣图/1.html"  class="fcL" >爆笑趣图</a>
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/63/各种萌/1.html"  class="fcR2" >各种萌</a>
+                    
+                    
+                    
+                
+                    
+                    
+                        <a href="/happy/tag/64/喵星人/1.html"  class="fcL" >喵星人</a>
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/36/搞笑gif/1.html"  class="fcR2" >搞笑gif</a>
+                    
+                    
+                    
+                
+                    
+                    
+                        <a href="/happy/tag/70/搞笑动态图/1.html"  class="fcL" >搞笑动态图</a>
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/45/亲子笑话/1.html"  class="fcR2" >亲子笑话</a>
+                    
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/51/恋人笑话/1.html"  class="fcR2" >恋人笑话</a>
+                    
+                    
+                    
+                
+                    
+                    
+                        <a href="/happy/tag/55/校园笑话/1.html"  class="fcL" >校园笑话</a>
+                    
+                    
+                
+                    
+                    
+                    
+                        <a href="/happy/tag/47/爆笑图片/1.html"  class="fcH" >爆笑图片</a>
+                    
+                
+                    
+                        <a href="/happy/tag/48/雷人囧事/1.html"  class="fcR2" >雷人囧事</a>
+                    
+                    
+                    
+                
+                    
+                        <a href="/happy/tag/69/汪星人/1.html"  class="fcR2" >汪星人</a>
+                    
+                    
+                    
+                
+                    
+                    
+                    
+                        <a href="/happy/tag/53/萌宝逗宠/1.html"  class="fcH" >萌宝逗宠</a>
+                    
+                
+                    
+                        <a href="/happy/tag/42/奇葩/1.html"  class="fcR2" >奇葩</a>
+                    
+                    
+                    
+                
+            </div>
+        </div>
+    </div>
+    <div class="fgx"></div>
+   
+</div>
+	</div>
+</div>
+<!--footer-->
+
+<div class="footer">
+	<div class="topnav"> <a href="http://help.mop.com/about.jsp">关于猫扑</a> | <a href="http://help.mop.com/contact.jsp">联系我们</a> | <a href="http://help.mop.com/job.jsp">诚聘英才</a> | <a href="http://help.mop.com/sales.jsp">营销中心</a> | <a href="http://help.mop.com/contract.jsp">服务条款</a> | <a href="http://help.mop.com/sitemap.jsp" class="last">网站地图</a> | <a href="http://help.mop.com/feedback.jsp" rel="nofpllow">意见反馈</a> | <a href="http://help.mop.com/help.jsp" rel="nofpllow">客服中心</a></div>
+	<div class="copyright">
+		<p>CopyRight&copy; 2002-2012 Inc.All Rights Reserved 猫扑网 版权所有</p>
+	</div>
+</div>
+<script type="text/javascript" src="http://mopimg.cn/dc/tj.js"></script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1460e61165a60871c9ca44be2d02f416' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type=text/javascript charset=utf-8 src="http://static.bshare.cn/b/bshareC0.js"></script>
+<!--回到顶部-->
+<div class="btn_top"><a href="#" target="_self" title="回到顶部">回到顶部</a></div>
+</body>
+</html>

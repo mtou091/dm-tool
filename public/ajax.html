@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <title>test</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+ </head>
+
+ <body>
+  <script>
+    (function(){
+
+      //获取跨域数据
+      window.onmessage = function(e){
+        var url = e.data;
+         alert(e.data);
+        //Ajax
+        var xhr = getXHR();
+
+        if(xhr){
+          xhr.open("GET",url,true);
+          xhr.onreadystatechange = changeHandle;
+          xhr.send(null);
+        }else{
+          alert("不支持Ajax");
+        }
+        
+        function changeHandle(){//返回处理
+          if(xhr.readyState == 4){
+            var parentwin = window.parent;
+            parentwin.postMessage(xhr.responseText,"*");//跨域发送数据
+          }
+        }
+
+        function getXHR(){//获取XMLHttpRequest
+          var xhr_temp;
+          if(window.XMLHttpRequest){
+            xhr_temp = new XMLHttpRequest();
+          }else if(window.ActiveXObject){
+            xhr_temp = new ActiveXObject("Microsoft.XMLHTTP");
+          }else{
+            xhr_temp = null;
+          }
+          return xhr_temp;
+        }
+
+      };
+    })();
+  </script>
+ </body>
+</html>

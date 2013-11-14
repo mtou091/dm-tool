@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>SSP测试</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width"> 
+  <link rel="icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="http://test.buzzinate.com/ceshi/xin/css/ivory.css"/>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="http://test.buzzinate.com/ceshi/lib/md5.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <!--<script type="text/javascript" src="js/messenger.js"></script>-->
+  <style type="text/css">
+  body {
+     margin:0; /* 必须 */
+     border:0;
+     height:100%; /* 必须 */
+     overflow-y:auto;/* 必须 */
+    }
+  #menu {
+    display:block;
+    top:50px; 
+    right:300px;
+    width:200px; 
+    position:fixed;
+    } /* IE并不认识fixed，而FF认识 */
+* html #menu {
+    position:absolute;
+}  /* 这个只有IE认识 */
+ li{list-style: none;}
+</style>
+
+<!--[if IE 6]>
+    <style type="text/css">
+    /*<![CDATA[*/
+html {overflow-x:auto; overflow-y:hidden;}
+    /*]]>*/
+    </style>
+<![endif]-->
+</head>
+
+
+<body onload="init()">
+
+  <div class="g1024">
+   <div class="c12 centered" id="alertDv" style="display:none;">
+    <div class="alert top" >
+    <p class="text-center" id="alertInfo"></p>
+    </div>
+  </div>
+
+
+    <div class="row spce-bot">
+      <div class="c6">
+        <h3 class="text-center space-bot">SSP广告版位接口测试</h3>        
+      </div>
+      <div class="c6">
+
+      </div>
+    </div>
+    
+    <hr>
+
+  <div class="row space-bot">
+  <div class="c12">
+
+    <div class="c8 hform" style="max-width: 600px;"> 
+
+            <label style="width:20%;">vendorId:</label>
+            <input type="text" name="vendorId" id="vendorId"/><br />
+            
+            <label style="width:20%;">name:</label>
+            <input type="text" name="name" id="name"/><br />
+                        
+            <label style="width:20%;">id:（创建时无需该参数）</label>
+            <input type="text" name="id" id="id"/><br />
+                                    
+            <label style="width:20%;">idleStrategy:</label>
+            <input type="text" name="idleStrategy" id="idleStrategy"/><br />
+                                                
+            <label style="width:20%;">url:</label>
+            <input type="text" name="url" id="url"/><br />
+                                                            
+            <label style="width:20%;">eCPM:</label>
+            <input type="text" name="eCPM" id="eCPM"/><br />
+                                                                        
+            <label style="width:20%;">style:</label>
+            <input type="text" name="style" id="style"/><br />
+                                                                                                
+            <label style="width:20%;">uuid:</label>
+            <input type="text" name="uuid" id="uuid"/><br />
+                                                                                                            
+            <label style="width:20%;">scret:</label>
+            <input type="text" name="scret" id="scret"/><br />
+                                                                                                            
+            <label style="width:20%;">size:</label>
+            <input type="text" name="size" id="size"/><br />
+                                                                                                                        
+            <label style="width:20%;">position:</label>
+            <input type="text" name="position" id="position"/><br />
+            
+            
+    </div>
+     
+
+  <div class="row space-bot">
+  <div class="c12"> 
+    <div class="c6 first">
+
+    </div>
+    <div class="c6 last">
+      <button type="submit" class="green" onclick="create()" >提交</button>
+      <button type="submit" class="green" onclick="update()" >更新</button>
+      <button type="submit" class="green" onclick="delet()" >删除</button>
+    </div>              
+  </div>
+</div>
+   
+
+
+    <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a>&Dan</p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.buzzads.com" target="_blank">buzzAds</a><p>
+      </div>    
+    </div>
+</div><!-- grid -->
+
+
+
+
+
+
+
+
+<script type="text/javascript" charset="UTF-8">
+
+ var patter = new RegExp('\]');
+
+function init(){
+
+document.getElementById("vendorId").value ="2" ;
+document.getElementById("name").value ="lezhi" ;
+document.getElementById("id").value = "1";
+document.getElementById("idleStrategy").value = "3" ;
+document.getElementById("url").value = "http://www.lezhi.me" ;
+document.getElementById("eCPM").value = '10';
+document.getElementById("style").value = '2';
+document.getElementById("uuid").value = '0376709e-3858-4ec4-a6c3-fecb78514dc9';
+document.getElementById("scret").value = '09684319-5097-4d65-984e-72fe9750a539';
+document.getElementById("size").value = '1';
+document.getElementById("position").value = '2';
+
+}
+
+
+
+
+
+function addSign(aa,secret){
+    var tem = [];
+    for(var a in aa){
+    tem.push(a);
+    }
+    tem.sort();
+     var temp = '';
+     var ts ='';
+     for(var p in tem){
+          ts = tem[p];
+         temp += (ts + '=' + aa[ts]);
+     }
+    temp += secret; 
+//     alert(temp);
+//    alert(hex_md5(temp));
+    return hex_md5(temp);
+ }
+
+
+function create(){
+  
+    var method ="post";
+    var path='http://api.buzzads.com/api/slot/create';
+    var label="cre";
+    var creparam =done_c(label);
+
+  post_to_url(path,creparam,method);
+}
+function update(){
+  
+    var method ="post";
+    var path='http://api.buzzads.com/api/slot/update';
+    var label="upd";
+    var updparam =done_c(label);
+
+  post_to_url(path,updparam,method);
+}
+function delet(){
+  
+    var method ="post";
+    var path='http://api.buzzads.com/api/slot/delete';
+    var label="del";
+    var delparam =done_c(label);
+
+  post_to_url(path,delparam,method);
+}
+function done_c(label){
+    var s_vendorId = trimStr(document.getElementById("vendorId").value);
+    var s_name = trimStr(document.getElementById("name").value);
+    var s_id = trimStr(document.getElementById("id").value);
+    var s_idleStrategy = trimStr(document.getElementById("idleStrategy").value);
+    var s_url = trimStr(document.getElementById("url").value);
+    var s_eCPM = trimStr(document.getElementById("eCPM").value);
+    var s_style = trimStr(document.getElementById("style").value);
+    var s_uuid = trimStr(document.getElementById("uuid").value);
+    var s_scret = trimStr(document.getElementById("scret").value);
+    var s_size = trimStr(document.getElementById("size").value);
+    var s_position = trimStr(document.getElementById("position").value);
+    var s_ts = new Date().valueOf().toString();
+    var sign="";
+    var updparam={};
+    var param={};
+    var creparam={};
+    
+    
+    switch (label){
+        case "cre":  
+            creparam = {        
+                'vendorId':s_vendorId,
+                'name':s_name,
+                'idleStrategy':s_idleStrategy,
+                'url':s_url,
+                'eCPM':s_eCPM,
+                'style':s_style,
+                'uuid':s_uuid,
+                'size':s_size,
+                'position':s_position,
+                'ts':s_ts /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                }
+    
+           sign = addSign(creparam,s_scret);
+           
+           param = {                 
+                vendorId:s_vendorId,
+                name:s_name,
+                idleStrategy:s_idleStrategy,
+                url:s_url,
+                eCPM:s_eCPM,
+                style:s_style,
+                uuid:s_uuid,
+                size:s_size,
+                position:s_position,
+                ts:s_ts, /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                sig:sign
+                }
+            break;
+          case "upd": 
+            var updparam = {        
+                'vendorId':s_vendorId,
+                'name':s_name,
+                'id':s_id,
+                'idleStrategy':s_idleStrategy,
+                'url':s_url,
+                'eCPM':s_eCPM,
+                'style':s_style,
+                'uuid':s_uuid,
+                'size':s_size,
+                'position':s_position,
+                'ts':s_ts /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                }
+    
+            sign = addSign(updparam,s_scret);
+           
+            param = {                 
+                vendorId:s_vendorId,
+                name:s_name,
+                id:s_id,
+                idleStrategy:s_idleStrategy,
+                url:s_url,
+                eCPM:s_eCPM,
+                style:s_style,
+                uuid:s_uuid,
+                size:s_size,
+                position:s_position,
+                ts:s_ts, /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                sig:sign
+                }        
+            break;
+          case "del":
+              updparam = {        
+                    'vendorId':s_vendorId,
+                    'id':s_id,
+                    'ts':s_ts /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                    }
+        
+                sign = addSign(updparam,s_scret);
+               
+                param = {                 
+                    vendorId:s_vendorId,
+                    id:s_id,
+                    ts:s_ts, /*请求时间戳，距1970年零时的毫秒数 (必选)*/
+                    sig:sign
+                    }                 
+            break;
+    } 
+    return  param;   
+}
+function post_to_url(path, params, method) { 
+        params = params || {};
+        method = method || "post"; 
+        var form = document.createElement("form");
+         //Move the submit function to another variable 
+         //so that it doesn't get overwritten. 
+         form._submit_function_ = form.submit; 
+         form.setAttribute("method", method); 
+         form.setAttribute("action", path); 
+         form.setAttribute("style", "display: none;"); 
+         form.setAttribute("accept-charset", "utf-8");
+         for(var key in params) { 
+             var hiddenField = document.createElement("input");
+             hiddenField.setAttribute("type", "hidden");
+             hiddenField.setAttribute("name", key);
+             hiddenField.setAttribute("value", params[key]);
+             form.appendChild(hiddenField);
+        } 
+        document.body.appendChild(form);
+        form._submit_function_(); //Call the renamed function. 
+        document.body.removeChild(form);
+      } 
+
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+
+
+
+   // 发送消息给子嵌入框
+ //  var msg = suuid+'&'+surl;
+ //  messenger.send(msg);
+                         
+
+function empty(v){ 
+  switch (typeof v){ 
+    case 'undefined' : return true; break;
+    case 'string' : if(trimStr(v).length == 0) return true; break; 
+    case 'boolean' : if(!v) return true; break; 
+    case 'number' : if(0 === v) return true; break; 
+    case 'object' : {
+                if(null === v) return true; 
+                if(undefined !== v.length && v.length==0) return true; 
+                for(var k in v){return false;} return true;} break; 
+                } 
+  return false; 
+}
+
+
+
+function alertStr(Str){
+
+  document.getElementById("alertDv").style.display="block";
+  document.getElementById("alertInfo").innerHTML = Str;
+  setTimeout("document.getElementById('alertInfo').innerHTML='';document.getElementById('alertDv').style.display='none';", 3000);
+     
+}
+
+</script>
+
+
+</body>
+</html>
+
+
+
+

@@ -1,11 +1,14 @@
 
 var fs = require("fs");
 var urllib = require('url');
+var http = require('https');
 var input = '../dm/public/work';
 var keywords =['|b|','|l|','|w|','|a|'];
 var output = '../dm/public/log';
+var token = "2.003k6msBdANkCD0d72ec0623dEXb9E";
+var flag = false;
 
-var datas = {'feeds':data};
+var datas ={};
 
 exports.autoroute = {
     'get' : {
@@ -17,7 +20,7 @@ exports.autoroute = {
         */
     },
     'post' : {
-       // '(.?)/login' : checkLoginHandler
+      '(.?)/sinaUid' : sinaUid
     }
 };
 
@@ -30,10 +33,62 @@ function index(req, res){
   if (params.query && params.query.callback) {
     //console.log(params.query.callback);
     var str =  params.query.callback + '(' + JSON.stringify(datas) + ')';//jsonp
+    
     res.end(str);
   } else {
     res.end(JSON.stringify(datas));//普通的json
+   
   }    
+
+
+}
+
+function sinaUid(req, res){
+  var params = urllib.parse(req.url, true);
+  //console.log(req);
+ 
+ // var postStr = req.body ;
+    var data = req.body;
+    var uids = data.feed;
+    var datass = {}; 
+    for (var i = uids.length - 1; i >= 0; i--) {
+       httpurl(uids[i]);
+       datass[uids[i]]= datas[uids[i]];
+    };
+
+  if (params.query && params.query.callback) {
+      console.log(datass);
+    
+    var str =  params.query.callback + '(' + JSON.stringify(datass) + ')';//jsonp
+   // console.log("jsonp"+str);
+    res.end(str);
+  } else {
+    res.end(JSON.stringify(datass));//普通的json
+     //console.log("json"+JSON.stringify(datas));
+  }    
+
+}
+
+
+function httpurl(uid){
+    flag = false;
+    var url = 'https://api.weibo.com/2/users/show.json?access_token='+token+'&uid='+uid;
+    var body = '';
+    var req = http.get(url, function(res) {
+  //console.log("Got response: " + res.statusCode);
+  res.on('data',function(chunk){
+         body += chunk;
+      }).on('end', function(){
+         flag = true;
+         datas[uid] = JSON.parse(body).name;
+        
+      });
+
+ }).on('error', function(e) {
+        flag = false;
+        console.log("Got error: " + e.message);
+ })
+req.end();
 
 
 }
@@ -100,7 +155,10 @@ rs.on('data', function (chunk) {
 rs.on('end', function () {
 
    console.log('read done!');
+
    ws.end(function () {
      console.log('write done!');
+    // datas = {'feeds':data} ;
+     //console.log(datas);
     });
 });

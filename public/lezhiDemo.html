@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="乐知参数测试" name="description">
+
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+<script src="c.js" type="text/javascript"></script>
+<link href="s.css" type="text/css" rel="stylesheet"></link>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+<script type="text/javascript" src="m.js"></script>
+<title>乐知参数测试</title>
+</head>
+<body onload='Init()' >
+<h3>乐知&广告参数调试</h3>
+<div id="HeaderTitle">
+<span style='color:#ff5c00;font-weight:bold;'>调试环境选择:</span>
+<select name="" id="typeId" onchange="changeToX()" onkeyup="this.blur();this.focus();">
+      <option name="type" value="1">测试服务器</option>
+      <option name="type" value="0">正式服务器</option>
+  </select> 
+</div>
+
+<hr style="color:#ff5c00;"/>
+<table cellspacing=4 cellpadding=0 width=100 border=0>
+<tr>
+<td><font class="en1">站长uuid:</font> </td>
+<td><input id="tuuid" size=50  class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+<a style="font-size:10px;color:green;cursor:pointer;" href="#" onclick="peizhi();">配置列表</a>
+</td>
+</tr>
+<tr>
+<td><font class="en1">文章url:</font></td>
+<td><input id="turl" size=50 class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></td>
+</tr>
+
+<tr>
+<td><font class="en1">页面标题:</font></td>
+<td><input size=50 id="ttitle" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></td>
+</tr>
+
+<tr>
+<td><font class="en1">关键字:</font> </td>
+<td><input size=50 id="tpic" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+</td>
+</tr>
+
+<tr>
+<td><font class="en1">广告尺寸:</font> </td>
+<td>
+<select name="" id="tsize" style="width: 100px;" onkeyup="this.blur();this.focus();">
+    <option value="SIZE200x200">200*200</option>
+    <option value="SIZE610x100">610*100</option>
+    <option value="SIZE660x90">660*90</option>
+    <option value="SIZE300x100">300*100</option>
+    <option value="SIZE300x250">300*250</option>
+    <option value="SIZE80x80" selected="selected">80*80</option>
+</select> 
+
+<select name="" id="tpara" style="width: 100px;" onkeyup="this.blur();this.focus();">
+    <option value="trace">原始参数</option>
+    <option value="plugin" selected="selected">常规</option>
+</select> 
+</td>
+</tr>
+
+<tr id="adsNum">
+<td><font class="en1">广告展示数:</font> </td>
+<td><input size=50 id="tcount" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"><span class="ino">(测试环境有效)</span>
+</td>
+</tr>
+</table>
+<br/>
+<div>
+<input class="button" type="submit" value="提交参数" id="submit_check" onclick='submit()'/>
+<input class="button" type="submit"  value="清空参数" id="submit_check1" onclick='de()'/>
+
+<span id ="info" style="color:red;font-size:12px;"></span>
+</div >
+
+ <div class="lezhi" style="margin-top:20px;font-size:10px;">
+<span>请求参数：</span>
+ <a id="lzurl" target="_blank"> </a>
+</div>
+
+<div class="HeadersRow">
+  <h4 id="HeaderSubTitle">请求结果:</h4>
+  <textarea id="RawJson" style="border: 1px solid #ff5c00;
+color:green;font-size:12px;">
+  </textarea>
+</div>
+<div id="ControlsRow">
+  <input class="button" type="Button" value="格式化" onclick="Process()"/>
+  <span id="TabSizeHolder">
+    缩进量
+    <select id="TabSize" onchange="TabSizeChanged()">
+      <option value="1">1</option>
+      <option value="2" selected="true">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+  </span>
+  <label for="QuoteKeys">
+    <input type="checkbox" id="QuoteKeys" onclick="QuoteKeysClicked()" checked="true" /> 
+    引号
+  </label>&nbsp; 
+  <a href="javascript:void(0);" onclick="SelectAllClicked()">全选</a>
+  &nbsp;
+  <span id="CollapsibleViewHolder" >
+      <label for="CollapsibleView">
+        <input type="checkbox" id="CollapsibleView" onclick="CollapsibleViewClicked()" checked="true" /> 
+        显示控制
+      </label>
+  </span>
+  <span id="CollapsibleViewDetail">
+    <a href="javascript:void(0);" onclick="ExpandAllClicked()">展开</a>
+    <a href="javascript:void(0);" onclick="CollapseAllClicked()">叠起</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(3)">2级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(4)">3级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(5)">4级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(6)">5级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(7)">6级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(8)">7级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(9)">8级</a>
+  </span>
+</div>
+<div id="Canvas" class="Canvas"></div>
+
+<script type="text/javascript" language="javascript">   
+
+
+var s = screen, d = document, u = d.location ;
+
+var UUIDPOOL = {
+       "uuid0": "6ee942be-d897-4f60-9a70-7acc2035c7a0",
+       "secret0": "be9a9505-e6e1-4ff2-b24b-c45f463f68e4",
+       "uuid1": "f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b",
+       "secret1": "e181947b-d8bf-4e94-b43f-8da9789248a3"
+
+        };
+
+
+
+function Init(){
+	 document.getElementById("tuuid").focus();
+	 changeToX();
+	/* if(empty(trimStr(d.getElementById("tuuid").value)))
+	     d.getElementById("tuuid").value="f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b";	 
+	 if(empty(trimStr(d.getElementById("turl").value)))
+		 d.getElementById("turl").value="http://www.bshare.cn";
+	 if(empty(trimStr(d.getElementById("ttitle").value)))
+		 d.getElementById("ttitle").value="这个是乐知测试页面的title";
+	 if(empty(trimStr(d.getElementById("tpic").value)))
+		 d.getElementById("tpic").value="这个是乐知测试的关键字";
+*/
+  }
+
+
+function changeToX(){
+
+  if(isTest()){
+   document.getElementById("tuuid").value = UUIDPOOL["uuid0"];
+   document.getElementById("adsNum").style.display = "";
+   }else{
+    document.getElementById("tuuid").value = UUIDPOOL["uuid1"];
+    document.getElementById("adsNum").style.display = "none";
+   }
+
+}
+
+function peizhi(){
+  var tuuid = trimStr(d.getElementById("tuuid").value);
+
+  var surl = 'http://www.lezhi.me/siteConfig?uuid='+tuuid;
+
+  if(empty(tuuid)){
+
+       d.getElementById("info").innerHTML="请求错误：UUID不合法！";
+         setTimeout("d.getElementById('info').innerHTML='';", 5000);
+         return ;
+  }
+
+  window.open(surl);
+
+
+}
+
+
+
+function submit(){
+	var tar = d.getElementById("lzurl");
+  var tuuid = trimStr(d.getElementById("tuuid").value);
+	var turl = trimStr(d.getElementById("turl").value);
+	var ttitle = trimStr(d.getElementById("ttitle").value);
+	var tpic = trimStr(d.getElementById("tpic").value);
+	var tcount = trimStr(d.getElementById("tcount").value);
+  var typeId = document.getElementById('typeId').value;
+  var tsize = document.getElementById('tsize').value;
+  var tpara = document.getElementById('tpara').value;
+  var surl = 'http://lzplugin.bshare.cn/'+tpara+'/feeds?referrer=http://lzplugin.bshare.cn/plugin/redirect&';
+
+if(isTest()){
+  surl += "uuid="+Url.encode(tuuid)+"&url="+Url.encode(turl)+"&title="+Url.encode(ttitle)+"&keywords="+Url.encode(tpic)+"&adCount="+Url.encode(tcount)+"&size="+tsize;
+  }else{
+  surl += "uuid="+Url.encode(tuuid)+"&url="+Url.encode(turl)+"&title="+Url.encode(ttitle)+"&keywords="+Url.encode(tpic);
+  }
+
+
+	tar.innerHTML= surl;
+	tar.href = surl;
+
+   	$.ajax({
+		url: surl,
+		dataType:'jsonp',
+		error:function(textStatus){
+
+		    d.getElementById("info").innerHTML="提交失败！网络有点慢，任务失败了,再来一次吧~";
+	       setTimeout("d.getElementById('info').innerHTML='';", 5000);
+        }, 
+		success:function(data){ //处理数据 data指向的是返回来的JSON数据
+        //alert(eval(data));
+       var ss =JSON.stringify(data);
+	   d.getElementById("RawJson").value = ss;
+     d.getElementById("info").innerHTML="提交成功！";
+     Process();
+	   setTimeout("d.getElementById('info').innerHTML='';", 5000);
+	  }
+	});
+
+
+	
+}
+
+
+
+function empty(v){ 
+	switch (typeof v){ 
+		case 'undefined' : return true; 
+		case 'string' : if(trimStr(v).length == 0) return true; break; 
+		case 'boolean' : if(!v) return true; break; 
+		case 'number' : if(0 === v) return true; break; 
+		case 'object' : if(null === v) return true; 
+		if(undefined !== v.length && v.length==0) return true; 
+		for(var k in v){return false;} return true; 
+		break; 
+		} 
+	return false; 
+}
+
+
+function de(){
+     d.getElementById("tuuid").value=" ";	 
+	 d.getElementById("turl").value=" ";
+	 d.getElementById("ttitle").value=" ";
+	 d.getElementById("tpic").value=" ";
+     d.getElementById("tcount").value =" ";
+     d.getElementById("info").innerHTML="清空成功！";
+    setTimeout("d.getElementById('info').innerHTML='';", 2000);
+}
+
+
+
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+
+
+
+var Url = {
+ 
+        // public method for url encoding
+        encode : function (string) {
+                return escape(this._utf8_encode(string));
+        },
+ 
+        // public method for url decoding
+        decode : function (string) {
+                return this._utf8_decode(unescape(string));
+        },
+ 
+        // private method for UTF-8 encoding
+        _utf8_encode : function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+ 
+                for (var n = 0; n < string.length; n++) {
+ 
+                        var c = string.charCodeAt(n);
+ 
+                        if (c < 128) {
+                                utftext += String.fromCharCode(c);
+                        }
+                        else if((c > 127) && (c < 2048)) {
+                                utftext += String.fromCharCode((c >> 6) | 192);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+                        else {
+                                utftext += String.fromCharCode((c >> 12) | 224);
+                                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+ 
+                }
+ 
+                return utftext;
+        },
+ 
+        // private method for UTF-8 decoding
+        _utf8_decode : function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+ 
+                while ( i < utftext.length ) {
+ 
+                        c = utftext.charCodeAt(i);
+ 
+                        if (c < 128) {
+                                string += String.fromCharCode(c);
+                                i++;
+                        }
+                        else if((c > 191) && (c < 224)) {
+                                c2 = utftext.charCodeAt(i+1);
+                                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                                i += 2;
+                        }
+                        else {
+                                c2 = utftext.charCodeAt(i+1);
+                                c3 = utftext.charCodeAt(i+2);
+                                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                                i += 3;
+                        }
+ 
+                }
+ 
+                return string;
+        }
+ 
+}
+
+function isTest(){
+  var typeId=document.getElementById('typeId').value;
+   if(typeId==0 ){return false;}else{return true;}
+}
+
+
+
+
+
+</script>
+
+</body>
+</html>
+  

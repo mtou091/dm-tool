@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+<title>新浪uid转换</title>
+<style type="text/css">
+
+<style>
+body { font:12px 'Microsoft Yahei', Tahoma, Arial; _font-family:Tahoma, Arial; }
+a { color:#0259C4; }
+a:hover { color:#900; }
+.tips { color:#CCC; }
+h1 { font-family:'Constantia';}
+.textarea {font: 1.4em/1.8em Arial; overflow: hidden; width: 550px; height: 6em; padding:5px; border:1px solid #3ba354; background:#FAFAFA;-webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; }
+.textarea:focus { background:#FFFFF7; outline:0; }
+#submit { padding:5px 10px; border:2px solid #0259C4; background:#0259C4; color:#FFF; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; cursor:pointer; }
+#submit.disabled { background:#D7D7D7; color:#ABABAB; border-color:#ABABAB; cursor:default; }
+</style>
+<script src="js/autoTextarea.js"></script>
+</head>
+<body style="background:#FBFCFD;">
+<h1>新浪uid转换：</h1>
+<div class="tips">
+注：多个uid请以“,”分隔。</br></div>
+<textarea id="textarea" class="textarea"></textarea>
+<textarea id="textareaR" class="textarea"></textarea>
+
+<script>
+var text = document.getElementById("textarea"),textR = document.getElementById("textareaR"),
+	tip = '请输入新浪uid..';
+	
+autoTextarea(text);
+autoTextarea(textR);
+text.value = tip;
+var param=[],flag = 0;
+var surl = "http://www.sanford.com:3000/sinaUid?uid=123414&callback=?";
+text.onfocus = function () {
+	if (text.value === tip) text.value = '';
+};
+text.onblur = function () {
+  var tmp = text.value;
+	if (tmp === ''){
+        tmp = tip;
+       }else{
+        param = tmp.split(",");
+        console.log(param);
+        // textR.value = tmp;
+       
+        $.ajax({
+          type: "POST",
+          data:{feed:param}, 
+    	  url: surl,
+          dataType:'jsonp',
+          error:function(textStatus){
+              alert("网络有点慢，任务失败了,再来一次吧~"); 
+            }, 
+          success:function(data,textStatus){ //处理数据 data指向的是返回来的JSON数据
+               alert("成功！");
+               textR.value = JSON.parse(data).toString();
+              console.log(data);
+            } 
+    
+        });
+       }
+   
+};
+</script>
+</body>
+</html>

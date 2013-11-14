@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="description" content="bShare - 分享到新浪微博" />
+		<meta name="keywords" content="bShare,分享,新浪微博" />
+		<meta name="author" content="Buzzinate" />
+		
+		<title>bShare - 分享到新浪微博</title>
+		<link rel="icon" href="http://static.bshare.cn/images/buzzinate_favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="http://static.bshare.cn/images/buzzinate_favicon.ico" type="image/x-icon" />
+		
+		<style>
+		    .clear{clear:both;}
+		    .heading{font:16px bold Helvetica,Calibri,Tahoma,Arial,微软雅黑,宋体,sans-serif;color:#000;}
+		    .shareImagesDiv a{cursor:pointer;height:80px;width:110px;display:table-cell;vertical-align:middle;position:relative;}
+		    .shareImagesDiv img{max-height:80px;max-width:110px;}
+		    .shareImagesDiv div{height:80px;width:110px;margin:0 3px;border:2px solid #ccc;border-radius:4px;background:#fff;}
+		    .shareImagesDiv div.selected{border:2px solid #7fcb65;}
+		    .shareButton,.backButton{float:right;text-decoration:none;height:16px;line-height:16px;text-align:center;color:#fff;cursor:pointer;border:1px solid #ec701b;background:#f60;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;width:80px;padding:5px 10px;}
+			.shareButton:active{border:1px solid #f60;background:#fd8331;}
+			.shareButton:hover,.backButton:hover{filter:alpha(opacity=90);-moz-opacity:0.9;-khtml-opacity:0.9;opacity:0.9;}
+			.shareButton.submitting{border:1px solid #999;background:#bbb;color:#666;}
+			.shareButton.submitting,.shareButton.submitting:hover{filter:alpha(opacity=60);-moz-opacity:0.6;-khtml-opacity:0.6;opacity:0.6;}
+			.backButton{border:1px solid #aaa;background:#ccc;color:#777;}
+			.backButton:active{border:1px solid #888;background:#aaa;color:#555;}
+			.boxSizing{width:100%;-webkit-box-sizing:border-box;box-sizing:border-box;-moz-box-sizing:border-box;}
+			.textEllipsis{width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+		</style>
+	</head>
+	
+	<body style="color:#555;font:normal 14px Helvetica,Calibri,Tahoma,Arial,宋体,sans-serif;border:0;margin:10px;padding:0;">
+	    <img title="分享到新浪微博" alt="新浪微博" src="http://static.bshare.cn/frame/images/logos/mp2/sinaminiblog.gif" style="position:absolute;">
+	    <div id="shareTitle" class="heading boxSizing textEllipsis" style="padding-left:40px;height:32px;" title="bShare分享">bShare分享</div>
+	    <div class="clear"></div>
+	    <div style="background:#eee;padding:10px;margin:10px 0;">
+	        <span style="float:left;color:#333;">说说你喜欢的理由</span>
+	        <span style="float:right;color:#333;">还可以输入&nbsp;<span id="shareContentCount" style="font:bold 16px Arial">0</span>&nbsp;字</span>
+	        <div class="clear" style="padding:3px;"></div>
+	        <div>
+		        <textarea id="shareContent" onkeyup="javascript:shareContentKeyPress(this);return true;" class="boxSizing" style="border:1px solid #bbb;padding:5px;resize:none;font:normal 14px monospace;overflow:auto;outline:none;word-break:break-all;height:150px;">bShare分享</textarea>
+		        <div class="clear"></div>
+		    </div>
+		    <div id="shareImagesDiv" class="shareImagesDiv" style="padding:5px;background:#ccc;border:1px solid #aaa;border-top:none;">
+	            <div class="selected">
+		            <a title="点击选取图片" onclick="javascript:imageClick(this);return false;">
+			            <img id="shareImage" alt="图片" src="http://static.bshare.cn/images/bshare-logo-main.gif">
+			            <img alt="已选" class="bsCheck" style="position:absolute;height:14px;width:14px;bottom:7px;right:6px;" src="http://static.bshare.cn/images/green_check.gif">
+		            </a>
+	            </div>
+	        </div>
+	        <div class="clear" style="padding:3px;"></div>
+	        <div id="shareUrl" class="textEllipsis" style="float:right;color:#000;text-align:right;" title="http://www.bshare.cn">http://www.bshare.cn</div>
+	        <div class="clear"></div>
+	    </div>
+	    <a class="backButton" title="返回" href="http://www.limei.com/" style="margin-left:5px;">返回</a>
+	    <a id="shareButton" class="shareButton" title="立即分享" onclick="javascript:shareSubmit(this);return false;">立即分享</a>
+	</body>
+	
+	<script type="text/javascript" charset="utf-8">
+	    // JAVASCRIPT UTILITY FUNCTIONS:
+        function ready(callback) {
+            // Mozilla, Opera and webkit
+            if (document.addEventListener) {
+               callback();
+            } else if (document.attachEvent) {
+                // ensure firing before onload,
+                // maybe late but safe also for iframes
+                document.attachEvent("onreadystatechange", function () {
+                    if (document.readyState === "complete") {
+                        document.detachEvent("onreadystatechange", arguments.callee);
+                        callback.call();
+                    }
+                });
+    
+                // A fallback to window.onload, that will always work
+                window.attachEvent("onload", callback);
+    
+                // If IE and not a frame
+                // continually check to see if the document is ready
+                var toplevel = false;
+                try {
+                    toplevel = window.frameElement === null;
+                } catch (e) {}
+    
+                if (document.documentElement.doScroll && toplevel) (function () {
+                    try {
+                        // http://javascript.nwbox.com/IEContentLoaded/
+                        document.documentElement.doScroll("left");
+                    } catch (error) {
+                        setTimeout(arguments.callee, 10);
+                        return;
+                    }
+                    callback.call();
+                })();
+            } else {
+                window.onload = callback;
+            }
+        }
+        function arrayContains(a, b) {
+            var i = a.length;
+            while (i--) {
+               if (a[i] === b) {
+                   return true;
+               }
+            }
+            return false;
+        }
+        function hasClass(ele, className) {
+            return ele.className && arrayContains(ele.className.split(" "), className);
+        }
+        function addClass(ele, className) {
+            if (!hasClass(ele, className)) {
+                ele.className += (ele.className ? " " : "") + className;
+            }
+        }
+        function removeClass(ele, className) {
+            if (hasClass(ele, className)) {
+                var clsss = ele.className.split(" "), i;
+                for (i = 0; i < clsss.length; i++) {
+                    if (clsss[i] === className) clsss.splice(i++, 1);
+                }
+                ele.className = clsss.join(" ");
+            }
+        }
+        
+        // EVENT HANDLERS:
+        function imageClick(ele) {
+            if (hasClass(ele.parentNode, "selected")) {
+                removeClass(ele.parentNode, "selected");
+                ele.getElementsByTagName("img")[1].style.display = "none";
+            } else {
+                addClass(ele.parentNode, "selected");
+                ele.getElementsByTagName("img")[1].style.display = "block";
+            }
+        }
+        function shareContentKeyPress(ele) {
+        	var l = 140 - ele.value.length;
+        	document.getElementById("shareContentCount").style.color = l < 0 ? "red" : "#555";
+        	document.getElementById("shareContentCount").innerHTML = l;
+        }
+        var isSubmitting;
+        function shareSubmit(ele) {
+        	if (isSubmitting) return;
+        	addClass(ele, "submitting");
+        	ele.innerHTML = "请稍候...";
+        	isSubmitting = true;
+        	
+        	// build callback URL:
+        	var callbackUrl = "http://www.bshare.cn/mobile/limei/callback", callbackUrlParam = {
+        		"iTunesAppId": "",
+        		"macId": "",
+        		"referringUrl": "http://www.limei.com/"
+        	}, temp = [], p;
+        	for (p in callbackUrlParam) {
+        		// don't encode here, or you will be double encoding
+                temp.push(p + '=' + (callbackUrlParam[p] || ""));
+            }
+        	callbackUrl += callbackUrl.indexOf("?") != -1 ? "&" : "?";
+        	callbackUrl += temp.join("&");
+        	temp = [];
+        	
+            var img = document.getElementById("shareImage"), param = {
+            	    "app": "limei",
+	            	"model.type": 18, /*分享类型参数（必选）*/
+	                "mhid": new Date().valueOf(), /*客户端自己填写，用作缓存key (必选)*/
+                    "callbackUrl": callbackUrl, /*分享成功后的回调地址，成功后会被附加上s=t (必选)*/
+                    "macId": "",
+                    "iTunesAppId": "",
+                    "model.url": "http://www.bshare.cn", /*分享的url(必选)*/
+                    "title": "bShare分享", /*分享的标题（必选）*/
+                    "model.publisherUuid": "", /*站长uuid(可选)*/
+                    "summary": document.getElementById("shareContent").value, /*分享的摘要(可选)*/
+                    "pic": hasClass(img.parentNode.parentNode, "selected") ? img.src : "" /*分享图片的url路径(可选)*/
+                };
+            for (p in param) {
+                temp.push(p + '=' + encodeURIComponent(param[p] || ""));
+            }
+            window.location.href = "http://b.bshare.cn/api/oauthshare/sinaminiblog?" + temp.join("&");
+        }
+        
+        // DOCUMENT READY:
+        ready(function() {
+            // update characters left:
+             shareContentKeyPress(document.getElementById("shareContent"));
+        });
+    </script>
+</html>

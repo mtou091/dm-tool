@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>buzzinate测试</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">	
+	<link rel="stylesheet" type="text/css" href="css/ivory.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	</head>
+<body>
+
+
+	<div class="g960">
+		<div class="row spce-bot">
+			<div class="c6">
+				<h3 class="text-center space-bot">测试乐知的异步加载</h3>				
+			</div>
+			<div class="c6">
+
+			</div>
+		</div>
+		
+  		<div style="float:right;margin-bottom:10px;margin-right:20px;">		
+	      <select name="" id="Ctest" onchange="changeX()">
+	         <option value="0">正式环境</option>
+	         <option value="1">测试环境</option>
+          </select>
+       </div>
+		<hr>
+		<div class="row space-bot">
+			<div class="c6 first">
+				<h4 class="text-center space-bot">乐知推荐内容切换 ：<button type="submit" class="green" onclick="change()" >异步切换</button>
+				</h4>
+                <div class="text-center">
+				
+                </div>
+				<div class="tab-container">
+
+
+
+					<label class="tab-label">
+						<input class="tab-radio" type="radio" name="page" value="page1" checked="checked"/>
+						<div class="tab">频道一</div>
+						<div class="tab-page lz-module lz-style-default" id="content1">
+							
+						</div>
+					</label>
+
+
+
+					<label class="tab-label">
+						<input class="tab-radio" type="radio" name="page" value="page2" />
+						<div class="tab">频道二</div>
+						<div class="tab-page lz-module lz-style-default" id="content2">
+							
+
+						</div>
+					</label>
+
+
+
+					<label class="tab-label">
+						<input class="tab-radio" type="radio" name="page" value="page3" />
+						<div class="tab">频道三</div>
+						<div class="tab-page lz-module lz-style-default" id="content3">
+							
+
+						</div>
+					</label>
+					
+
+
+				</div>
+
+			</div>
+
+
+			<div class="c6 last">
+				<h4 class="text-center space-bot">栏目</h4>
+				<div class="accordion">
+					<section>
+						<a href="#acc1" id="acc1">侧栏一</a>
+						<div class="lz-module lz-style-default" id="side1">
+						
+						</div>
+
+					</section>
+					<section>
+						<a href="#acc2" id="acc2">侧栏二</a>
+						<div class="lz-module lz-style-default" id="side2">
+						
+						</div>
+					</section>
+					<section>
+						<a href="#acc3" id="acc3">侧栏三</a>
+						<div class="lz-module lz-style-default" id="side3">
+
+						</div>
+					
+					</section>
+				</div>
+			</div>
+		</div>
+
+
+		<hr>
+		<div class="row space-bot">
+			<div class="c6">
+				<p>Developed by <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a></p>
+			</div>
+			<div class="c6 text-right">
+				<p>谢谢光临<p>
+			</div>		
+		</div>
+	</div><!-- grid -->
+
+
+
+
+
+<!-- lezhi code start -->
+
+<style>
+ .b-recomm-panel {border:none !important;}
+ .b-recomm-tab{display:none !important;} 
+ .b-recomm-list li{border:0px !important;}
+</style>
+
+
+<script type="text/javascript" charset="UTF-8">
+
+var URLPOOL0 = {
+       "url1": "http://green.workercn.cn/3187/201305/22/130522084630032.shtml",
+       "url2": "http://green.workercn.cn/3204/201305/22/130522114755396.shtml",
+       "url3": "http://green.workercn.cn/3204/201305/21/130521135822422.shtml",
+       "url4": "http://green.workercn.cn/3187/201305/20/130520091050022.shtml",
+       "url5": "http://green.workercn.cn/3204/201304/24/130424141919455.shtml"
+        };
+
+var URLPOOL1 = {
+       "url1": "http://qa.buzzinate.com/adsTest/?post=1",
+       "url2": "http://qa.buzzinate.com/adsTest/?post=16",
+       "url3": "http://qa.buzzinate.com/adsTest/?post=8",
+       "url4": "http://qa.buzzinate.com/adsTest/?post=11",
+       "url5": "http://qa.buzzinate.com/adsTest/?post=15"
+        };
+ 
+function isTest(){
+   var typeId=document.getElementById('Ctest').value;
+   if(typeId==0 ){return false;}else{return true;}
+};
+
+
+
+var lezhi_config = {global: {
+    //url: window.location.href
+	url:isTest()?URLPOOL1['url1']:URLPOOL0['url1']
+     }
+ };
+var lezhi_style_default = {
+	global: {
+	 type:"fixed"	
+	},
+   side1:{//侧边栏样式配置
+    promote:'您可能也喜欢',
+	width:296,
+	pic: true,
+	col: 2,
+    row: 2
+	},
+   side2:{//侧边栏样式配置
+    promote:'您可能也喜欢',
+	width:296,
+	pic: true,
+	col: 2,
+    row: 2
+	},
+   side3:{//侧边栏样式配置
+    promote:'您可能也喜欢',
+	width:296,
+	pic: true,
+	col: 2,
+    row: 2
+	},
+   content1:{//内容底部栏样式配置
+	//width:640,
+	pic: false,
+	col: 5,
+    row: 2,
+	hvcolor:'#40a907'
+	} ,
+   content2:{//内容底部栏样式配置
+	//width:640,
+	pic: false,
+	col: 5,
+    row: 2,
+	hvcolor:'#40a907'
+	} ,
+   content3:{//内容底部栏样式配置
+	//width:640,
+	pic: false,
+	col: 5,
+    row: 2,
+	hvcolor:'#40a907'
+	} 
+};
+
+
+
+
+</script>
+<script type="text/javascript" charset="utf-8" src="http://lzstatic.bshare.cn/plugin/lz.js#uuid=c2ca7383-6d4c-4123-b026-6c0af2b86ee3">	
+</script>
+<script type="text/javascript" charset="UTF-8">
+
+function change(){
+
+   var num =Math.floor(Math.random()*5+1);
+
+   isTest()?window.lezhi.loadRecomm(URLPOOL1['url'+num]):window.lezhi.loadRecomm(URLPOOL0['url'+num]);
+                           
+};
+
+
+
+
+function changeX(){
+	isTest()?window.lezhi.loadRecomm(URLPOOL1['url1']):window.lezhi.loadRecomm(URLPOOL0['url1']);
+}
+  
+</script>
+
+<!-- lezhi code end -->
+
+
+</body>
+</html>

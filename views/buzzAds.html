@@ -1,0 +1,546 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>buzzinate测试</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width"> 
+  <link rel="icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="http://test.buzzinate.com/ceshi/xin/css/ivory.css"/>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <!--<script type="text/javascript" src="js/messenger.js"></script>-->
+  <style type="text/css">
+  body {
+     margin:0; /* 必须 */
+     border:0;
+     height:100%; /* 必须 */
+     overflow-y:auto;/* 必须 */
+    }
+  #menu {
+    display:block;
+    top:50px; 
+    right:300px;
+    width:200px; 
+    position:fixed;
+    } /* IE并不认识fixed，而FF认识 */
+* html #menu {
+    position:absolute;
+}  /* 这个只有IE认识 */
+ li{list-style: none;}
+</style>
+
+<!--[if IE 6]>
+    <style type="text/css">
+    /*<![CDATA[*/
+html {overflow-x:auto; overflow-y:hidden;}
+    /*]]>*/
+    </style>
+<![endif]-->
+</head>
+
+
+<body onload="init()">
+
+  <div class="g1024">
+   <div class="c12 centered" id="alertDv" style="display:none;">
+    <div class="alert top" >
+    <p class="text-center" id="alertInfo"></p>
+    </div>
+  </div>
+
+
+    <div class="row spce-bot">
+      <div class="c6">
+        <h3 class="text-center space-bot">buzz广告接口测试</h3>        
+      </div>
+      <div class="c6">
+
+      </div>
+    </div>
+    
+    <hr>
+
+  <div class="row space-bot">
+  <div class="c12">
+
+    <div class="c8 hform" style="max-width: 600px;"> 
+
+            <label style="width:20%;">agent:</label>
+            <input type="text" name="uuid" id="agent"/>
+            
+    </div>
+     
+  
+       
+   <div class="c8 vform" style="max-width: 600px;"> 
+         <label style="width:20%;">banner内容:</label>
+
+  </div>
+
+   <div class="c8 hform" style="max-width: 600px;border:1px solid #ddd;padding-top:20px;"> 
+  
+      <div class="c2 hform" > 
+         <label style="width:20%;">btype:</label>
+         <input type="text" name="bn_btype" id="bn_btype"  />   
+     </div>
+    <div class="c2 hform" > 
+         <label style="width:20%;">id:</label>
+         <input type="text" name="bn_id" id="bn_id"  />   
+     </div>
+       <div class="c2 hform" > 
+         <label style="width:20%;">pos:</label>
+         <input type="text" name="bn_pos" id="bn_pos"  />   
+     </div>
+
+       <div class="c2 hform" > 
+         <label style="width:20%;">size:</label>
+         <input type="text" name="bn_size" id="bn_size"  />   
+     </div>
+
+       <div class="c2 hform" > 
+         <label style="width:20%;">price:</label>
+         <input type="text" name="md_price" id="md_price"  />   
+     </div>
+
+      <div class="c2" > 
+      
+      <button type="submit" class="blue" id="bn_sub" onclick="submitban()">+1</button>  
+     </div>
+     
+   </div>     
+ 
+ 
+
+   <div class="c8 hform" style="max-width: 600px;"> 
+
+            <label style="width:20%;">cId:</label>
+            <input type="text" name="cId" id="cId"  />
+            
+    </div>
+
+    <div class="c8 hform" style="max-width: 600px;"> 
+
+            <label style="width:20%;">ip:</label>
+            <input type="text" name="md_ip" id="md_ip"  />
+            
+    </div>
+
+
+
+   <div class="c8 vform" style="max-width: 600px;font-size:24px;"> 
+         <label style="width:20%;">media内容:</label>
+  </div>
+ <div class="c8 hform" style="max-width: 600px;"> 
+   <div class="c8 hform" style="max-width: 600px;border:1px solid #ddd;padding-top:20px;"> 
+  
+      <div class="c2 hform" > 
+         <label style="width:20%;">blockUrl:</label>
+         <input type="text" name="blockUrl" id="blockUrl"  />   
+     </div>
+       <div class="c2" > 
+      
+      <button type="submit" class="blue" id="media_sub" onclick="submitburl()">+1</button>  
+     </div>
+     </div>
+
+
+    <div class="c2 hform" > 
+         <label style="width:20%;">keyWords:</label>
+         <input type="text" name="md_keyWords" id="md_keyWords"  />   
+     </div>
+     
+
+       <div class="c2 hform" > 
+         <label style="width:20%;">url:</label>
+         <input type="text" name="md_url" id="md_url"  />   
+     </div>
+
+     
+   </div>   
+
+
+
+
+
+     <div class="c8 vform" style="max-width: 600px;"> 
+         <label style="width:20%;">Dspbid内容:</label>
+  </div>
+
+   <div class="c8 hform" style="max-width: 600px;border:1px solid #ddd;padding-top:20px;"> 
+  
+      <div class="c2 hform" > 
+         <label style="width:20%;">adId:</label>
+         <input type="text" name="ds_adId" id="ds_adId"  />   
+     </div>
+    <div class="c2 hform" > 
+         <label style="width:20%;">bannerId:</label>
+         <input type="text" name="ds_bannerId" id="ds_bannerId"  />   
+     </div>
+       <div class="c2 hform" > 
+         <label style="width:20%;">dspId:</label>
+         <input type="text" name="ds_dspId" id="ds_dspId"  />   
+     </div>
+
+       <div class="c2 hform" > 
+         <label style="width:20%;">segment:</label>
+         <input type="text" name="ds_segment" id="ds_segment"  />   
+     </div>
+
+   <div class="c2 hform" > 
+         <label style="width:20%;">link:</label>
+         <input type="text" name="ds_link" id="ds_link"  />   
+     </div>
+   <div class="c2 hform" > 
+         <label style="width:20%;">price:</label>
+         <input type="text" name="ds_price" id="ds_price"  />   
+     </div>
+
+  <div class="c2" > 
+      
+      <button type="submit" class="blue" id="ds_sub" onclick="submitdsp()">+1</button>  
+     </div>
+
+   </div>  
+
+
+
+
+
+
+<div class="c4">
+<div class="vform" id="menu">
+<ul>
+<li id="banner_C1"><fieldset>
+ <label>banner内容：</label>
+  <textarea name="" id="banner_C"></textarea>
+</fieldset></li>
+<li id="media_C1"><fieldset>
+ <label>media内容：</label>
+  <textarea name="" id="media_C"></textarea>
+</fieldset></li>
+<li id="dspbid_c1"><fieldset>
+ <label>Dspbid内容：</label>
+  <textarea name="" id="dspbid_c"></textarea>
+</fieldset></li>
+
+</ul>
+</div>
+
+  </div>
+
+
+      
+   </div>
+
+  </div> 
+
+
+ 
+
+  <div class="row space-bot">
+  <div class="c12"> 
+    <div class="c6 first">
+    </div>
+    <div class="c6 last">
+      <button type="submit" class="green" onclick="submit()" >提交</button>
+    </div>              
+  </div>
+</div>
+
+  <div class="row space-bot">
+  <div class="c8" style="margin-bottom:15px;"> 
+   <label>参数预览：</label>
+  </div> 
+
+ <div class="vform c8">
+  <textarea name="" id="content" style="min-width: 587px;"></textarea>
+ </div>
+ <div class="c8">
+  <div class="c5"></div>
+  <div class="c3"><a href="" target="_blank" id="dspurl" >点击查看返回结果</a>
+  </div>
+</div>
+
+  </div>
+
+
+    
+
+
+
+
+
+  <div class="c8 vform" style="max-width: 600px;"> 
+  <label style="width:20%;">cookie请求：</label>
+  
+
+   <div class="c8 hform" style="max-width: 600px;border:1px solid #ddd;padding-top:20px;"> 
+  
+      <div class="c2 hform" > 
+         <label style="width:20%;">adId:</label>
+         <input type="text" name="cki_cid" id="cki_cid"  />   
+     </div>
+    <div class="c2 hform" > 
+         <label style="width:20%;">uid:</label>
+         <input type="text" name="cki_uid" id="cki_uid"  />   
+     </div>
+       <div class="c2 hform" > 
+         <label style="width:20%;">gd:</label>
+         <input type="text" name="cki_gd" id="cki_gd"  />   
+     </div>
+  
+
+
+  <div class="c2" > 
+      
+      <button type="submit" class="blue" id="cki_sub" onclick="submitcki()">cookie</button>  
+  </div>
+
+ <div class="c3"><a href="" target="_blank" id="cki_url" >点击查看结果</a>
+  </div>
+  <textarea name="" id="cki_content" style="min-width: 560px;"></textarea>
+   </div>  
+
+
+
+
+
+</div>
+
+
+ </div>    
+
+
+    <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a>&Dan</p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.buzzads.com" target="_blank">buzzAds</a><p>
+      </div>    
+    </div>
+</div><!-- grid -->
+
+
+
+
+
+
+
+
+<script type="text/javascript" charset="UTF-8">
+
+ var patter = new RegExp('\]');
+
+function init(){
+
+document.getElementById("blockUrl").value ="1.c" ;
+
+document.getElementById("bn_btype").value ="1" ;
+document.getElementById("bn_pos").value = "1";
+document.getElementById("bn_size").value = "2" ;
+document.getElementById("bn_id").value = "1" ;
+
+
+document.getElementById("ds_adId").value = '0';
+document.getElementById("ds_bannerId").value = '1';
+document.getElementById("ds_dspId").value = '2';
+document.getElementById("ds_segment").value = '"<div>Hello World</div>"';
+document.getElementById("ds_link").value = 'http://bshare.cn';
+document.getElementById("ds_price").value = '2.5';
+
+document.getElementById("dspbid_c").value = '';
+
+
+
+document.getElementById("agent").value = '"agent"';
+document.getElementById("cId").value = '12345';
+document.getElementById("md_ip").value = '"127.0.0.1"';
+document.getElementById("md_keyWords").value = '["1","2","3"]';
+document.getElementById("md_price").value = '"2"';
+document.getElementById("md_url").value = '"bshare.cn"';
+
+document.getElementById('media_C').value = '';
+
+
+document.getElementById("dspurl").value = '';
+
+document.getElementById("content").value = '';
+
+document.getElementById("content").style.display="none";
+document.getElementById("dspurl").style.display="none";
+document.getElementById("media_C1").style.display="none";
+document.getElementById("dspbid_c1").style.display="none";
+document.getElementById("banner_C1").style.display="none";
+
+document.getElementById("cki_cid").value="1CHmi3GTDYkBF7PHzOMO";
+document.getElementById("cki_uid").value="123456";
+document.getElementById("cki_gd").value="m";
+
+}
+// 父页面中
+// 初始化信使, 告知与其交互的iframe引用
+//var messenger = Messenger.initInParent(document.getElementById('frame_content')); 
+
+// 监听消息
+//messenger.onmessage = function (data) {
+//  alertStr(data);
+
+//};
+
+
+
+function submitburl(){
+    document.getElementById("media_C1").style.display="block";
+    var blockUrl = trimStr(document.getElementById("blockUrl").value);
+    var burl = document.getElementById("media_C").value ;
+    var flag = patter.test(burl);
+    if(!flag){
+
+      burl ='['+'"'+encodeURIComponent(blockUrl)+'"'+']'; 
+    }else{
+      burl=burl.substring(0, burl.length-1); 
+      burl +=','+'"'+encodeURIComponent(blockUrl)+'"'+']';
+    }
+    
+    document.getElementById("media_C").value = burl;
+  
+};
+
+     
+function submitban(){
+
+    document.getElementById("banner_C1").style.display="block";
+    var banvalue =document.getElementById("banner_C").value ;
+    var btype = trimStr(document.getElementById("bn_btype").value);
+    var pos = trimStr(document.getElementById("bn_pos").value);
+    var size = trimStr(document.getElementById("bn_size").value);
+    var id = trimStr(document.getElementById("bn_id").value);
+    var price = trimStr(document.getElementById("md_price").value);
+    var flag = patter.test(banvalue);
+
+    if(!flag){
+
+         banvalue ='"banner"'+':'+'[{'+'"btype"'+':'+btype+','+'"id"'+':'+id+','+'"pos"'+':'+pos+','+'"size"'+':'+size+','+'"price"'+':'+price+'}]';
+     
+    }else{
+
+       banvalue=banvalue.substring(0, banvalue.length-1); 
+       banvalue +=',{'+'"btype"'+':'+btype+','+'"id"'+':'+id+','+'"pos"'+':'+pos+','+'"size"'+':'+size+','+'"price"'+':'+price+'}]';
+    }
+    
+    document.getElementById("banner_C").value = banvalue;
+  
+}
+function submitdsp(){
+      document.getElementById("dspbid_c1").style.display="block";
+    var dspvalue = document.getElementById("dspbid_c").value ;
+    var adId = trimStr(document.getElementById("ds_adId").value);
+    var bannerId = trimStr(document.getElementById("ds_bannerId").value);
+    var dspId = trimStr(document.getElementById("ds_dspId").value);
+    var segment = trimStr(document.getElementById("ds_segment").value);
+    var link = trimStr(document.getElementById("ds_link").value);
+    var priced = trimStr(document.getElementById("ds_price").value);
+    var flag = patter.test(dspvalue);
+    if(!flag){
+
+         dspvalue ='"dspbid"'+':'+'[{'+'"adId"'+':'+adId+','+'"bannerId"'+':'+bannerId+','+'"dspId"'+':'+dspId+','+'"segment"'+':'+segment+','+'"link"'+':'+'"'+encodeURIComponent(link)+'"'+','+'"price"'+':'+priced+'}]'; 
+    }else{
+       dspvalue=dspvalue.substring(0, dspvalue.length-1); 
+       dspvalue +=',{'+'"adId"'+':'+adId+','+'"bannerId"'+':'+bannerId+','+'"dspId"'+':'+dspId+','+'"segment"'+':'+segment+','+'"link"'+':'+'"'+encodeURIComponent(link)+'"'+','+'"price"'+':'+priced+'}]'
+    }
+    
+    document.getElementById("dspbid_c").value = dspvalue;
+  
+}
+function submit(){
+    document.getElementById("content").style.display="block";
+    document.getElementById("dspurl").style.display="block";
+    var tar = document.getElementById("dspurl");
+    var agent = trimStr(document.getElementById("agent").value);
+    var cId = trimStr(document.getElementById("cId").value);
+    var ip = trimStr(document.getElementById("md_ip").value);
+    var keyWords = trimStr(document.getElementById("md_keyWords").value);
+
+    var url = trimStr(document.getElementById("md_url").value);
+    var burl = trimStr(document.getElementById("media_C").value);
+    var banvalue = trimStr(document.getElementById("banner_C").value);
+    var dspvalue = trimStr(document.getElementById("dspbid_c").value);
+
+    var media = '"media"'+':{'+'"blockUrl"'+':'+burl+','+'"keyWords"'+':'+keyWords+','+'"url"'+':'+url+'}';
+    var surl = 'http://api.buzzads.com/api/bidrequest.j?rtb=';
+
+    surl += '{'+'"agent"'+':'+agent+','+banvalue+','+'"cId"'+':'+cId+','+'"ip"'+':'+ip+','+media+','+dspvalue+'}'
+
+    document.getElementById("content").value = surl;
+
+    tar.href = surl;
+  
+}
+
+function submitcki(){
+    var tarc = document.getElementById("cki_url");
+    var cki_cid = trimStr(document.getElementById("cki_cid").value);
+    var cki_uid = trimStr(document.getElementById("cki_uid").value);
+    var cki_gd = trimStr(document.getElementById("cki_gd").value);
+    var ckiurl ='http://api.buzzads.com/api/cookie.j'+'?'+'cid='+cki_cid+'&'+'uid='+cki_uid+'&'+'gd='+cki_gd
+        
+    document.getElementById("cki_content").value = ckiurl;
+
+    tarc.href = ckiurl;
+
+
+}
+
+
+
+
+</script>
+<script type="text/javascript" charset="UTF-8">
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+
+
+
+   // 发送消息给子嵌入框
+ //  var msg = suuid+'&'+surl;
+ //  messenger.send(msg);
+                         
+
+function empty(v){ 
+  switch (typeof v){ 
+    case 'undefined' : return true; break;
+    case 'string' : if(trimStr(v).length == 0) return true; break; 
+    case 'boolean' : if(!v) return true; break; 
+    case 'number' : if(0 === v) return true; break; 
+    case 'object' : {
+                if(null === v) return true; 
+                if(undefined !== v.length && v.length==0) return true; 
+                for(var k in v){return false;} return true;} break; 
+                } 
+  return false; 
+}
+
+
+
+function alertStr(Str){
+
+  document.getElementById("alertDv").style.display="block";
+  document.getElementById("alertInfo").innerHTML = Str;
+  setTimeout("document.getElementById('alertInfo').innerHTML='';document.getElementById('alertDv').style.display='none';", 3000);
+     
+}
+
+</script>
+
+
+</body>
+</html>
+
+
+

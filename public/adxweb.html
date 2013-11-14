@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> 广告接口试验 </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+<hr style="color:#ff5c00;"/>
+
+<font style="font-size:20px;width:60px;height:10px;" >agent参数:</font> 
+<input id="agent" size=50  value='"agent"' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"><br/>
+
+<font style="font-size:20px;width:60px;height:10px;" >banner参数:</font>
+<p><font>BTYPE:</font><input id="btype" size=10 value="1"  class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>POS:</font><input id="pos" size=10 value="1" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>SIZE:</font><input id="size" size=10 value="2" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<input class="button" type="submit" value="提交BANNER参数" id="submit_ban" onclick='submitban()'/></p><br/>
+
+<font style="font-size:20px;width:60px;height:10px;" >CID参数:</font>
+<input size=50 id="CID" value="12345" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"><br/>
+
+<font style="font-size:20px;width:60px;height:10px;" >IP参数:</font> 
+<input size=50 id="IP" value='"127.0.0.1"' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"><br/>
+
+
+<font style="font-size:20px;width:60px;height:10px;" >media参数:</font>
+<p>
+<font>blockUrl:</font><input id="blockUrl" size=20 value="1.c"  class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+<input class="button" type="submit" value="提交blockUrl参数" id="submit_burl" onclick='submitburl()'/><br/>
+
+<font>keyWords:</font><input id="keyWords" size=20 value='["1","2","3"]' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>price:</font><input id="price" size=10 value='"2"' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>url:</font><input id="url" size=20 value='"bshare.cn"' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></p><br/>
+
+<font style="font-size:20px;width:60px;height:10px;" >dspbid参数:</font> 
+<p>
+<font>adId:</font><input id="adId" size=10 value="0"  class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>bannerId:</font><input id="bannerId" size=10 value="1" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>dspId:</font><input id="dspId" size=10 value="2" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>segment:</font><input id="segment" size=30 value='"<div>Hello World</div>"' class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>link:</font><input id="link" size=20 value="http://bshare.cn" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<font>price:</font><input id="priced" size=10 value="2.5" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+
+<input class="button" type="submit" value="提交dspid参数" id="submit_dsp" onclick='submitdsp()'/>
+</p>
+<br/>
+<div> <textarea id="RawJsonburl" style="border: 1px solid #ff5c00;color:green;font-size:12px;width:400px;height: 30px;">
+ blockurl参数</textarea></div><br/>
+<div class="HeadersRow" >
+<textarea id="RawJson" style="border: 1px solid #ff5c00;color:green;font-size:12px;width:400px;height:100px;">
+ BANNER参数 </textarea>
+ <textarea id="RawJsondsp" style="border: 1px solid #ff5c00;color:green;font-size:12px;width:400px;height: 100px;">
+ dspid参数 </textarea>
+</div>
+
+<div>
+<input class="button" type="submit" value="提交参数" id="submit_check" onclick='submit()'/>
+
+<span id ="info" style="color:red;font-size:12px;"></span>
+<div> <textarea id="RawJsontt" style="border: 1px solid #ff5c00;color:green;font-size:12px;width:800px;height: 60px;">
+ 提交参数</textarea></div>
+ <div class="lezhi" style="margin-top:20px;font-size:10px;">
+<span>请求参数：</span>
+ <a id="lzurl" target="_blank"> </a>
+</div>
+<hr style="color:#ff5c00;"/>
+<script type="text/javascript" language="javascript">
+
+    var c=0;  
+    var burl; 
+function submitburl(){
+	var blockUrl = trimStr(document.getElementById("blockUrl").value);
+
+    if(c==0){
+
+         burl ='['+'"'+encodeURIComponent(blockUrl)+'"'+']';
+         c=2;   
+    }else{
+       burl=burl.substring(0, burl.length-1); 
+       burl +=','+'"'+encodeURIComponent(blockUrl)+'"'+']';
+    }
+    
+    document.getElementById("RawJsonburl").value = burl;
+	
+}
+
+    var a=0;  
+    var banvalue; 
+function submitban(){
+    var btype = trimStr(document.getElementById("btype").value);
+	var pos = trimStr(document.getElementById("pos").value);
+	var size = trimStr(document.getElementById("size").value);
+
+    if(a==0){
+
+         banvalue ='"banner"'+':'+'[{'+'"btype"'+':'+btype+','+'"pos"'+':'+pos+','+'"size"'+':'+size+'}]';
+         a=2;   
+    }else{
+       banvalue=banvalue.substring(0, banvalue.length-1); 
+       banvalue +=',{'+'"btype"'+':'+btype+','+'"pos"'+':'+pos+','+'"size"'+':'+size+'}]';
+    }
+    
+    document.getElementById("RawJson").value = banvalue;
+	
+}
+    var b=0;
+    var dspvalue;
+function submitdsp(){
+    var adId = trimStr(document.getElementById("adId").value);
+	var bannerId = trimStr(document.getElementById("bannerId").value);
+	var dspId = trimStr(document.getElementById("dspId").value);
+    var segment = trimStr(document.getElementById("segment").value);
+	var link = trimStr(document.getElementById("link").value);
+	var priced = trimStr(document.getElementById("priced").value);
+
+    if(b==0){
+
+         dspvalue ='"dspbid"'+':'+'[{'+'"adId"'+':'+adId+','+'"bannerId"'+':'+bannerId+','+'"dspId"'+':'+dspId+','+'"segment"'+':'+segment+','+'"link"'+':'+'"'+encodeURIComponent(link)+'"'+','+'"price"'+':'+priced+'}]';
+         b=2;   
+    }else{
+       dspvalue=dspvalue.substring(0, dspvalue.length-1); 
+       dspvalue +=',{'+'"adId"'+':'+adId+','+'"bannerId"'+':'+bannerId+','+'"dspId"'+':'+dspId+','+'"segment"'+':'+segment+','+'"link"'+':'+'"'+encodeURIComponent(link)+'"'+','+'"price"'+':'+priced+'}]'
+    }
+    
+    document.getElementById("RawJsondsp").value = dspvalue;
+	
+}
+function submit(){
+    var tar = document.getElementById("lzurl");
+    var agent = trimStr(document.getElementById("agent").value);
+    var cId = trimStr(document.getElementById("CID").value);
+	var ip = trimStr(document.getElementById("IP").value);
+    var keyWords = trimStr(document.getElementById("keyWords").value);
+	var price = trimStr(document.getElementById("price").value);
+   	var url = trimStr(document.getElementById("url").value);
+    var media = '"media"'+':{'+'"blockUrl"'+':'+burl+','+'"keyWords"'+':'+keyWords+','+'"price"'+':'+price+','+'"url"'+':'+url+'}';
+    var surl = 'http://api.buzzads.com/api/bidrequest.j?rtb=';
+
+    surl += '{'+'"agent"'+':'+agent+','+banvalue+','+'"cId"'+':'+cId+','+'"ip"'+':'+ip+','+media+','+dspvalue+'}'
+
+    document.getElementById("RawJsontt").value = surl;
+
+    tar.innerHTML= surl;
+	tar.href = surl;
+	
+}
+
+var Url = {
+ 
+        // public method for url encoding
+        encode : function (string) {
+                return escape(this._utf8_encode(string));
+        },
+ 
+        // public method for url decoding
+        decode : function (string) {
+                return this._utf8_decode(unescape(string));
+        },
+ 
+        // private method for UTF-8 encoding
+        _utf8_encode : function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+ 
+                for (var n = 0; n < string.length; n++) {
+ 
+                        var c = string.charCodeAt(n);
+ 
+                        if (c < 128) {
+                                utftext += String.fromCharCode(c);
+                        }
+                        else if((c > 127) && (c < 2048)) {
+                                utftext += String.fromCharCode((c >> 6) | 192);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+                        else {
+                                utftext += String.fromCharCode((c >> 12) | 224);
+                                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                                utftext += String.fromCharCode((c & 63) | 128);
+                        }
+ 
+                }
+ 
+                return utftext;
+        },
+ 
+        // private method for UTF-8 decoding
+        _utf8_decode : function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+ 
+                while ( i < utftext.length ) {
+ 
+                        c = utftext.charCodeAt(i);
+ 
+                        if (c < 128) {
+                                string += String.fromCharCode(c);
+                                i++;
+                        }
+                        else if((c > 191) && (c < 224)) {
+                                c2 = utftext.charCodeAt(i+1);
+                                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                                i += 2;
+                        }
+                        else {
+                                c2 = utftext.charCodeAt(i+1);
+                                c3 = utftext.charCodeAt(i+2);
+                                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                                i += 3;
+                        }
+ 
+                }
+ 
+                return string;
+        }
+ 
+}
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+</script>
+
+ </body>
+</html>

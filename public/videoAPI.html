@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="常用客户案例测试" name="description">
+<title>视频API案例测试</title>
+<style type="text/css">
+body{
+font-family: verdana;
+font-size: 20px;
+color: #000000;
+background-color:#ffffff;
+}
+.en1 {
+font-size: 20px;
+font-family: Verdana
+}
+.input1{
+font-family: verdana;
+background-color: #EEEEEE;
+border-bottom: #FFFFFF 1px solid;
+border-left: #CCCCCC 1px solid;
+border-right: #FFFFFF 1px solid;
+border-top: #CCCCCC 1px solid;
+font-size: 20px;
+}
+.input1-bor {
+font-family:verdana;
+background-color:#F0F8FF;
+font-size: 24px;
+border: 1px solid #333333;
+}
+
+ul li{
+float:left;
+list-style-type:none;
+color: #999999;
+margin-right:5px;
+height:16px;
+line-height:16px;
+font-size:20px;
+vertical-align:middle;
+}
+td{ white-space:nowrap;}
+.bshare img{border:none;}
+
+        
+        
+</style>
+
+</head>
+<body onload='Init()' >
+
+<h3>按钮：API视频测试页面</h3>
+<hr />
+<table cellspacing=4 cellpadding=0 width=100 border=0>
+<tr>
+<td><font class="en1">uuid:</font> </td>
+<td><input id="tuuid" size=50  class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+</td>
+</tr>
+<tr>
+<td><font class="en1">分享url:</font></td>
+<td><input id="turl" size=50 class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></td>
+</tr>
+
+<tr>
+<td><font class="en1">分享标题:</font></td>
+<td><input size=50 id="ttitle" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></td>
+</tr>
+<tr>
+<td><font class="en1">分享图片:</font> </td>
+<td><input size=50 id="tpic" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+</td>
+</tr>
+<tr>
+<td><font class="en1">分享视频:</font> </td>
+<td><input size=50 id="tvideo" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+</td>
+</tr>
+<tr>
+<td><font class="en1">分享内容: </font> </td>
+<td><textarea id="tsummary" rows=5 cols=51 class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'"></textarea>
+</td>
+</tr>
+<tr>
+<td><font class="en1">测试人员:</font> </td>
+<td><input size=25 id="tvUid" class="input1" onblur="this.className='input1'" onfocus="this.className='input1-bor'">
+</td>
+</tr>
+</table>
+
+<ul class="bshare ">
+<li>分享到:</li>
+<li><a title="分享到QQ空间"  onclick="shareTo('qzone')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/qzone.gif "/></a></li>
+<li><a title="分享到新浪微博"  onclick="shareTo('sinaminiblog')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/sinaminiblog.gif "/></a></li>
+<li><a title="分享到腾讯微博"  onclick="shareTo('qqmb')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/qqmb.gif "/></a></li>
+<li><a title="分享到天涯"  onclick="shareTo('tianya')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/tianya.gif "/></a></li>
+<li><a title="分享到腾讯朋友"  onclick="shareTo('qqxiaoyou')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/qqxiaoyou.gif "/></a></li>
+<li><a title="分享到飞信"  onclick="shareTo('feixin')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/feixin.gif "/></a></li>
+<li><a title="分享到MSN"  onclick="shareTo('msn')" href="javascript:void(0);" ><img src="http://static.bshare.cn/frame/images/logos/mp2/msn.gif "/></a></li>
+</ul>
+
+
+<script  type='text/javascript'>
+var s = screen, d = document, wd = 640, hg = 480, u = d.location;
+function Init(){
+	 d.getElementById("tuuid").focus();
+	 
+	 if(empty(trimStr(d.getElementById("tuuid").value)))
+	     d.getElementById("tuuid").value="f51fa0a9-6b0f-4281-a7e5-ea77beadeb3b";
+	 
+	 if(empty(trimStr(d.getElementById("turl").value)))
+		 d.getElementById("turl").value="http://www.bshare.cn";
+	 if(empty(trimStr(d.getElementById("ttitle").value)))
+		 d.getElementById("ttitle").value="这个是测试页面的title，测试页面分享的标题";
+	 if(empty(trimStr(d.getElementById("tpic").value)))
+		 d.getElementById("tpic").value="http://static.bshare.cn/images/banners/lezhi_banner.jpg";
+	 if(empty(trimStr(d.getElementById("tvideo").value)))
+		 d.getElementById("tvideo").value="http://player.youku.com/player.php/Type/Folder/Fid/7995706/Ob/1/Pt/12/sid/XMjk3NjgzMTky/v.swf";
+	 if(empty(trimStr(d.getElementById("tsummary").value)))
+		 d.getElementById("tsummary").value="这是一个测试的页面，这个是分享的内容";
+	if(empty(trimStr(d.getElementById("tvUid").value)))
+		d.getElementById("tvUid").value="sanford";
+  }
+function shareTo(site){
+
+    var uuid = trimStr(d.getElementById("tuuid").value);
+	var turl = trimStr(d.getElementById("turl").value);
+	var title = trimStr(d.getElementById("ttitle").value);
+	var pic = trimStr(d.getElementById("tpic").value);
+	var summary = trimStr(d.getElementById("tsummary").value);
+	var video = trimStr(d.getElementById("tvideo").value);
+	var vUid = trimStr(d.getElementById("tvUid").value);	
+	var url="http://api.bshare.cn/share/"+site+"?url="+Url.encode(turl)+"&title="+Url.encode(title)+"&publisherUuid="+uuid+"&pic="+Url.encode(pic)+"&video="+Url.encode(video)+"&summary="+Url.encode(summary)+"&vUid="+Url.encode(vUid);
+     window.open(url, 'bshare', ['toolbar=0,status=0,resizable=1,width='+ wd +',height='+ hg +',left='+ (s.width - wd) / 2+ ',top='+ (s.height - hg) / 2]);	
+}
+
+
+
+
+
+
+function empty(v){ 
+	switch (typeof v){ 
+		case 'undefined' : return true; 
+		case 'string' : if(trimStr(v).length == 0) return true; break; 
+		case 'boolean' : if(!v) return true; break; 
+		case 'number' : if(0 === v) return true; break; 
+		case 'object' : 
+		if(null === v) return true; 
+		if(undefined !== v.length && v.length==0) return true; 
+		for(var k in v){return false;} return true; 
+		break; 
+		} 
+	return false; 
+}
+
+
+var Url = {
+ 
+		// public method for url encoding
+		encode : function (string) {
+				return escape(this._utf8_encode(string));
+		},
+ 
+		// public method for url decoding
+		decode : function (string) {
+				return this._utf8_decode(unescape(string));
+		},
+ 
+		// private method for UTF-8 encoding
+		_utf8_encode : function (string) {
+				string = string.replace(/\r\n/g,"\n");
+				var utftext = "";
+ 
+				for (var n = 0; n < string.length; n++) {
+ 
+						var c = string.charCodeAt(n);
+ 
+						if (c < 128) {
+								utftext += String.fromCharCode(c);
+						}
+						else if((c > 127) && (c < 2048)) {
+								utftext += String.fromCharCode((c >> 6) | 192);
+								utftext += String.fromCharCode((c & 63) | 128);
+						}
+						else {
+								utftext += String.fromCharCode((c >> 12) | 224);
+								utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+								utftext += String.fromCharCode((c & 63) | 128);
+						}
+ 
+				}
+ 
+				return utftext;
+		},
+ 
+		// private method for UTF-8 decoding
+		_utf8_decode : function (utftext) {
+				var string = "";
+				var i = 0;
+				var c = c1 = c2 = 0;
+ 
+				while ( i < utftext.length ) {
+ 
+						c = utftext.charCodeAt(i);
+ 
+						if (c < 128) {
+								string += String.fromCharCode(c);
+								i++;
+						}
+						else if((c > 191) && (c < 224)) {
+								c2 = utftext.charCodeAt(i+1);
+								string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+								i += 2;
+						}
+						else {
+								c2 = utftext.charCodeAt(i+1);
+								c3 = utftext.charCodeAt(i+2);
+								string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+								i += 3;
+						}
+ 
+				}
+ 
+				return string;
+		}
+ 
+}
+
+function trimStr(str){
+
+return str.replace(/(^\s*)|(\s*$)/g,"");
+
+}
+
+</script>
+</div>
+</div>
+</body>
+</html>
+  
