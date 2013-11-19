@@ -102,16 +102,17 @@ function httpurl(uid){
     var body = '';
     var req = http.get(url, function(res) {
   //console.log("Got response: " + res.statusCode);
-  res.on('data',function(chunk){
+    res.on('data',function(chunk){
          body += chunk;
       }).on('end', function(){
          flag = true;
-         datas[uid] = JSON.parse(body).name;
+         datas[uid] = JSON.parse(body).name || " ";
        
       });
 
 }).on('error', function(e) {
-        flag = false;
+        flag = true;
+        datas[uid] = " ";
         console.log("Got error: " + e.message);
 })
 req.end();
