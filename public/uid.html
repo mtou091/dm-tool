@@ -23,49 +23,151 @@ h1 { font-family:'Constantia';}
 <body style="background:#FBFCFD;">
 <h1>新浪uid转换：</h1>
 <div class="tips">
-注：多个uid请以“,”分隔。</br></div>
+注：多个uid请以"换行符"分隔。</br></div>
 <textarea id="textarea" class="textarea"></textarea>
 <textarea id="textareaR" class="textarea"></textarea>
 
 <script>
 var text = document.getElementById("textarea"),textR = document.getElementById("textareaR"),
-	tip = '请输入新浪uid..';
-	
+     tip = '请输入新浪uid..';
+    
 autoTextarea(text);
 autoTextarea(textR);
 text.value = tip;
-var param=[],flag = 0;
-var surl = "http://www.sanford.com:3000/sinaUid?uid=123414&callback=?";
+var param=[],flag = 0 ,bala='';
+
 text.onfocus = function () {
-	if (text.value === tip) text.value = '';
+     if (text.value === tip){
+     text.value = '';
+  }else{
+     bala = text.value ;
+  }
 };
 text.onblur = function () {
   var tmp = text.value;
-	if (tmp === ''){
+     if (tmp === ''){
         tmp = tip;
+       }else if(tmp === bala){
+        return;
        }else{
-        param = tmp.split(",");
+        param = tmp.split("\n");
+       var paramP = bala.split("\n");
         console.log(param);
         // textR.value = tmp;
-       
-        $.ajax({
-          type: "POST",
-          data:{feed:param}, 
-    	  url: surl,
+       for (var i = param.length - 1; i >= 0; i--) {
+         if(arrayContains(paramP,param[i])){
+           continue;
+         }else{
+           send("getSinaUid?uid="+param[i]+"&callback=call","get",'');
+         }
+         
+       };
+     }  
+  //balance(); 
+};
+
+
+
+function send(surl,method,dat){
+var url = "http://www.sanford.com:3000/"+surl;
+  console.log(url);
+     if(method.toLowerCase() == "post"){
+      $.ajax({
+          type: method,
+          data:{feed:dat},
+          url: url,
           dataType:'jsonp',
           error:function(textStatus){
-              alert("网络有点慢，任务失败了,再来一次吧~"); 
-            }, 
+              console.log("网络有点慢，任务失败了,再来一次吧~");
+            },
           success:function(data,textStatus){ //处理数据 data指向的是返回来的JSON数据
-               alert("成功！");
-               textR.value = JSON.parse(data).toString();
-              console.log(data);
-            } 
-    
-        });
-       }
+               console.log("成功！");
+               textR.value += JSON.parse(data).toString();
+               console.log(data);
+            }
    
-};
+        });
+
+
+
+     }else{
+
+     request(url);
+
+     }
+
+     
+
+}
+
+
+function request(url) {
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.charset = "utf-8";
+        js.src = url;
+       document.getElementsByTagName("head")[0].appendChild(js);
+
+       js.onload = js.onreadystatechange = function() {
+               if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+
+               // callback在此处执行
+               
+                js.onload = js.onreadystatechange = null;
+
+                 }
+            };
+    }
+
+function call(data){
+  var textV = text.value.split("\n");
+     var ss= textR.value;
+  console.log("成功！");
+  textR.value ="";
+  var tmp = data.feeds;
+   for(k in tmp){
+      ss += k +","+ tmp[k]+"\n";
+   }
+  console.log(ss);
+
+  textR.value = ss ;
+  //balance();
+
+}
+
+function balance(){
+  var textV = text.value.split("\n");
+  var textRV= textR.value.split("\n");
+  var tmp ={} ,result={},t;
+  for (var i = textRV.length - 1; i >= 0; i--) {
+       t = textRV[i].split(",");
+      tmp(t[0]) = t[1] ;
+  };
+  for (var i = textV.length - 1; i >= 0; i--) {
+      if(tmp[textV[i]] == undefined){
+        send("getSinaUid?uid="+textV[i]+"&callback=call","get",'');
+      }else{
+        result[textV[i]] = tmp[textV[i]];
+      }
+  };
+  var sss = "";
+  for(k in result){
+    sss += k +","+ result[k]+"\n";
+  }
+textR.value = sss ;
+
+}
+
+function arrayContains(a, b) {
+    var i = a.length;
+    while (i--) {
+      if (a[i] === b) {
+        return true;
+        }
+    }
+    return false;
+}
+
 </script>
 </body>
 </html>

@@ -12,12 +12,9 @@ var datas ={};
 
 exports.autoroute = {
     'get' : {
-        '(.?)/(index)?' : index/*showIndexView,
-        '(.?)/login' : checkLoginHandler,
-        '(.?)/logout' : onLogoutHandler,
-        '(.?)/log_out' : onClearUserIdenHandler,
-        '(.?)/update_priv' : updatePrivHandler
-        */
+        '(.?)/(index)?' : index,
+        '(.?)/getSinaUid' : getSinaUid
+
     },
     'post' : {
       '(.?)/sinaUid' : sinaUid
@@ -29,28 +26,56 @@ function index(req, res){
 
   var params = urllib.parse(req.url, true);
   console.log(params);
- 
+
   if (params.query && params.query.callback) {
     //console.log(params.query.callback);
     var str =  params.query.callback + '(' + JSON.stringify(datas) + ')';//jsonp
-    
+   
     res.end(str);
   } else {
     res.end(JSON.stringify(datas));//普通的json
-   
-  }    
+  
+  }   
 
+
+}
+function getSinaUid(req, res){
+     var datass = {} ,tmp = {};
+     var params = urllib.parse(req.url, true);
+  //console.log(req);   
+     var uid = params.query.uid;
+     if(datas[uid] == undefined){
+       httpurl(uid);
+     }else{
+       flag = true;
+     }
+    var info = setInterval(function () {
+       if (flag) {
+         clearInterval(info);
+         datass[uid]= datas[uid];  
+         tmp['feeds']=datass;
+       if (params.query && params.query.callback) {
+          var str =  params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
+           console.log("jsonp"+str);
+           res.end(str);
+        } else {
+          res.end(JSON.stringify(tmp));//普通的json
+          console.log("json"+JSON.stringify(tmp));
+        }  
+      }
+
+    }, 100);
 
 }
 
 function sinaUid(req, res){
   var params = urllib.parse(req.url, true);
   //console.log(req);
- 
- // var postStr = req.body ;
+
+// var postStr = req.body ;
     var data = req.body;
     var uids = data.feed;
-    var datass = {}; 
+    var datass = {};
     for (var i = uids.length - 1; i >= 0; i--) {
        httpurl(uids[i]);
        datass[uids[i]]= datas[uids[i]];
@@ -58,14 +83,14 @@ function sinaUid(req, res){
 
   if (params.query && params.query.callback) {
       console.log(datass);
-    
+   
     var str =  params.query.callback + '(' + JSON.stringify(datass) + ')';//jsonp
    // console.log("jsonp"+str);
     res.end(str);
   } else {
     res.end(JSON.stringify(datass));//普通的json
      //console.log("json"+JSON.stringify(datas));
-  }    
+  }   
 
 }
 
@@ -73,6 +98,7 @@ function sinaUid(req, res){
 function httpurl(uid){
     flag = false;
     var url = 'https://api.weibo.com/2/users/show.json?access_token='+token+'&uid='+uid;
+    console.log("call:"+url);
     var body = '';
     var req = http.get(url, function(res) {
   //console.log("Got response: " + res.statusCode);
@@ -81,13 +107,13 @@ function httpurl(uid){
       }).on('end', function(){
          flag = true;
          datas[uid] = JSON.parse(body).name;
-        
+       
       });
 
- }).on('error', function(e) {
+}).on('error', function(e) {
         flag = false;
         console.log("Got error: " + e.message);
- })
+})
 req.end();
 
 
@@ -127,7 +153,7 @@ rs.on('data', function (chunk) {
         prevline = lines.pop();
     } else {
         prevline = '';
-    }  
+    } 
     var param = [];
     lines.forEach(function (line) {
         if(line.length > 0){
@@ -148,7 +174,7 @@ rs.on('data', function (chunk) {
          }
        ws.write(JSON.stringify(param) + CRLF);
        data.push(param);
-      }     
+      }    
     });
 });
 
