@@ -73,7 +73,6 @@ cs.on('data', function (chunk) {
     lines.forEach(function (line) {
 
      var tmp = line.split("\t");
-    
      var tmpK = tmp[1].split(",");
      var s =[];
      for (var i = tmpK.length - 1; i >= 0; i--) {
@@ -82,7 +81,7 @@ cs.on('data', function (chunk) {
      };
 
      s = uniqueC(s);
-
+     console.log(s);
      for (var j = s.length - 1; j >= 0; j--) {
        unique(s[j]);
      };

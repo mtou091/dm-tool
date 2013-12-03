@@ -1,8 +1,8 @@
 /*分unique uid总数统计
   uid总数
 */
-var output = './doc/uidCount';
-var uid_path="./cookie/cookie_uid.data";
+var output = './yema/uidCount.data';
+var uid_path="./yema/cookie_uid.data";
 //1CH00ccGCP5EuvRpF8l8  2681033275
 //process.argv[2] == undefined?"./cookie/cookie_keywords.data":process.argv[2];
 

@@ -13,8 +13,8 @@ var datas ={};
 exports.autoroute = {
     'get' : {
         '(.?)/(index)?' : index,
-        '(.?)/getSinaUid' : getSinaUid
-
+        '(.?)/getSinaUid' : getSinaUid,
+        '(.?)/getWork' : getWork
     },
     'post' : {
       '(.?)/sinaUid' : sinaUid
@@ -70,9 +70,9 @@ function getSinaUid(req, res){
 
 function sinaUid(req, res){
   var params = urllib.parse(req.url, true);
-  //console.log(req);
+   //console.log(req);
 
-// var postStr = req.body ;
+   // var postStr = req.body ;
     var data = req.body;
     var uids = data.feed;
     var datass = {};
@@ -130,7 +130,27 @@ function showIndexView(req, res) {
     }
 }
 
+function getWork(req,res){
+    var params = urllib.parse(req.url, true);
+  //console.log(req);
 
+  // var postStr = req.body ;
+    var param = params.query.param;
+    
+   if (params.query && params.query.callback) {
+      console.log(datass);
+   
+    var str =  params.query.callback + '(' + JSON.stringify(datass) + ')';//jsonp
+   // console.log("jsonp"+str);
+    res.end(str);
+  } else {
+    res.end(JSON.stringify(datass));//普通的json
+     //console.log("json"+JSON.stringify(datas));
+  }   
+
+
+
+}
 var data =[];
 var rs = fs.createReadStream(input, {
     flags: 'r',

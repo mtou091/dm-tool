@@ -1,12 +1,13 @@
 /*分地域过滤cookie
 */
-var output = './doc/gpk.data';
-var key_path="./doc/cookie_info.data";
+var output = './cookie/gpk.data';
+var key_path="./doc/nzj_cookie_info.data";
 //1CH00K0VD1BMN1scYKeH  广东  深圳
 //process.argv[2] == undefined?"./cookie/cookie_keywords.data":process.argv[2];
 
 var fs = require('fs');
-var keys = ["浙江","江苏","山东","上海","安徽"];
+//var keys = ["浙江","江苏","山东","上海","安徽"];
+var keys= ["黑龙江","辽宁","吉林","河北","山西","北京","天津"];
 var rs = fs.createReadStream(key_path, {
     flags: 'r',
     encoding: 'utf-8'
