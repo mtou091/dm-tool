@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ivory.css"/>
+<title>support work</title>
+<style type="text/css">
+
+body { font:12px 'Microsoft Yahei', Tahoma, Arial; _font-family:Tahoma, Arial; }
+a { color:#0259C4; }
+a:hover { color:#900; }
+.tips { color:#CCC; }
+h1 { font-family:'Constantia';}
+.textarea {font: 1.4em/1.8em Arial; overflow: hidden; width: 550px; height: 6em; padding:5px; border:1px solid #3ba354; background:#FAFAFA;-webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; }
+.textarea:focus { background:#FFFFF7; outline:0; }
+#submit { padding:5px 10px; border:2px solid #0259C4; background:#0259C4; color:#FFF; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; cursor:pointer; }
+#submit.disabled { background:#D7D7D7; color:#ABABAB; border-color:#ABABAB; cursor:default; }
+</style>
+
+</head>
+<body style="background:#FBFCFD;" >
+
+
+<div class="g1024">
+<h2>support 工作日志<h2/>
+<hr/>
+ <div class="row spce-bot">
+ <div class="c12 centered" id="">
+  <div class="c6 first">
+    <form class="hform" >
+        <fieldset>
+           <!-- <label>产品分类</label>-->
+            <select name="" id="selectTerm" onchange="changeIterm()">  
+            <option value="all">全部产品</option>
+            <option value="bshare">bShare</option>
+            <option value="weijifen">微积分</option>
+            <option value="lezhi">乐知推荐</option>
+            <option value="ads">广告</option>
+            </select>
+        </fieldset>
+    </form>  
+  </div>
+ 
+ <div class="c6 last">
+
+
+ </div>
+
+</div>
+</div>
+
+
+
+
+
+ <div class="row spce-bot">
+   <div class="c12 centered" id="siteDv">
+   
+   </div>
+ </div>
+
+
+   <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a></p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.bshare.cn/" target="_blank">bShare分享</a><p>
+      </div>    
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript" charset="UTF-8">
+ changeIterm();
+function changeIterm(){
+
+  var iterm = document.getElementById("selectTerm").value;
+  if(iterm){
+     send("getWork?feed="+iterm+"&callback=call","get",'');
+  }
+} 
+function send(surl,method,dat){
+ var url = "http://www.sanford.com:3000/"+surl;
+  console.log(url);
+     if(method.toLowerCase() == "post"){
+      $.ajax({
+          type: method,
+          data:{feed:dat}, 
+          url: url,
+          dataType:'jsonp',
+          error:function(textStatus){
+              console.log("网络有点慢，任务失败了,再来一次吧~"); 
+            }, 
+          success:function(data,textStatus){ //处理数据 data指向的是返回来的JSON数据
+               console.log("成功！");
+              // textR.value += JSON.parse(data).toString();
+               console.log(data);
+            } 
+    
+        });
+
+
+
+     }else{
+
+     request(url);
+
+     }
+
+      
+
+}
+
+
+function request(url) {
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.charset = "utf-8";
+        js.src = url;
+       document.getElementsByTagName("head")[0].appendChild(js);
+
+       js.onload = js.onreadystatechange = function() {
+               if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') { 
+
+               // callback在此处执行
+                
+                js.onload = js.onreadystatechange = null;
+
+                 } 
+            };
+    }
+
+function call(data){
+
+  console.log("call成功！");
+  
+  var inhtml = "<table><tr><th>序号</th><th class='text-center'>日期</th><th>需求方</th><th>产品</th><th>需求内容</th></tr>";
+    
+  var tmp = data.feeds,len = tmp.length, len2;
+  for (var i = 0; i <len; i++) {
+    inhtml+="<tr class='"+(i%2==0?'even':'')+"'><td class='text-center'>"+(i+1)+"</td>";
+      for(var v in tmp[i]){
+         len2 = tmp[i][v].length; 
+         for (var j= 0 ;j< len2; j++) {
+           inhtml+="<td class='text-center'>"+tmp[i][v][j]+"</td>";
+
+         };   
+      }
+    inhtml+="</tr>";
+  };
+
+ inhtml += "</table>";
+
+ document.getElementById("siteDv").innerHTML = inhtml;
+  
+}
+
+
+function print (datas){
+    var data = datas.split("\n");
+    var inhtml = "<table><tr><th class='text-center'>序列号</th><th class='text-center'>新浪UID</th><th>新浪昵称</th></tr>";
+      var len = data.length ,tmp;
+      for (var i = 0; i < len-1; i++) {
+        tmp = data[i].split(",");
+     inhtml+="<tr class='"+(i%2==0?'even':'')+"'><td class='text-center'>"+(i+1)+"</td><td class='text-center'><a href='http://www.weibo.com/u/"+tmp[0]+"' target='_blank'>"+tmp[0]+"</a></td><td class='text-center'>"+tmp[1]+"</td></tr>";
+    }
+    inhtml += "</table>";
+
+    document.getElementById("siteDv").innerHTML = inhtml;
+
+}
+
+function arrayContains(a, b) {
+    var i = a.length;
+    while (i--) {
+      if (a[i] === b) {
+        return true;
+        }
+    }
+    return false;
+}
+
+</script>
+</body>
+</html>

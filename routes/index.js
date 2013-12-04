@@ -14,7 +14,7 @@ exports.autoroute = {
     'get' : {
         '(.?)/(index)?' : index,
         '(.?)/getSinaUid' : getSinaUid,
-        '(.?)/getWork' : getWork
+        '(.?)/getWork' : getWorkFeed
     },
     'post' : {
       '(.?)/sinaUid' : sinaUid
@@ -118,6 +118,50 @@ function httpurl(uid){
 req.end();
 
 
+}
+
+function getWorkFeed(req, res){
+   var tmp={};
+   var params = urllib.parse(req.url, true);
+    //console.log(req);    
+   var feed = params.query.feed;
+    if(!feed){
+     tmp["feeds"]=data;
+
+    }else{
+     tmp["feeds"] = getFeeds(feed);
+
+    }
+
+   if (params.query.callback) { 
+        //console.log(tmp);
+         var str =  params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
+          // console.log("jsonp"+str);
+           res.end(str);
+    } else {
+          res.end(JSON.stringify(tmp));//普通的json
+         // console.log("json"+JSON.stringify(tmp));
+    }   
+
+}
+
+function getFeeds(para){
+  var tmp =[];
+  if(para =="all"){
+    tmp =data;
+  }else{
+  
+   for (var i = 0,len = data.length ; i <len; i++) {
+      for(var v in data[i]){
+         if(v==para){
+           tmp.push(data[i]);
+         }
+
+      }
+   };
+
+  }
+return tmp;
 }
 
 
