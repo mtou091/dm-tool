@@ -7,6 +7,8 @@ var keywords =['|b|','|l|','|w|','|a|'];
 var output = '../dm/public/log';
 var token = "2.003k6msBdANkCD0d72ec0623dEXb9E";
 var flag = false;
+var workFla =false;
+var returnP =[];
 
 var datas ={};
 
@@ -125,24 +127,52 @@ function getWorkFeed(req, res){
    var params = urllib.parse(req.url, true);
     //console.log(req);    
    var feed = params.query.feed;
-    if(!feed){
-     tmp["feeds"]=data;
+   var search = params.query.search;
 
-    }else{
-     tmp["feeds"] = getFeeds(feed);
+    var a = feed?1:0;
+    var b = search?1:0;
+    var caseid = 2*a+b;
+    switch(caseid){
+      case 3 :{
+         search = decodeURIComponent(search);
+         console.log(search);
+         getSearchFeeds(search,feed);
+      }break;
+      case 2 :{
+         getFeeds(feed);
+
+      }break;
+      case 1 :{
+         search = decodeURIComponent(search);
+         getSearchFeeds(search,feed);
+      }break;
+      case 0 :{
+         returnP = data;
+      }break;
 
     }
+    var info = setInterval(function () {
+        if (workFla) {
+          tmp["feeds"] = returnP;
+          if (params.query.callback) { 
+             console.log(tmp);
+             var str =  params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
+             console.log("jsonp"+str);
+             res.end(str);
+             workFla = false;
+             returnP =[];
+          } else {
+             res.end(JSON.stringify(tmp));//普通的json
+             workFla = false;
+             returnP =[];
+             // console.log("json"+JSON.stringify(tmp));
+          }   
 
-   if (params.query.callback) { 
-        //console.log(tmp);
-         var str =  params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
-          // console.log("jsonp"+str);
-           res.end(str);
-    } else {
-          res.end(JSON.stringify(tmp));//普通的json
-         // console.log("json"+JSON.stringify(tmp));
-    }   
-
+        clearInterval(info); 
+           
+        }
+    }, 10);
+   
 }
 
 function getFeeds(para){
@@ -161,9 +191,57 @@ function getFeeds(para){
    };
 
   }
-return tmp;
+  returnP = tmp;
+  workFla = true;
+  
 }
 
+function getSearchFeeds(se,fe){
+    var pre ="" ,tpData=[];
+    var re = fs.createReadStream(output, {
+    flags: 'r',
+    encoding: 'utf-8'
+    }).on('data', function (chunk) {
+        var lines = chunk.split(CRLF);
+        lines[0] = pre + lines[0];
+
+        if (chunk.substr(chunk.length - 2) !== CRLF) {
+            pre = lines.pop();
+        } else {
+            pre = '';
+        } 
+        var param = [];
+        lines.forEach(function (line) {
+          var tmp = line.substring(line.indexOf("{"),line.indexOf("}")+1);
+          
+          if(tmp.indexOf(se)!=-1){
+             tpData.push(JSON.parse(tmp));
+          }
+          
+        });
+
+      }).on('end', function () {
+            
+            if(fe&&fe!=="all"){
+              for (var i = 0,len=tpData.length; i < len; i++) {
+                  for(var c in tpData[i]){
+                     if(c==fe){
+                        returnP.push(tpData[i]);
+                     }
+                  }
+              };
+
+            }else{
+               console.log(tpData);
+              returnP = tpData;
+              
+            }
+           workFla = true ; 
+      });
+
+   
+
+}
 
 function showIndexView(req, res) {
     if (req.session.user && req.session.user.uId !== undefined && req.session.user.uName !== undefined) {

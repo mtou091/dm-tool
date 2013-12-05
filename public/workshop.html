@@ -44,16 +44,16 @@ h1 { font-family:'Constantia';}
   </div>
  
  <div class="c6 last">
-
+    <form class="vform">
+          <fieldset>
+            <input class="post" type="text" name="" id="searchForm" /><span type="submit" class="post" name="" onclick="search();">搜索</span>
+          </fieldset>
+    </form>
 
  </div>
 
 </div>
 </div>
-
-
-
-
 
  <div class="row spce-bot">
    <div class="c12 centered" id="siteDv">
@@ -140,15 +140,27 @@ function call(data){
 
   console.log("call成功！");
   
-  var inhtml = "<table><tr><th>序号</th><th class='text-center'>日期</th><th>需求方</th><th>产品</th><th>需求内容</th></tr>";
+  var inhtml = "<table><tr><th>序</th><th class='text-center'>日期</th><th>需求方</th><th>产品</th><th>需求内容</th></tr>";
     
   var tmp = data.feeds,len = tmp.length, len2;
-  for (var i = 0; i <len; i++) {
+  for (var i = 0,j =len-1; j>=0; i++,j--) {
     inhtml+="<tr class='"+(i%2==0?'even':'')+"'><td class='text-center'>"+(i+1)+"</td>";
-      for(var v in tmp[i]){
-         len2 = tmp[i][v].length; 
-         for (var j= 0 ;j< len2; j++) {
-           inhtml+="<td class='text-center'>"+tmp[i][v][j]+"</td>";
+      for(var v in tmp[j]){
+         len2 = tmp[j][v].length; 
+         for (var k= 0 ;k< len2; k++) {
+           if(k==2){
+            var t;
+            switch(tmp[j][v][k]){
+              case "a" : t ="广告"  ;break;
+              case "b" : t = "bShare" ;break;
+              case "w" : t = "微积分" ;break;
+              case "l" : t = "乐知" ;break;
+            }
+            inhtml+="<td class='text-center'>"+t+"</td>";
+           }else{
+            inhtml+="<td class='text-center'>"+tmp[j][v][k]+"</td>";
+           }
+           
 
          };   
       }
@@ -159,6 +171,15 @@ function call(data){
 
  document.getElementById("siteDv").innerHTML = inhtml;
   
+}
+
+function search(){
+  var iterm = document.getElementById("searchForm").value;
+  var iterm1 = document.getElementById("selectTerm").value;
+  if(iterm||iterm1){
+     send("getWork?feed="+iterm1+"&search="+encodeURIComponent(iterm)+"&callback=call","get",'');
+  }
+
 }
 
 
