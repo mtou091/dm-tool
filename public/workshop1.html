@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="js/jquery-1.7.min.js" type="text/javascript" charset="utf-8"></script> 
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+<script src="js/content.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="css/ivory.css"/>
+</head>
+<title>support work</title>
+
+<body style="background:#FBFCFD;" >
+<div class="g1024">
+<h2>support 工作日志<h2/>
+<hr/>
+ <div class="row spce-bot">
+ <div class="c12 centered" id="">
+  <div class="c6 first">
+    <form class="hform" >
+        <fieldset>
+           <!-- <label>产品分类</label>-->
+            <select name="" id="selectTerm" onchange="searchform()">  
+            <option value="all">全部产品</option>
+            <option value="bshare">bShare</option>
+            <option value="weijifen">微积分</option>
+            <option value="lezhi">乐知推荐</option>
+            <option value="ads">广告</option>
+            </select>
+        </fieldset>
+    </form>  
+  </div>
+ 
+ <div class="c6 last">
+    <form class="vform">
+          <fieldset>
+            <input class="post" type="text" name="" id="searchForm" /><span type="submit" class="post" name="" onclick="searchform();">搜索</span>
+          </fieldset>
+    </form>
+
+ </div>
+
+</div>
+</div>
+
+ <div class="row spce-bot">
+   <div class="c12 centered" id="siteDv">
+   
+   </div>
+ </div>
+
+ <div class="row spce-bot" style="margin-top:10px;">
+   <div class="c12 centered" id="pagelist" >     
+  </div>    
+</div> 
+
+   <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a></p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.bshare.cn/" target="_blank">bShare分享</a><p>
+      </div>    
+    </div>
+
+</div>
+  
+<script type="text/javascript" charset="utf-8">
+    var os = new ObjSearch();
+    os.kw = document.getElementById('searchForm').value;        
+    os.option = document.getElementById('selectTerm').value;
+//  os.displayId = '__result';
+    os.search();
+
+ function searchform(){
+    os.kw = document.getElementById('searchForm').value;        
+    os.option = document.getElementById('selectTerm').value;
+    os.search();
+ }
+
+</script>
+   
+</body>
+</html>
