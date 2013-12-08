@@ -1,5 +1,5 @@
-/*分关键词cookie总数统计
-  cookie总数
+/*分关键词 unique cookie总数统计
+  
 */
 var output = './doc/key_cookie';
 var key_path="./cookie/cookie_keywords.data";
@@ -8,6 +8,7 @@ var key_path="./cookie/cookie_keywords.data";
 
 var fs = require('fs');
 var keys = {};
+var uniqueC = {};
 var rs = fs.createReadStream(key_path, {
     flags: 'r',
     encoding: 'utf-8'
@@ -26,19 +27,27 @@ var timeIn = Date.parse(new Date());
 var cLines =0;
 var ctkey = 0;
 
+function unique(cookie,key) {
+  var hash =cookie+'|'+key;
+  if(uniqueC[hash]==undefined){
+     uniqueC[hash] = 1;
 
-function unique(key) {
- 
-  if(keys[key] == undefined){
+    if(keys[key] == undefined){
 
-    keys[key] = 1;
-    ctkey++;
+      keys[key] = 1;
+      ctkey++;
+
+    }else{
+      keys[key]++ ;
+    }
 
   }else{
-    keys[key]++ ;
-  }
 
-}
+   uniqueC[hash]++;
+
+  }
+  
+};
 
 rs.on('data', function (chunk) {
 
@@ -52,25 +61,31 @@ rs.on('data', function (chunk) {
     }
 
   cLines+=lines.length;
- console.log("已读取行数为："+cLines+"  已耗时："+((Date.parse(new Date())-timeIn)/1000)+"秒"+CRLF);
+  console.log("已读取行数为："+cLines+"  已耗时："+((Date.parse(new Date())-timeIn)/1000)+"秒"+CRLF);
 
     lines.forEach(function (line) {
 
      var tmp = line.split("\t");
-     
+     var key = tmp[0];
      var stk = tmp[1].split(",");
-  
-     for (var i = stk.length - 1; i >= 0; i--) {
-      unique(stk[i]);
-     };
+     if(key!= undefined &&stk!=undefined){
 
+       for (var i = stk.length - 1; i >= 0; i--) {
+
+       unique(key,stk[i]);
+
+       };
+
+      }
+     
     });
 
-
 });
+
 rs.on('end', function () {
-   // ws.write(keyword+"总数："+count + CRLF);
-    ws.write('[keywords_count :'+ctkey+',cookie_count:'+cLines+"]"+ CRLF);
+   
+    console.log('[keywords_count :'+ctkey+ CRLF);
+    ws.write('[keywords_count :'+ctkey+ CRLF);
     var term = [];
     for(v in keys){
       term.push(v);
@@ -81,13 +96,14 @@ rs.on('end', function () {
     });
 
     for (var i = term.length - 1; i >= 0; i--) {
-      ws.write("['"+term[i]+"':"+keys[term[i]]+"]"+CRLF);
+      ws.write(term[i]+"\t"+keys[term[i]]+CRLF);
     };
 
 
     ws.end(function () {
 
-      console.log('数据跑步完成！共收集关键字'+ctkey+'个');
+      console.log('数据跑步完成！共收集关键字'+ctkey+'个'+"  已耗时："+((Date.parse(new Date())-timeIn)/1000)+"秒"+CRLF);
+
 
       for (var i = term.length - 1; i >= 0; i--) {
 
