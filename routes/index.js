@@ -5,10 +5,10 @@ var http = require('https');
 var input = '../dm/public/work';
 var keywords =['|b|','|l|','|w|','|a|'];
 var output = '../dm/public/log';
-var token = "2.003k6msBdANkCD0d72ec0623dEXb9E";
+var token = ["2.00CZNX6CdANkCD93a54b78320oZ3E_","2.00uBIq8CdANkCDcf0c2399ad0Kz843","2.00XMkZRBdANkCDee3b5926aaaAXvjC","2.00kZJdiCdANkCDbcb6711593FTdciD","2.00NWBOoBdANkCD3904c43e1abMBu1D"];
 var flag = false;
 var workFla =false;
-var returnP =[];
+var returnP =[],result = [];
 
 var datas ={};
 
@@ -16,7 +16,8 @@ exports.autoroute = {
     'get' : {
         '(.?)/(index)?' : index,
         '(.?)/getSinaUid' : getSinaUid,
-        '(.?)/getWork' : getWorkFeed
+        '(.?)/getWork' : getWorkFeed,
+        '(.?)/getExchange':getExchange
     },
     'post' : {
       '(.?)/sinaUid' : sinaUid
@@ -47,7 +48,7 @@ function getSinaUid(req, res){
   //console.log(req);   
      var uid = params.query.uid;
      if(datas[uid] == undefined){
-       httpurl(uid);
+       httpurl(uid,3);
      }else{
        flag = true;
      }
@@ -79,7 +80,7 @@ function sinaUid(req, res){
     var uids = data.feed;
     var datass = {};
     for (var i = uids.length - 1; i >= 0; i--) {
-       httpurl(uids[i]);
+       httpurl(uids[i],3);
        datass[uids[i]]= datas[uids[i]];
     };
 
@@ -97,30 +98,90 @@ function sinaUid(req, res){
 }
 
 
-function httpurl(uid){
-    flag = false;
-    var url = 'https://api.weibo.com/2/users/show.json?access_token='+token+'&uid='+uid;
+function getNickName(uid,rNum){
+
+    var num = Math.floor(Math.random()*5);
+    var url = 'https://api.weibo.com/2/users/show.json?access_token='+token[num]+'&uid='+uid;
     console.log("call:"+url);
     var body = '';
     var req = http.get(url, function(res) {
-  //console.log("Got response: " + res.statusCode);
-    res.on('data',function(chunk){
+      console.log("Got response: " + res.statusCode);
+      res.on('data',function(chunk){
          body += chunk;
       }).on('end', function(){
-         flag = true;
-         datas[uid] = JSON.parse(body).name || " ";
-       
+         
+          var nick = JSON.parse(body).name;
+          datas[uid] = nick; 
+          rNum--;
+          httpurl(uid,rNum);   
       });
 
-}).on('error', function(e) {
-        flag = true;
-        datas[uid] = " ";
+    }).on('error', function(e) {
+        
+        datas[uid] = "";
+        rNum--;
+        httpurl(uid,rNum); 
         console.log("Got error: " + e.message);
-})
-req.end();
-
+    })
+   req.end();
 
 }
+
+
+function httpurl(uid,rNum){
+   console.log("here!");
+   if(rNum>0&&(datas[uid]==""||datas[uid] ==undefined)){           
+
+      getNickName(uid,rNum);
+   }else{
+     flag = true;
+
+   }
+}
+
+
+function getExchange(req, res){
+  
+  var params = urllib.parse(req.url, true);
+  var inputX = '../dm/data/x_count';
+  var pre ="";
+  var re = fs.createReadStream(inputX, {
+    flags: 'r',
+    encoding: 'utf-8'
+    }).on('data', function (chunk) {
+        var lines = chunk.split(CRLF);
+        lines[0] = pre + lines[0];
+
+        if (chunk.substr(chunk.length - 2) !== CRLF) {
+            pre = lines.pop();
+        } else {
+            pre = '';
+        } 
+     
+        lines.forEach(function (line) {
+          
+          console.log(line);
+          result.push(JSON.parse(line));  
+        });
+
+      }).on('end', function () {
+       
+          if (params.query && params.query.callback) {
+            //console.log(params.query.callback);
+              console.log("ceshi shujuhangshu");
+              console.log(result[0]);
+            var str =  params.query.callback + '(' + result[0] + ')';//jsonp
+   
+           res.end(str);
+         } else {
+           res.end(result[0]);//普通的json
+  
+         }   
+
+    });
+
+}
+
 
 function getWorkFeed(req, res){
    var tmp={};

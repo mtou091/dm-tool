@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+    <script src="js/jquery-1.7.min.js" type="text/javascript" charset="gb2312"></script> 
+    <script src="js/db_cpcj.js" type="text/javascript" charset="gb2312"></script> 
+    <script src="js/db_cp.js" type="text/javascript" charset="gb2312"></script> 
+    <script src="js/SearchEngine.js" type="text/javascript" charset="gb2312"></script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body> 
+    
+    <div class="warp">
+    <script>
+        var os = new ObjSearch();
+        function Init()
+        {
+            os.kw = $('#txtkw').val();        
+            os.option = $('#sChoose').val();
+           os.displayId = '__result';
+        }
+    </script>
+    <p>
+        <input id="txtkw" type="text" value="" />
+        <select id="sChoose" name="D1">
+            <option value="0">企业</option>
+            <option value="1">产品</option>
+        </select><input id="Button1" type="button" value="提交" onclick="Init();os.search();" />
+    </p>
+	<div class="list">
+    	<div id="content"></div>
+		<div id="pager">
+            <div id="total"></div>
+            <div id="pagelist"></div>
+        </div>
+    </div>
+     
+</div>
+    <div id="__result">
+    </div>
+    
+</body>
+</html>

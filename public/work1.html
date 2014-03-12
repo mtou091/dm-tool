@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://static.bshare.cn/js/libs/json2-min.js"></script>
+<script type="text/javascript" src="js/ZeroClipboard.js"></script>
+<link rel="stylesheet" type="text/css" href="css/ivory.css"/>
+<title>新浪uid转换</title>
+<style type="text/css">
+
+<style>
+body { font:12px 'Microsoft Yahei', Tahoma, Arial; _font-family:Tahoma, Arial; }
+a { color:#0259C4; }
+a:hover { color:#900;}
+.tips { color:#CCC; }
+h1 { font-family:'Constantia';}
+.textarea {font: 1.4em/1.8em Arial; width: 350px; min-height: 150px; padding:5px; border:1px solid #3ba354; background:#FAFAFA;-webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; }
+.textarea:focus { background:#FFFFF7; outline:0; }
+#submit { padding:5px 10px; border:2px solid #0259C4; background:#0259C4; color:#FFF; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; cursor:pointer; }
+#submit.disabled { background:#D7D7D7; color:#ABABAB; border-color:#ABABAB; cursor:default; }
+</style>
+<script src="js/autoTextarea.js"></script>
+</head>
+<body style="background:#FBFCFD;" >
+<div class="text-center">
+  <h1>新浪uid转换</h1>
+  <div class="tips">
+  注：多个uid请以"换行符"分隔。</br>
+  </div>
+</div>
+
+<div class="g1024">
+<hr/>
+
+ <div class="row spce-bot">
+   <div class="c12 centered">
+
+   <div class="c5">
+   <div class="text-center ">
+   <fieldset>
+    <textarea id="textarea" class="textarea" ></textarea>
+    </fieldset>
+    </div>
+  </div> 
+
+   <div class="c2" id="clip_container">
+   <div class="text-center" >
+   <ul style="list-style:none;">
+   <li><button type="submit" class="blue small" onclick="getUid();return false;">提 交</button> </li>
+   <li><button type="submit" class="blue small" onclick="de();return false;">清 空</button></li>
+   <li><button type="submit" class="blue small" id="clip_button">复 制</button><span id="tips"></span></li>
+   <li><button type="submit" id="list" style="display:none;" class="blue small" onclick="show();return false;">查 看</button></li>
+   </ul>
+    </div>
+  </div> 
+
+
+   <div class="c5">
+   <div class="text-center">
+   <fieldset>
+    <textarea id="textareaR" class="textarea" readonly></textarea>
+   </fieldset>
+    </div>
+  </div> 
+
+   </div>
+ </div>
+
+
+ <div class="row spce-bot">
+   <div class="c12 centered" style="display:none;padding-top:10px;" id="siteDv">
+   
+   </div>
+ </div>
+
+
+   <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">sanford</a></p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.bshare.cn/" target="_blank">bShare分享</a><p>
+      </div>    
+    </div>
+
+</div>
+
+
+
+<script>
+var text = document.getElementById("textarea"),
+   textR = document.getElementById("textareaR"),
+     tip = '请输入新浪uid...';
+  
+text.value = tip;
+var param=[],flag = 0 ,bala='';
+
+text.onfocus = function () {
+  if (text.value == tip){
+     text.value = '';
+  }else{
+     bala = text.value ;
+  }
+};
+
+var clip = new ZeroClipboard.Client();
+    clip.setHandCursor(true);   
+    clip.addEventListener('mouseOver', function (client) {
+    // update the text on mouse over
+    clip.setText(textR.value );
+    }); 
+    clip.addEventListener('complete', function (client, text) {
+    //debugstr("Copied text to clipboard: " + text );
+  
+    document.getElementById('clip_button').innerHTML='ctrl+V';
+    setTimeout("document.getElementById('clip_button').innerHTML='复 制';", 1500);
+    });
+
+    clip.glue('clip_button', 'clip_container' );
+
+function getUid() {
+  var tmp = text.value;
+  if (tmp == ''||tmp == tip){
+        text.value = tip;
+     }else{
+        param = tmp.split("\n");
+        console.log(param);
+        // textR.value = tmp;
+        var l = param.length;
+        if(l<300){
+          for (var i =0; i <l ; i++) {
+            var key = bala[param[i]];
+            if(key==""||key==undefined){
+              send("getSinaUid?uid="+param[i]+"&callback=call","get",'');
+            }
+          }
+          
+        }else{
+          send("sinaUid","post",param); 
+        }
+       
+     }   
+  document.getElementById("list").style.display="inline-block"; 
+  document.getElementById("list").innerHTML="查 看"; 
+  //balance();  
+}
+
+
+function send(surl,method,dat){
+ var url = "http://www.sanford.com:3000/"+surl;
+  console.log(url);
+     if(method.toLowerCase() == "post"){
+      $.ajax({
+          type: method,
+          data:{feed:dat}, 
+          url: url,
+          dataType:'jsonp',
+          error:function(textStatus){
+              console.log("网络有点慢，任务失败了,再来一次吧~"); 
+            }, 
+          success:function(data,textStatus){ //处理数据 data指向的是返回来的JSON数据
+               console.log("成功！");
+               textR.value += JSON.parse(data).toString();
+               console.log(data);
+            } 
+    
+        });
+
+
+
+     }else{
+
+     request(url);
+
+     }
+
+      
+
+}
+
+
+function request(url) {
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.charset = "utf-8";
+        js.src = url;
+       document.getElementsByTagName("head")[0].appendChild(js);
+
+       js.onload = js.onreadystatechange = function() {
+               if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') { 
+
+               // callback在此处执行
+                
+                js.onload = js.onreadystatechange = null;
+
+                 } 
+            };
+    }
+
+function call(data){
+  var textV = text.value.split("\n");
+  var ss= textR.value;
+  console.log("成功！");
+  textR.value ="";
+  var tmp = data.feeds;
+   for(k in tmp){
+      ss += k +","+ tmp[k]+"\n";
+   }
+  console.log(ss);
+
+  textR.value = ss ;
+  print(ss);
+ // balance();
+
+}
+
+
+function print (datas){
+    var data = datas.split("\n");
+    var inhtml = "<table><tr><th class='text-center'>序列号</th><th class='text-center'>新浪UID</th><th>新浪昵称</th></tr>";
+      var len = data.length ,tmp;
+      for (var i = 0; i < len-1; i++) {
+        tmp = data[i].split(",");
+     inhtml+="<tr class='"+(i%2==0?'even':'')+"'><td class='text-center'>"+(i+1)+"</td><td class='text-center'><a href='http://www.weibo.com/u/"+tmp[0]+"' target='_blank'>"+tmp[0]+"</a></td><td class='text-center'>"+tmp[1]+"</td></tr>";
+    }
+    inhtml += "</table>";
+
+    document.getElementById("siteDv").innerHTML = inhtml;
+
+}
+
+
+function de(){
+   document.getElementById("textarea").value="";
+   document.getElementById("textareaR").value="";
+   document.getElementById("siteDv").innerHTML="";
+   document.getElementById("list").style.display="none";
+}
+
+function show(){
+
+  var listButton = document.getElementById("list"),listD = document.getElementById("siteDv") ;
+  if(listButton.innerHTML=="隐 藏"){
+     listD.style.display="none";
+     listButton.innerHTML="查 看";
+
+  }else{
+    listD.style.display="block";
+    listButton.innerHTML="隐 藏";
+  }
+  
+
+}
+
+
+
+
+
+function balance(){
+  var textV = text.value.split("\n");
+  var textRV= textR.value.split("\n");
+  var tmp ={} ,result={},t;
+  for (var i = textRV.length - 1; i >= 0; i--) {
+       t = textRV[i].split(",");
+      tmp(t[0]) = t[1] ;
+  };
+  for (var i = textV.length - 1; i >= 0; i--) {
+      if(tmp[textV[i]] == undefined){
+        send("getSinaUid?uid="+textV[i]+"&callback=call","get",'');
+      }else{
+        result[textV[i]] = tmp[textV[i]];
+      }
+  };
+  var sss = "";
+  for(k in result){
+    sss += k +","+ result[k]+"\n";
+  }
+ textR.value = sss ;
+
+}
+
+function arrayContains(a, b) {
+    var i = a.length;
+    while (i--) {
+      if (a[i] === b) {
+        return true;
+        }
+    }
+    return false;
+}
+
+</script>
+</body>
+</html>

@@ -79,7 +79,7 @@ function OutputHtml(){
 	
 	if(PageFrontBegin != 1){
 
-	   Temp += '<li><a href="javascript:void(0)" onclick="GotoPage(' + (Page - 10) + ')" title="前10页" class="more">...</a></li>';
+	   Temp += '<li><a href="javascript:void(0)" onclick="GotoPage(' + (Page - 10) + ')" title="前10页" class="more"><<</a></li>';
 	}
 
 	for(var i = PageFrontBegin;i < Page;i ++){
@@ -95,7 +95,7 @@ function OutputHtml(){
 
 	if(PageFrontEnd != Pages){
 
-	   Temp += "<li><a href='javascript:void(0)' onclick='GotoPage(" + (Page + 10) + ")' title='后10页' class='more' >...</a></li>";
+	   Temp += "<li><a href='javascript:void(0)' onclick='GotoPage(" + (Page + 10) + ")' title='后10页' class='more' >>></a></li>";
 
 	}
 	

@@ -1,0 +1,29 @@
+*{margin:0;padding:0;}
+img{border:0;}
+li{list-style:none;}
+a{text-decoration:none;}
+a:hover{text-decoration:underline;}
+body{background:#ffffff;font-size:12px;font-family:Verdana, Geneva, sans-serif;}
+.warp{position:relative;width:960px;margin:0 auto;}
+.list{width:670px;}
+.entry{float:left;width:202px;position:relative;margin:10px;_display:inline;}
+.entry a{display:block;text-decoration:none;border:1px #000000 solid;}
+.entry a:hover{border:1px #999 solid;}
+.entry .url{position:absolute;left:1px;bottom:1px;height:28px;width:200px;background:#000;text-align:center;
+			filter:alpha(opacity=80);-moz-opacity:0.8;opacity: 0.8;}
+.entry .url span{display:block;border:0;color:#fff;margin-top:6px;padding:2px;font-weight:bold;}
+
+.detail{position:absolute;right:45px;top:10px;width:216px;padding:10px;background:#393939;border:1px #555 solid;color:#fff;}
+.detail li{margin-bottom:4px;}
+.detail li.mt10{margin-bottom:10px;}
+#url, #company , #description{color:#999;}
+.detail a{color:#999;}
+.detail a:hover{color:#fff;}
+
+#content h1{color:#ccc;font-size:20px;text-align:center;padding:70px 0;}
+/* www.codefans.net */
+#pager{clear:both;color:Black;}
+#pager a{color:Black;}
+#total{float:left;color:Black;}
+#pagelist{float:right; color:Black}
+.f90{color:Black;}
