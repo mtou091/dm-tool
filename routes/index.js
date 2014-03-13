@@ -2,9 +2,10 @@
 var fs = require("fs");
 var urllib = require('url');
 var http = require('https');
-var input = '../dm/public/work';
+var httpt = require('http');
+var input = '../dm-tool/public/work';
 var keywords =['|b|','|l|','|w|','|a|'];
-var output = '../dm/public/log';
+var output = '../dm-tool/public/log';
 var token = ["2.00CZNX6CdANkCD93a54b78320oZ3E_","2.00uBIq8CdANkCDcf0c2399ad0Kz843","2.00XMkZRBdANkCDee3b5926aaaAXvjC","2.00kZJdiCdANkCDbcb6711593FTdciD","2.00NWBOoBdANkCD3904c43e1abMBu1D"];
 var flag = false;
 var workFla =false;
@@ -17,13 +18,48 @@ exports.autoroute = {
         '(.?)/(index)?' : index,
         '(.?)/getSinaUid' : getSinaUid,
         '(.?)/getWork' : getWorkFeed,
-        '(.?)/getExchange':getExchange
+        '(.?)/getExchange':getExchange,
+        '(.?)/sharing':sharing
     },
     'post' : {
       '(.?)/sinaUid' : sinaUid
     }
 };
 
+
+function sharing(req, resp){
+
+    var params = urllib.parse(req.url, true);  
+    var uuid = params.query.uuid||"";
+    var url = "http://www.bshare.cn/api/feeds/sharing.json?uuid="+uuid+"&count=20";
+    console.log("call:"+url);
+    var body = '';
+    var req = httpt.get(url, function(res) {
+    console.log("Got response: " + res.statusCode);
+    res.on('data',function(chunk){
+         body += chunk;
+      }).on('end', function(){
+         
+        var feeds = JSON.parse(body);         
+        if (params.query && params.query.callback) {
+       
+        var str =  params.query.callback + '(' + JSON.stringify(feeds) + ')';//jsonp
+        //console.log("jsonp"+str);
+         resp.end(str);
+       } else {
+       resp.end(JSON.stringify(feeds));//普通的json
+       //console.log("json"+JSON.stringify(datas));
+       }   
+
+     });
+
+    }).on('error', function(e) {
+        
+        console.log("Got error: " + e.message);
+   })
+   req.end();
+
+}
 
 function index(req, res){
 

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>实时分享动态</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+	<link rel="stylesheet" type="text/css" href="css/ivory.css" media="all">
+	<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+</head>
+<body>
+  <style type="text/css">
+ tr:hover{background-color: #eeeeff;}
+  </style>
+<div class="row">
+    <h1 class="text-center">实时分享动态</h1>
+</div>
+<hr/>
+
+
+ <div class="row spce-bot">
+ <div class="c12 centered" id="">
+
+  <div class="c6 first">
+
+  </div>
+
+ <div class="c6 last">
+    <form class="hform">
+          <fieldset>
+          <label>网站UUID：</label>
+            <input class="post" type="text" name="" id="searchForm" /><span type="submit" class="post" name="" onclick="getShares();">刷新</span>
+          </fieldset>
+    </form>
+
+ </div>
+
+</div>
+</div>
+
+
+ <div class="row spce-bot">
+   <div class="c12 centered" id="siteDv">
+   
+   </div>
+ </div>
+
+
+
+  <hr>
+    <div class="row space-bot">
+      <div class="c6">
+        <p>Developed @ <a href="http://www.weibo.com/mtou091/" target="_blank">新</a></p>
+      </div>
+      <div class="c6 text-right">
+        <p>谢谢光临|<a href="http://www.bshare.cn" target="_blank">bShare</a><p>
+      </div>    
+    </div>
+
+
+
+
+
+
+<!-- bShare feeds API 调用-更多帮助见bShare网站:http://www.bshare.cn/help/apiShares-->
+<!-- 以下所有的路径参数都为可选-->
+<!-- uuid: 您拥有的站点的publisher UUID，不提供则返回bShare全站的排行榜 Feeds. -->
+<!-- count: 返回条数，最大为50条，不设置默认为10条-->
+
+
+ <script type="text/javascript">
+function getShares(){
+
+   var uuid = document.getElementById('searchForm').value||"";
+	$.ajax({
+		url: "http://www.sanford.com:3000/sharing?uuid="+uuid+"&count=20",
+		dataType:'jsonp',
+		success:function(data){ 
+				var inhtml = "<table><tr><th>序</th><th class='text-center'>日期</th><th>标题</th><th>来源</th><th>分享量</th><th>分享人</th></tr>";
+   
+               $(data.sharing).each(function(i){ 　
+                 inhtml+="<tr class='"+(i%2==0?'even':'')+"'><td class='text-center'>"+(i+1)+"</td>";
+                 inhtml+="<td class='text-center'>"+data.sharing[i].time+"</td>";
+                 inhtml+="<td class='text-center'><a target=\"_blank\" style=\"overflow: hidden;text-overflow:ellipsis;\" href='"+ data.sharing[i].url +"'>"+data.sharing[i].title+"</a></td>";
+                 inhtml+="<td class='text-center'>"+domainURI(data.sharing[i].url)+"</td>";
+                 inhtml+="<td class='text-center'>"+data.sharing[i].shares+"</td>";
+                 inhtml+="<td class='text-center'>"+data.sharing[i].vUid+"</td>";
+                 inhtml+="</tr>";           
+                 });
+                inhtml += "</table>"; 
+                $("#siteDv").html(inhtml);  
+        } 
+	});
+
+}
+
+function domainURI(str){
+    var durl=/http:\/\/([^\/]+)\//i;
+    domain = str.match(durl);
+    return domain[1];
+ }
+
+getShares();
+</script> 
+
+</body>
+</html>
