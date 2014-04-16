@@ -95,9 +95,23 @@ function getShares(){
 }
 
 function domainURI(str){
-    var durl=/http:\/\/([^\/]+)\//i;
-    domain = str.match(durl);
-    return domain[1];
+   // var durl=/http:\/\/([^\/]+)\//i;
+   // domain = str.match(durl);
+   //  return domain[1]||"";
+    if(str!==""&&str!==undefined){
+      var pre = str.split("//");
+      var domain = pre[1]||"";
+      if(domain.indexOf("/")!=-1){
+      return domain.split("/")[0]||"";
+      }else if(domain.indexOf("?")!=-1){
+        return domain.split("?")[0]||"";
+        
+      }else{
+        return domain ;
+      }     
+    }else{
+     return str;
+    }
  }
 
 getShares();

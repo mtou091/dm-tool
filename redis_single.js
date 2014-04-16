@@ -26,8 +26,12 @@ var domain_path = output+ "cookie_footprints.data";
 var fs = require('fs'),
 path = require('path'),
 url = require('url');//,
-//redis = require("redis"),
-//client = redis.createClient();
+redis = require("redis"),
+client = redis.createClient();
+
+client.on("error", function (err) {
+        console.log("Error :" + err);
+});
 
 var keys ={}; //关键字
 var cats = {};//一级兴趣
@@ -39,32 +43,17 @@ var ccs ={};//城市关注
 var sexs = {};//年龄统计
 var domains = {};//域名统计
 
-//关键字分组
-/*
-var zu ={
-  "A":["雅诗兰黛","ESTEE LAUDER"],
-  "B":["兰蔻","LANCOME","SK2","SKII","LANEIGE","兰芝"],
-  "B1":["兰蔻","LANCOME"],
-  "B2":["SK2","SKII"],
-  "B3":["LANEIGE","兰芝"],
-  "C":["欧莱雅","L'OREAL","资生堂","SHISEIDO","佰草集","ZA","自然堂"],
-  "C1":["欧莱雅","L'OREAL"],
-  "C2":["资生堂","SHISEIDO"],
-  "C3":["佰草集"],
-  "C4":["ZA"],
-  "C5":["自然堂"]
-};
-*/
+
 
 var zu ={
  // "A":["平安银行","余额宝","融360","91金融超市"],
-  "A1":["平安银行"]//,
+  //"A1":["平安银行"],
  // "A2":["余额宝"],
  // "A3":["融360"],
  // "A4":["91金融超市"]//,
  // "B":["保险","外币","保值"],
  // "C":["婚博会"]
- //"X":[""]
+ "X":[""]
 };
 
 var zu1 = {
@@ -77,7 +66,7 @@ var zu1 = {
 };
 //输入流
 
-var rs = fs.createReadStream(key_path, {
+var rs = fs.createReadStream(domain_path, {
     flags: 'r',
     encoding: 'utf-8'
 });
@@ -117,7 +106,7 @@ var prevline = '';
 
 var timeIn = Date.parse(new Date());
 var cLines =0;
-
+var elem = {"D":1,"E":2,"F":3,"G":4};
 var menu = {
   'keywords':[rs],
   'category':[rs,cs],
@@ -156,12 +145,12 @@ var chainOut = {
 
 //程序入口，start(iterm);
 
-start('keywords');
+//start('keywords');
 //start('category');
 //start('uid');
 //start('location');
 //start('friends');
-//start('birth');
+start('birth');
 //start('domain');
 //start("combine");
 
@@ -177,7 +166,7 @@ function store(arg,cookie,zu){
    }else{
     arg[zu][cookie]++;
    }
-
+   
 }
 
 //开始数据读入
@@ -267,7 +256,7 @@ function readFile(chunk,key){
 
     lines.forEach(function(line){
        switch(key){
-         case "keywords" : readKeywords(line);break;//当为tar_category时，调用readTarget_Categorys
+         case "keywords" : readOther(line);break;//当为tar_category时，调用readTarget_Categorys
          case "category" : readCategorys(line);break;
          case "uid" : readUids(line);break;
          case "location" : readLocation(line);break;
@@ -310,58 +299,65 @@ function readKeywords(line){
 //地理信息文件读取规则
 function readLocation(line){
 
-      var tmp = line.split("\t");
-      var cp = tmp[1];
-      var cc = tmp[2];
-      var ccid = tmp[0];
+    var tmp = line.split("\t");
+    var cp = tmp[1];
+    var cc = tmp[2];
+    var ccid = tmp[0];
 
-      for (var v in keys) {
+    for (var v in elem) {
 
-       var kcid = keys[v][ccid]; 
-     
-       if(kcid !== undefined){
-         if(cp!==undefined&&cp!=""){
-            store(cps,cp,v); 
-          }
+      var list = elem[v]; 
+      client.select(list, function() { 
 
-          if(cc!==undefined&&cc!=""){
+         client.get(ccid,function (err, reply) {
 
-            store(ccs,cc,v); 
-          }
-       }
+           if(reply!== null){
 
-      };
-        
- }
+             if(cp!==undefined&&cp!=""){
+                 store(cps,cp,reply); 
+             }
+
+             if(cc!==undefined&&cc!=""){
+
+                store(ccs,cc,reply); 
+             }
+           }
+
+        });
+      });
+    };
+}
  //兴趣文件读取规则
 function readCategorys(line){
    
-      var tmp = line.split("\t");
-      var ccid = tmp[0];
-      var cat = tmp[1].split(",")||[];
-      var s ={};
-      
-      for (var vl in keys) {
+    var tmp = line.split("\t");
+    var ccid = tmp[0];
+    var cat = tmp[1].split(",")||[];
+    var s ={};
+    for (var vl in elem) {
 
-       var kcid = keys[vl][ccid]; 
-     
-       if(kcid !=undefined){
+      var list = elem[vl]; 
+      client.select(list, function() { 
+
+        client.get(ccid,function (err, reply) {
+
+          if(reply!== null){
+
             var catTmp;
             
             for (var j = cat.length - 1; j >= 0; j--) {
               catTmp = cat[j].split("|")[0];
-              store(cats1,catTmp,vl); 
+              store(cats1,catTmp,reply); 
               s[catTmp.substring(0,2)]={};
             }
+            for(var v in s){
+              store(cats,v,reply); 
+            }
+          }
 
-           for(var v in s){
-
-              store(cats,v,vl); 
-           }
-
-       }
-
-      } 
+        });
+      });
+    }; 
 
 }
 
@@ -405,49 +401,64 @@ function readTarget_Categorys(line){
 //微博uid文件读取规则
 function readUids(line){
 
-     var tmp = line.split("\t");    
-     var uuid = tmp[1];
-     var ucid = tmp[0];
-     if(uuid!==undefined&&ucid!==undefined){
-      for (var vl in keys) {
+  var tmp = line.split("\t");    
+  var uuid = tmp[1];
+  var ucid = tmp[0];
+  if(uuid!==undefined&&ucid!==undefined){
 
-       var kcid = keys[vl][ucid]; 
-     
-       if(kcid !==undefined){
-           store(uids,uuid,vl);
-       }
+    for (var vl in elem) {
 
-      }
-     }  
+      var list = elem[vl]; 
+      client.select(list, function() { 
+
+         client.get(ucid,function (err, reply) {
+
+           if(reply!== null){
+
+             store(uids,uuid,reply);
+
+           }
+
+        });
+      });
+    };
+  }  
 }
 
 
 //footprint文件读取规则
 function readDomain(line){
 
-     var tmp = line.split("\t");   
-     var urlStr = tmp[1];
-     var domain = "";
-     //console.log("=====domain:"+domain);
-     if(typeof urlStr == 'string'){
-       domain = url.parse(urlStr).host||"";
-     }else{
-       domain = "";
-     }
-     
-     var dcid = tmp[0];
-     if(dcid!==undefined){
-      for (var dl in keys) {
+  var tmp = line.split("\t");   
+  var urlStr = tmp[1];
+  var domain = "";
+  //console.log("=====domain:"+domain);
+  if(typeof urlStr == 'string'){
+    domain = url.parse(urlStr).host||"";
+   }else{
+    domain = "";
+   }     
 
-       var kcid = keys[dl][dcid]; 
-     
-       if(kcid !==undefined){
-           store(domains,domain,dl);
+  var dcid = tmp[0];
+  if(dcid!==undefined){
 
-       }
+    for (var dl in elem) {
 
-      }
-     }  
+      var list = elem[dl]; 
+      client.select(list, function() { 
+
+         client.get(dcid,function (err, reply) {
+
+           if(reply!== null){
+
+             store(domains,domain,reply);
+
+           }
+
+        });
+      });
+    };
+  }  
 }
 
 //出生日期文件读取规则
@@ -504,7 +515,7 @@ function readOther(line){
     // var ouid = tmp[1];
      var ocid = tmp[0];
      if(ocid!==undefined&&ocid!==""){
-        store(keys,ocid,"ALL");
+       // store(keys,ocid,"ALL");
      }
 }
 
@@ -541,7 +552,7 @@ function result(arg,r){
   }
 
   console.log(r+"数据已写入完毕！共读取:' "+cLines+"  行,耗时："+((Date.parse(new Date())-timeIn)/1000)+"秒"+CRLF);
-  
+  client.quit();
 }
 
 function mkdir(dirpath, mode, callback) {
