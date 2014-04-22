@@ -2,8 +2,8 @@
 *分组交叉统计 unique cookie 数据
 *total unique cookie 数据
 */
-var output = './bank/zu_cookie_count.data';
-var path1 ="./bank/cookie_keywords.data";//1
+var output = './yh/zu_cookie_count.data';
+var path1 ="./yh/cookie_keywords.data";//1
 //process.argv[2] == undefined?"./cookie/cookie_keywords.data":process.argv[2];
 var fs = require('fs');
 var ws = fs.createWriteStream(output, {
@@ -11,16 +11,29 @@ var ws = fs.createWriteStream(output, {
     encoding: 'utf-8'
 });
 
-var zu ={
-  "A":['小额信贷','网购分期','银行贷款','贷款利率','无抵押小额贷款','个人贷款','身份证信用贷款','民间信贷','消费信贷','个人创业贷款','个人住房贷款','私人贷款利息','贷款担保','分期还款','首付率','公积金贷款','信用记录','按揭','车贷','提前还款'],
-  "B":['信用卡积分','刷卡手续费','异地取款','银行开户','汇率','存款利息','申请信用卡','签帐额','信用卡还款','异地汇款','个人所得税','利率计算器','刷卡套现','信用卡比较','信用卡取现','信用卡额度','信用卡分期','信用卡透支','境外人民币支付','银行商户'],
-  "C":['汇率','理财产品','余额宝','财付通','大盘','期货行情','外汇牌价','分红比较','基金比较','互联网金融','金价','信托产品','人民币走势','房地产政策','股票推荐','个股点评','房地产信托','房地产税','外汇牌价','股票报价']
+var zu = {
+  "A":["别墅|投资","别墅|收藏","别墅|高尔夫"],
+  "A1":["别墅|高尔夫"],
+  "A2":["别墅|投资","别墅|收藏"],
+  "B":["高尔夫|运动","高尔夫|体育","高尔夫|球场","高尔夫球|高尔夫球"],
+  "E":["颐和山庄|颐和山庄","中奥美泉宫|中奥美泉宫","泊月湾|泊月湾","汤臣高尔夫别墅|汤臣高尔夫别墅","汤臣高尔夫|汤臣高尔夫","银丽高尔夫别墅|银丽高尔夫别墅","银丽高尔夫|银丽高尔夫","南都西湖高尔夫别墅|南都西湖高尔夫别墅","南都西湖高尔夫|南都西湖高尔夫"],
+  "E1":["颐和山庄|颐和山庄"],
+  "E2":["中奥美泉宫|中奥美泉宫"],
+  "E3":["泊月湾|泊月湾"],
+  "E4":["汤臣高尔夫别墅|汤臣高尔夫别墅","汤臣高尔夫|汤臣高尔夫"],
+  "E5":["银丽高尔夫别墅|银丽高尔夫别墅","银丽高尔夫|银丽高尔夫"],
+  "E6":["南都西湖高尔夫别墅|南都西湖高尔夫别墅","南都西湖高尔夫|南都西湖高尔夫"]
 };
-var score = {"A":0,"B":1,"C":2};
+var zu1 ={
+  "C":["2102"],
+  "D":["2804"]
+};
+
+var score = {"A":0,"A1":1,"A2":2,"B":3,"C":4,"D":5,"E":6,"E1":7,"E2":8,"E3":9,"E4":10,"E5":11,"E6":12};
 var resultArry={};
 var keys = {};
 //规则说明--{路径:[分组规则,score(true|false)],<>}
-var rule = {"./bank/cookie_keywords.data":[zu,false]};
+var rule = {"./yh/cookie_keywords.data":[zu,false],"./yh/target_cookie.data":[zu1,false]};
 
 var matched = false;
 var CRLF = '\n';
@@ -76,7 +89,7 @@ function readline(line,rule){
 
               if(keyword== zu[a][i]){
                  
-                 core += Math.pow(2,score[a]);//cookie打分
+                 core = core|Math.pow(2,score[a]);//cookie打分
                  fla = true;
                  break;
               }
@@ -158,13 +171,14 @@ function getStr(num,len){
       str = "0"+str;
     };
   }
-  return str ;
+
+  return str.split("").reverse().join(""); 
 }
 //存储分组信息
 function store(key,arg){
   
   if(keys[key]==undefined){
-    keys[key] = 1 ;
+    keys[key] = arg ;
     uniquC ++;
    // arg = getStr(arg,3);//存储为字符串
 
@@ -175,9 +189,19 @@ function store(key,arg){
     }
        
   }else{
-   // console.log("重复的cookie为："+key+CRLF);
-    keys[key]++;
-  } 
+    // console.log("重复的cookie为："+key+CRLF);  
+
+     var tmp = keys[key]|arg;
+     resultArry[keys[key]]--;
+     resultArry[arg]--;
+     keys[key]= tmp;
+
+     if(resultArry[tmp]==undefined){
+         resultArry[tmp] = 1;
+     }else{
+         resultArry[tmp] += 1;
+     }
+  }
 
 }
 //输出结果
@@ -198,7 +222,7 @@ function result() {
 
           var strA = getStr(x,zuLen);
           console.log(strA+","+resultArry[x]);
-          ws.write(strA+"\t"+resultArry);
+          ws.write(strA+"\t"+resultArry[x]+CRLF);
 
           for (var i = 0;i<zuLen;i++) {
               var index = zuArry[i];
