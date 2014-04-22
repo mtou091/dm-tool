@@ -5,7 +5,7 @@
 var XLSX = require("xlsx");
 var inExcel = "./doc/columbia.xlsx";
 var inDoc = "./data/";
-var outDoc = "./doc/test3.xlsx";
+var outDoc = "./doc/topfans.xlsx";
 var iconv = require('iconv-lite');
 var fs = require('fs');  
 var path = require("path");
@@ -17,7 +17,7 @@ var result = {};
 var interestE = {};
 var carCategory = {};
 var numRule = {"interest2":30,"province":20,"city":30};//数据限制规则
-var SheetNames ={"birthday":"年龄统计","province":"省份统计","city":"城市统计","interest1":"Interest一级分类","interest2":"Interest二级分类","car":"汽车标签统计","domain":"域名分布统计","result.data":"数据总览","topfans":"共同关注统计","interestDoc.data":"附录_Taxonomy"};
+var SheetNames ={"birthday":"年龄统计","province":"省份统计","city":"城市统计","interest1":"Interest一级分类","interest2":"Interest二级分类","car":"汽车标签统计","domain":"域名分布统计","result.data":"数据总览","topfans":"共同关注统计","interestDoc.data":"附录_Taxonomy","times":"人群浏览频次统计"};
 //程序入口
 formatExls(inDoc,outDoc);
 
@@ -178,6 +178,9 @@ function getYemei(id){
    case "topfans" :{
       return yemei.concat(["UID","昵称","共同粉丝关注"]);
     }break;
+   case "times" :{
+      return yemei.concat(["浏览频次","人数","%"]);
+    }break;
     default :{
        return yemei;
     }break;
@@ -185,6 +188,7 @@ function getYemei(id){
 }
 //每个分组的显示情况
 function getCell(id,line,data){
+  //console.log(data);
     var cells = [],inter={};
     if(id.indexOf("interest")!=-1){
       inter = getInterestData(0);
@@ -192,9 +196,13 @@ function getCell(id,line,data){
     var zu =line.split(path.sep).pop().split("_")[0]||line ;
     cells.push([zu,'','']);
     var dataTmp = data.split("\n");
-    var len = numRule[id]||dataTmp.length;
-        
+    var len = dataTmp.length;
+    if(numRule[id]&&numRule[id]<len){
+      len = numRule[id];
+    }
+
     for (var i=0; i<len; i++) {
+         
         var xxx = dataTmp[i].split("\t");            
         if(id == "interest1"){
           xxx = [xxx[0],inter[xxx[0]],xxx[1]];
