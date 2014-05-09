@@ -2,38 +2,34 @@
 *分组交叉统计 unique cookie 数据
 *total unique cookie 数据
 */
-var output = './yh/zu_cookie_count.data';
-var path1 ="./yh/cookie_keywords.data";//1
+var output = './huan/zu_cookie_count.data';
+var path1 ="./huan/cookie_keywords.data";//1
 //process.argv[2] == undefined?"./cookie/cookie_keywords.data":process.argv[2];
 var fs = require('fs');
 var ws = fs.createWriteStream(output, {
-    flags: 'a',//a：追加，w+ :复写
+    flags: 'w+',//a：追加，w+ :复写
     encoding: 'utf-8'
 });
 
 var zu = {
-  "A":["别墅|投资","别墅|收藏","别墅|高尔夫"],
-  "A1":["别墅|高尔夫"],
-  "A2":["别墅|投资","别墅|收藏"],
-  "B":["高尔夫|运动","高尔夫|体育","高尔夫|球场","高尔夫球|高尔夫球"],
-  "E":["颐和山庄|颐和山庄","中奥美泉宫|中奥美泉宫","泊月湾|泊月湾","汤臣高尔夫别墅|汤臣高尔夫别墅","汤臣高尔夫|汤臣高尔夫","银丽高尔夫别墅|银丽高尔夫别墅","银丽高尔夫|银丽高尔夫","南都西湖高尔夫别墅|南都西湖高尔夫别墅","南都西湖高尔夫|南都西湖高尔夫"],
-  "E1":["颐和山庄|颐和山庄"],
-  "E2":["中奥美泉宫|中奥美泉宫"],
-  "E3":["泊月湾|泊月湾"],
-  "E4":["汤臣高尔夫别墅|汤臣高尔夫别墅","汤臣高尔夫|汤臣高尔夫"],
-  "E5":["银丽高尔夫别墅|银丽高尔夫别墅","银丽高尔夫|银丽高尔夫"],
-  "E6":["南都西湖高尔夫别墅|南都西湖高尔夫别墅","南都西湖高尔夫|南都西湖高尔夫"]
-};
-var zu1 ={
-  "C":["2102"],
-  "D":["2804"]
+  "B":["基金","收益","理财产品"],
+  "C":["华安","huaan","微钱宝","月月鑫"],
+  "C1":["微钱宝"],
+  "D":["余额宝","天弘","华夏基金","活期宝","活期通","汇添富","现金宝","嘉实","定存宝","现金宝"],
+  "D1":["余额宝","天弘"],
+  "D2":["华夏基金","活期宝","活期通"],
+  "D3":["汇添富","现金宝"],
+  "D4":["嘉实"],
+  "D5":["定存宝","现金宝"]
 };
 
-var score = {"A":0,"A1":1,"A2":2,"B":3,"C":4,"D":5,"E":6,"E1":7,"E2":8,"E3":9,"E4":10,"E5":11,"E6":12};
+var zu1 = {"A":["21","2102"]};
+
+var score = {"A":0,"B":1,"C":2,"C1":3,"D":4,"D1":5,"D2":6,"D3":7,"D4":8,"D5":9};
 var resultArry={};
 var keys = {};
 //规则说明--{路径:[分组规则,score(true|false)],<>}
-var rule = {"./yh/cookie_keywords.data":[zu,false],"./yh/target_cookie.data":[zu1,false]};
+var rule = {"./huan/cookie_keywords.data":[zu,false],"./huan/target_cookie.data":[zu1,false]};
 
 var matched = false;
 var CRLF = '\n';
@@ -176,31 +172,22 @@ function getStr(num,len){
 }
 //存储分组信息
 function store(key,arg){
-  
+  var tmp;
   if(keys[key]==undefined){
-    keys[key] = arg ;
+    tmp = arg;
     uniquC ++;
-   // arg = getStr(arg,3);//存储为字符串
-
-    if(resultArry[arg]==undefined){
-      resultArry[arg] = 1;
-    }else{
-      resultArry[arg] += 1;
-    }
-       
+   // arg = getStr(arg,3);//存储为字符串    
   }else{
     // console.log("重复的cookie为："+key+CRLF);  
-
-     var tmp = keys[key]|arg;
+     tmp = keys[key]|arg;
      resultArry[keys[key]]--;
-     resultArry[arg]--;
-     keys[key]= tmp;
+  }
 
-     if(resultArry[tmp]==undefined){
-         resultArry[tmp] = 1;
-     }else{
-         resultArry[tmp] += 1;
-     }
+  keys[key] = tmp;
+  if(resultArry[tmp]==undefined){
+    resultArry[tmp] = 1;
+  }else{
+    resultArry[tmp] += 1;
   }
 
 }
