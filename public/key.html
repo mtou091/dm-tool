@@ -1,0 +1,494 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>关键词选择</title>
+<style type="text/css">
+body,div,h2,h3,ul,li,p{margin:0;padding:0;}
+a{text-decoration:none;}
+a:hover{text-decoration:underline;}
+ul{list-style-type:none;}
+body{color:#333;font:12px/1.5 \5b8b\4f53;}
+#msgBox{width:75%;background:#fff;border-radius:5px;margin:10px auto;padding-top:10px;}
+#msgBox form h2{font-weight:400;font:400 18px/1.5 \5fae\8f6f\96c5\9ed1;}
+#msgBox form{padding:0 20px 15px;}
+#userName,#taskname,#conBox{color:#777;border:1px solid #d0d0d0;border-radius:6px;background:#fff repeat-x;padding:3px 5px;font:14px/1.5 arial;}
+#userName.active,#conBox.active{border:1px solid #fff;}
+#userName{height:20px;}
+#conBox{width:75%;resize:none;height:40px;overflow:auto;}
+#msgBox form div{position:relative;color:#999;margin-top:10px;}
+#msgBox img{border-radius:3px;}
+#msgBox .list{padding:10px;z-index: 20}
+#msgBox .list h3{position:relative;height:33px;font-size:14px;font-weight:400;background:#fff;border-top:1px solid #ccc;border-bottom: 1px dashed #d8d8d8;padding:5px 0px; }
+#msgBox .list h3 span{position:relative;top:6px;line-height:28px;display:inline-block;padding:0 15px;cursor: pointer;}
+#msgBox .list h3 span.current{border-bottom: 3px solid #ccc}
+#msgBox .list ul{overflow:hidden;zoom:1;}
+#msgBox .list ul li{float:left;clear:both;width:100%;border-bottom:1px dashed #d8d8d8;padding:10px 0;background:#fff;overflow:hidden;}
+#msgBox .list ul li.hover{background:#f5f5f5;}
+#msgBox .list .content{float:left;width:400px;font-size:14px;margin-left:10px;font-family:arial;word-wrap:break-word;}
+#msgBox .list .userName{display:inline;padding-right:5px;}
+#msgBox .list .userName a{color:black;}
+#msgBox .list .msgInfo{display:inline;word-wrap:break-word;}
+#msgBox .list .times{color:#889db6;font:12px/18px arial;float:right;overflow:hidden;zoom:1;}
+#msgBox .list .times a{color:#889db6;display:none;}
+
+#sug_layer_div{
+  position:relative;
+  top:-13px;
+  overflow:hidden;      /*DIV 内容溢出时隐藏*/
+  background:#fff;      /*DIV 背景颜色*/
+  border:#d0d0d0 1px solid; /*DIV 边框样式*/
+  display:none;       /*DIV 初始隐藏*/
+  font-size: 14px;
+}
+
+.button {  
+    display: inline-block;  
+    zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */  
+    *display: inline;  
+    vertical-align: baseline;  
+    margin: 0 2px;  
+    outline: none;  
+    cursor: pointer;  
+    text-align: center;  
+    text-decoration: none;  
+    font: 14px/100% Arial, Helvetica, sans-serif;  
+    padding: .5em 2em .55em;  
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);  
+    -webkit-border-radius: .5em;   
+    -moz-border-radius: .5em;  
+    border-radius: .5em;  
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);  
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);  
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);  
+}  
+.button:hover {  
+    text-decoration: none;  
+}  
+.button:active {  
+    position: relative;  
+    top: 1px;  
+}  
+
+.gray {  
+    color: #e9e9e9;  
+    border: solid 1px #555;  
+    background: #6e6e6e;  
+    background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));  
+    background: -moz-linear-gradient(top,  #888,  #575757);  
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#575757');  
+}  
+.gray:hover {  
+    background: #616161;  
+    background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));  
+    background: -moz-linear-gradient(top,  #757575,  #4b4b4b);  
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#4b4b4b');  
+}  
+.gray:active {  
+    color: #afafaf;  
+    background: -webkit-gradient(linear, left top, left bottom, from(#575757), to(#888));  
+    background: -moz-linear-gradient(top,  #575757,  #888);  
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#575757', endColorstr='#888888');  
+} 
+
+
+</style>
+<script src="js/jquery-1.7.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/keychoice.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+/*-------------------------- +
+  获取id, class, tagName
+ +-------------------------- */
+var get = {
+	byId: function(id) {
+		return typeof id === "string" ? document.getElementById(id) : id
+	},
+	byClass: function(sClass, oParent) {
+		var aClass = [];
+		var reClass = new RegExp("(^| )" + sClass + "( |$)");
+		var aElem = this.byTagName("*", oParent);
+		for (var i = 0; i < aElem.length; i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+		return aClass
+	},
+	byTagName: function(elem, obj) {
+		return (obj || document).getElementsByTagName(elem)
+	}
+};
+/*-------------------------- +
+  事件绑定, 删除
+ +-------------------------- */
+var EventUtil = {
+	addHandler: function (oElement, sEvent, fnHandler) {
+		oElement.addEventListener ? oElement.addEventListener(sEvent, fnHandler, false) : (oElement["_" + sEvent + fnHandler] = fnHandler, oElement[sEvent + fnHandler] = function () {oElement["_" + sEvent + fnHandler]()}, oElement.attachEvent("on" + sEvent, oElement[sEvent + fnHandler]))
+	},
+	removeHandler: function (oElement, sEvent, fnHandler) {
+		oElement.removeEventListener ? oElement.removeEventListener(sEvent, fnHandler, false) : oElement.detachEvent("on" + sEvent, oElement[sEvent + fnHandler])
+	},
+	addLoadHandler: function (fnHandler) {
+		this.addHandler(window, "load", fnHandler)
+	}
+};
+/*-------------------------- +
+  设置css样式
+  读取css样式
+ +-------------------------- */
+function css(obj, attr, value)
+{
+	switch (arguments.length)
+	{
+		case 2:
+			if(typeof arguments[1] == "object")
+			{	
+				for (var i in attr) i == "opacity" ? (obj.style["filter"] = "alpha(opacity=" + attr[i] + ")", obj.style[i] = attr[i] / 100) : obj.style[i] = attr[i];
+			}
+			else
+			{	
+				return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, null)[attr]
+			}
+			break;
+		case 3:
+			attr == "opacity" ? (obj.style["filter"] = "alpha(opacity=" + value + ")", obj.style[attr] = value / 100) : obj.style[attr] = value;
+			break;
+	}
+};
+
+EventUtil.addLoadHandler(function ()
+{
+	var oMsgBox = get.byId("msgBox");
+	var oUserName = get.byId("userName");
+	var oConBox = get.byId("conBox");
+	var oSendBtn = get.byId("sendBtn");
+	var oList = get.byClass("list")[0];
+	var oUl = get.byTagName("ul", oList)[0];
+	var aLi = get.byTagName("li", oList);
+	var aFtxt = get.byClass("f-text", oMsgBox);
+	var bSend = true;
+	var timer = null;
+	var oTmp = "";
+	var i = 0;
+
+	
+	//禁止表单提交
+	EventUtil.addHandler(get.byTagName("form", oMsgBox)[0], "submit", function () {return false});
+	
+	//为广播按钮绑定发送事件
+	EventUtil.addHandler(oSendBtn, "click", fnSend);
+	
+	//为Ctrl+Enter快捷键绑定发送事件
+	EventUtil.addHandler(document, "keyup", function(event)
+	{
+		var event = event || window.event;
+		event.ctrlKey && event.keyCode == 13 && fnSend()
+	});
+	
+	//发送广播函数
+	function fnSend ()
+	{
+		var reg = /^\s*$/g;
+		if(reg.test(oUserName.value))
+		{
+			alert("\u8bf7\u586b\u5199\u7ec4\u540d");
+			oUserName.focus()
+		}
+		else if(reg.test(oConBox.value))
+		{
+			alert("\u8bf7\u8f93\u5165\u5173\u952e\u8bcd");
+			oConBox.focus()
+		}
+		else if(!bSend)
+		{
+			alert("\u8bf7\u68c0\u67e5\u8f93\u5165\u5185\u5bb9\uff01");
+			oConBox.focus()
+		}
+		else
+		{
+			$('#msgBox h3 span').removeClass('current');
+            $('#msgBox h3 span:eq(0)').addClass('current');
+			$(".list ul:eq(0)").show('normal');
+        	$(".list ul:eq(1)").hide('normal');
+
+			var oLi = document.createElement("li");
+			oLi.innerHTML = "<div class=\"content\">\
+							 	<div class=\"userName\"><a href=\"javascript:;\">" + oUserName.value + "</a>:</div>\
+								<div class=\"msgInfo\">" + oConBox.value.replace(/<[^>]*>|&nbsp;/ig, "") + "</div>\
+								<div class=\"times\"><a class=\"del\" href=\"javascript:;\">\u5220\u9664</a></div>\
+							 </div>";
+			//插入元素
+			aLi.length ? oUl.insertBefore(oLi, aLi[0]) : oUl.appendChild(oLi);
+			
+			//重置表单
+			get.byTagName("form", oMsgBox)[0].reset();
+			
+			//将元素高度保存
+			var iHeight = oLi.clientHeight - parseFloat(css(oLi, "paddingTop")) - parseFloat(css(oLi, "paddingBottom"));
+			var alpah = count = 0;
+			css(oLi, {"opacity" : "0", "height" : "0"});	
+			timer = setInterval(function ()
+			{
+				css(oLi, {"display" : "block", "opacity" : "0", "height" : (count += 8) + "px"});
+				if (count > iHeight)
+				{
+					clearInterval(timer);
+					css(oLi, "height", iHeight + "px");
+					timer = setInterval(function ()
+					{
+						css(oLi, "opacity", (alpah += 10));
+						alpah > 100 && (clearInterval(timer), css(oLi, "opacity", 100))
+					},30)
+				}
+			},30);
+
+
+			//调用鼠标划过/离开样式
+			liHover();
+			//调用删除函数
+			delLi()
+		}
+	};
+		
+	
+	//广播按钮鼠标划过样式
+	//EventUtil.addHandler(oSendBtn, "mouseover", function () {this.className = "hover"});
+
+	//广播按钮鼠标离开样式
+	//EventUtil.addHandler(oSendBtn, "mouseout", function () {this.className = ""});
+	
+	//li鼠标划过/离开处理函数
+	function liHover()
+	{
+		for (i = 0; i < aLi.length; i++)
+		{
+			//li鼠标划过样式
+			EventUtil.addHandler(aLi[i], "mouseover", function (event)
+			{
+				this.className = "hover";
+				oTmp = get.byClass("times", this)[0];
+				var aA = get.byTagName("a", oTmp);
+				if (!aA.length)
+				{
+					var oA = document.createElement("a");					
+					oA.innerHTML = "删除";
+					oA.className = "del";
+					oA.href = "javascript:;";
+					oTmp.appendChild(oA)
+				}
+				else
+				{
+					aA[0].style.display = "block";
+				}
+			});
+
+			//li鼠标离开样式
+			EventUtil.addHandler(aLi[i], "mouseout", function ()
+			{
+				this.className = "";
+				var oA = get.byTagName("a", get.byClass("times", this)[0])[0];
+				oA.style.display = "none"	
+			})
+		}
+	}
+	liHover();
+	
+	//删除功能
+	function delLi()
+	{
+		var aA = get.byClass("del", oUl);
+		
+		for (i = 0; i < aA.length; i++)
+		{
+			aA[i].onclick = function ()
+			{
+				var oParent = this.parentNode.parentNode.parentNode;
+				var alpha = 100;
+				var iHeight = oParent.offsetHeight;
+				timer = setInterval(function ()
+				{
+					css(oParent, "opacity", (alpha -= 10));
+					if (alpha < 0)
+					{
+						clearInterval(timer);						
+						timer = setInterval(function ()
+						{
+							iHeight -= 10;
+							iHeight < 0 && (iHeight = 0);
+							css(oParent, "height", iHeight + "px");
+							iHeight == 0 && (clearInterval(timer), oUl.removeChild(oParent))
+						},30)
+					}	
+				},30);			
+				this.onclick = null	
+			}			
+		}
+	}
+	delLi();
+	
+	//输入框获取焦点时样式
+	for (i = 0; i < aFtxt.length; i++)
+	{
+		EventUtil.addHandler(aFtxt[i], "focus", function ()	{this.className = "active"});		
+		EventUtil.addHandler(aFtxt[i], "blur", function () {this.className = ""})
+	}
+	
+});
+
+</script>
+</head>
+<body>
+<div id="msgBox">
+    
+  <form>
+    <h2>关键词选择</h2>
+    <div>       	
+       <input id="userName" class="f-text" value="A" />
+       <label>(组名)</label>
+    </div>
+    <div style="vertical-align:bottom;">
+        <input id="conBox" searchURL="/getKeywords" class="f-text"></input> 
+        <input id="sendBtn" class="button grey" style="float:right;" type="button" value="增加" title="快捷键 Ctrl+Enter" />
+    </div>
+    <div id="sug_layer_div"></div>
+ </form>
+ <div class="clear:both"></div>
+    <div class="list">
+      <h3><span class="current">关键词列表</span><span>分组结果</span>  
+        <div style="float:right;padding-right:10px;vertical-align:bottom;">
+        <label id="infomsg" style="margin-right:20px;color:red;"></label>
+        <label>项目名称：</label>
+         <input id="taskname" class="f-text" value="task1" />
+         <input id="createBtn" class="button grey" postURL="/creatIterm" type="button" value="保存" title="创建任务" />
+        <div>
+      </h3>
+        <ul id="keylist">
+            <li>
+                
+                <div class="content">
+                    <div class="userName"><a href="javascript:;">A</a>:</div>
+                    <div class="msgInfo">关键词A</div>
+                    <div class="times"><a class="del" href="javascript:;">删除</a></div>
+                </div>
+            </li>
+             <li>
+                
+                <div class="content">
+                    <div class="userName"><a href="javascript:;">B</a>:</div>
+                    <div class="msgInfo">关键词B</div>
+                    <div class="times"><a class="del" href="javascript:;">删除</a></div>
+                </div>
+            </li>
+            <li>
+                
+             <div class="content">
+                    <div class="userName"><a href="javascript:;">C</a>:</div>
+                    <div class="msgInfo">关键词C</div>
+                    <div class="times"><a class="del" href="javascript:;">删除</a></div>
+                </div>
+            </li>
+
+        </ul>
+
+        <ul id="itermkey" style="display:none;">
+        <li>
+                
+             <div class="content">
+                    <div class="userName"><a href="javascript:;">C</a>:</div>
+                    <div class="msgInfo">关键词C</div>
+                    <div class="times"><a class="del" href="javascript:;">删除</a></div>
+                </div>
+            </li>
+
+        </ul>
+
+    </div>	
+</div>
+<script>
+$("#msgBox h3 span").click(function(){
+    var number = $(this).index();
+    $('#msgBox h3 span').not(this).removeClass('current');
+    $(this).addClass('current');
+    if(number == 1){
+    	creatIterm();
+        $(".list ul:eq(0)").hide('normal');
+        $(".list ul:eq(1)").show('normal');
+    }else{
+    	$(".list ul:eq(0)").show('normal');
+        $(".list ul:eq(1)").hide('normal');
+    }
+
+
+    });
+function creatIterm(taskname){
+	var iterm = {};
+	$("#keylist .content").each(function(){
+		var tmp =$(this).find(".userName a").text().toUpperCase();
+		var key = $(this).find(".msgInfo:eq(0)").text()||"";
+
+		if(iterm[tmp]==undefined){
+			iterm[tmp]= key;
+		}else{
+			var keys =iterm[tmp].split(",")||[];
+			var flag =true;
+			for (var i = keys.length - 1; i >= 0; i--) {
+				if(keys[i]==key){
+					flag = false;
+					break;
+				}
+			};
+			if(flag){
+				iterm[tmp] = iterm[tmp]+","+key;
+			}
+			
+		}
+
+	});
+	if(taskname){
+		$('#infomsg').html("<img src='./img/support-loading.gif' style='width:25px;height:25px;vertical-align:bottom;'/>");
+		var dataT = {};
+		dataT["taskid"]=encodeURIComponent(taskname);
+		dataT["group"]=iterm;
+      $.ajax({
+		type:"POST",
+		dataType:"json",
+		url:$("#createBtn").attr("postURL")||"/creatIterm",
+		data:dataT,
+		success:function(data,status) {
+			 if (data) {
+				var iter = data["success"];
+				var info ="";
+				if(iter =="error"){
+					info = "创建任务失败！";
+				}else{
+					info ="任务" +iter+" 创建成功！";
+				}
+
+				$('#infomsg').html(info);
+
+				setTimeout("$('#infomsg').html('')",3000);
+				
+			  }
+			}
+	   });
+
+	}else{
+		var insHtml ="";
+		for(var k in iterm){
+	       insHtml += "<li><div class=\"content\"><div class=\"userName\"><a href=\"javascript:;\">" +k+ "</a>:</div><div class=\"msgInfo\">" + iterm[k]+ "</div></div></li>";
+		}
+
+		$("#itermkey").html(insHtml);
+		}
+}
+$("#createBtn").click(function(){
+   var taskid = $("#taskname").val();
+   if(taskid==""||taskid==undefined){
+   	 alert("请填写正确的任务名称");
+   }else if($("#keylist li").length ==0){
+   	 alert("请选择关键词组！");
+   }else{
+   	  creatIterm(taskid);
+   }
+});
+</script>
+</body>
+</html>
