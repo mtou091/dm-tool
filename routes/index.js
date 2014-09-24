@@ -2,14 +2,19 @@ var fs = require("fs");
 var urllib = require('url');
 var http = require('https');
 var httpt = require('http');
+var pinyin = require("pinyin");
+var process = require('child_process');
+var path = require("path");
 var input = '../dm-tool/public/work';
+var keytext = "../dm-tool/doc/words.txt";
 var keywords = ['|b|', '|l|', '|w|', '|a|'];
 var output = '../dm-tool/public/log';
-var token = ["2.00CZNX6CdANkCD93a54b78320oZ3E_", "2.00uBIq8CdANkCDcf0c2399ad0Kz843", "2.00XMkZRBdANkCDee3b5926aaaAXvjC", "2.00kZJdiCdANkCDbcb6711593FTdciD", "2.00NWBOoBdANkCD3904c43e1abMBu1D"];
+var infoDir = "../dm-tool/info";
+var token = ["2.00AhNbrBIg5IQD2dc53670b8fKdgKE","2.00AhNbrB8B8pgBecd78056c8epz9ZD","2.00XMkZRBdANkCDee3b5926aaaAXvjC","2.00kZJdiCdANkCDbcb6711593FTdciD","2.00AhNbrBqCha4D92d6ace279VmiFSC"];
 var flag = false;
 var workFla = false;
 var returnP = [], result = [];
-
+var choiceKeys =[];
 var datas = {};
 
 exports.autoroute = {
@@ -18,10 +23,14 @@ exports.autoroute = {
         '(.?)/getSinaUid': getSinaUid,
         '(.?)/getWork': getWorkFeed,
         '(.?)/getExchange': getExchange,
-        '(.?)/sharing': sharing
+        '(.?)/sharing': sharing,
+        '(.?)/getKeywords': getKeywords
+        
     },
     'post': {
-        '(.?)/sinaUid': sinaUid
+        '(.?)/sinaUid': sinaUid,
+        '(.?)/creatIterm': creatIterm
+
     }
 };
 
@@ -133,6 +142,112 @@ function sinaUid(req, res) {
 
 }
 
+function creatIterm(req, res) {
+    
+    var iterm={}, tmp={};
+    var params = urllib.parse(req.url, true);
+    var data = req.body;
+    //console.log(data);
+    var itermr = pinyin(decodeURIComponent(data.taskid||""), {
+                       style: pinyin.STYLE_NORMAL, // 设置拼音风格
+                       heteronym: false
+                       }).toString().replace(",",""); 
+    var itermid =itermr+getDay()||"";
+    data['taskid'] = itermid ;
+
+    creatfile(data,function(err){
+
+       if (err){
+         throw err;
+         tmp["success"] = "error";
+
+       }else{
+
+         tmp["success"] = itermid;
+
+       }  
+
+    
+      if (params.query.callback) {
+         var str = params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
+         //console.log("jsonp" + str);
+         res.end(str);
+                
+      } else {
+
+       res.end(JSON.stringify(tmp));//普通的json
+
+      }
+
+    });
+    
+
+}
+//创建任务文件
+function creatfile(iterm,callback){
+    var itermFile = iterm.taskid||"",flag = false;
+    var itermDir = path.join(infoDir,itermFile);
+    var pathname = path.join(infoDir,itermFile,itermFile+".json");
+    var keywordsFile = path.join(infoDir,itermFile,"keywords.data");
+    mkdir(itermDir, function(err) {
+         if (err != null) {
+           console.log('error: ' + error);
+         }else{
+            console.log("创建json文件");
+            fs.writeFile(pathname, JSON.stringify(iterm),function(err){
+
+                if (err != null) {
+                    console.log('error: ' + err);
+                }else{
+                    var keywords ="",groupS = iterm.group||{};
+
+                    for(var k in groupS){
+                        keywords += groupS[k]+"\n";
+
+                    }
+                    console.log("创建data文件");
+                    fs.writeFile(keywordsFile, keywords,function(err){
+                        if (err != null) {
+                            console.log('error: ' + err);
+                        }else{
+                            console.log("开始回调！");
+                            callback();
+                        }
+                    });
+                }
+
+            });
+            
+         }
+    });   
+
+}
+
+exports.createDir = function (){process.exec('D: && cd testweb && md mydir',
+      function (error, stdout, stderr) {
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+    });
+}
+//调用执行文件
+exports.openApp = function(){
+    process.execFile('D:/testweb/aaa.bat',null,{cwd:'D:/'},
+      function (error,stdout,stderr) {
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+    });
+}
+
+//获取当前日期 MMDD
+function getDay(){
+
+    var oDate = new Date();
+
+    return (oDate.getMonth() + 1).toString().replace(/^(\d)$/,"0$1") + oDate.getDate().toString().replace(/^(\d)$/,"0$1");
+}
+
 
 function getNickName(uid, rNum) {
 
@@ -215,6 +330,45 @@ function getExchange(req, res) {
             }
 
         });
+
+}
+
+function getKeywords(req, res) {
+    var tmp = {},data = [];
+    var params = urllib.parse(req.url, true);
+    //console.log(req);    
+    var search = unescape(params.query.keywords_input);
+    console.log(search)
+    if(choiceKeys.length==0){
+        init();
+    }
+    var importent = "";
+    for (var i = choiceKeys.length - 1; i >= 0; i--) {
+
+        if(choiceKeys[i].indexOf(search)!=-1){
+            if(choiceKeys[i]==search){
+                importent = choiceKeys[i];
+            }else{
+               data.push(choiceKeys[i]); 
+            }
+            
+        }
+    };
+    if(importent!==""){
+        data.unshift(importent);
+    }
+    tmp["sugList"] = data;
+    if (params.query.callback) {
+        console.log(tmp);
+        var str = params.query.callback + '(' + JSON.stringify(tmp) + ')';//jsonp
+        //console.log("jsonp" + str);
+        res.end(str);
+                
+    } else {
+
+       res.end(JSON.stringify(tmp));//普通的json
+
+    }
 
 }
 
@@ -444,3 +598,39 @@ rs.on('end', function () {
         //console.log(datas);
     });
 });
+
+init();
+function init(){
+
+    try {
+            var tmpdata = fs.readFileSync(keytext,"utf-8");
+             choiceKeys = tmpdata.split("\n");
+            //console.log(data);
+            // Deal with data.
+        } catch (err) {
+            console.log("读取words.txt文件失败！");
+            // Deal with error.
+        }
+ 
+
+}
+
+//建立文件夹
+function mkdir(dirpath, mode, callback) {
+    if(arguments.length === 2) {
+        callback = mode;
+        mode = 0777;
+    }
+
+    fs.exists(dirpath, function(exists) {
+        if(exists) {
+            callback(null);
+        } else {
+            mkdir(path.dirname(dirpath), mode, function(err) {
+                // console.log('>>', dirpath)
+                if(err) return callback(err);
+                fs.mkdir(dirpath, mode, callback);
+            });
+        }
+    });
+};
