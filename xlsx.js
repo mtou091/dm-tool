@@ -5,7 +5,7 @@
 var XLSX = require("xlsx");
 var inExcel = "./doc/columbia.xlsx";
 var inDoc = "./data/";
-var outDoc = "./doc/topfans.xlsx";
+var outDoc = "./doc/bidding0921.xlsx";
 var iconv = require('iconv-lite');
 var fs = require('fs');  
 var path = require("path");
@@ -16,8 +16,8 @@ var excel = [];
 var result = {};
 var interestE = {};
 var carCategory = {};
-var numRule = {"interest2":30,"province":20,"city":30};//数据限制规则
-var SheetNames ={"birthday":"年龄统计","province":"省份统计","city":"城市统计","interest1":"Interest一级分类","interest2":"Interest二级分类","car":"汽车标签统计","domain":"域名分布统计","result.data":"数据总览","topfans":"共同关注统计","interestDoc.data":"附录_Taxonomy","times":"人群浏览频次统计"};
+var numRule = {"xinterest1":30,"interest2":30,"province":20,"city":30,"domain":500,"url":500};//数据限制规则
+var SheetNames ={"birthday":"年龄统计","province":"省份统计","city":"城市统计","interest1":"Interest一级分类","interest2":"Interest二级分类","car":"汽车标签统计","domain":"域名分布统计","result.data":"数据总览","topfans":"共同关注统计","interestDoc.data":"附录_Taxonomy","times":"人群浏览频次统计","url":"浏览足迹统计","gender":"性别统计","xinterest1":"交叉二级兴趣","xinterest2":"交叉一级兴趣"};
 //程序入口
 formatExls(inDoc,outDoc);
 
@@ -25,8 +25,32 @@ formatExls(inDoc,outDoc);
 //creatEx("./count/result.data","./count/interestCount.xlsx");
 
 
-function getCarDate(){
-   
+function getCarData(){
+
+   var carData = {};
+    writeFiles([carCategoryDoc],function(data){
+      for(var x in data){
+        var lines = data[x].split("\n");
+           for (var i = 0,len =lines.length ; i < len; i++) {
+               var line =lines[i].split("\t")||"";
+               var id = line[0];
+               var carprice =line[3];
+               if(id!==undefined&&id!==""){
+
+                 if(carprice==undefined||carprice==""){
+                    carData[id] = "暂无";
+                 }else{
+                   carData[id] = carprice;
+                 }
+
+               }
+
+           }
+       
+      }
+
+    })
+    return carData;
 
 }
 
@@ -42,11 +66,11 @@ function getInterestData(num){
            for (var i = 0,len =lines.length ; i < len; i++) {
                var line =lines[i].split("\t")||"";
                var id = line[0];
-               var cateName =line[3];
+               var cateName =line[3]||"";
                if(id!==undefined&&id!==""){
 
                  if(cateName==undefined||cateName==""){
-                    interest[id] = line[2];
+                    interest[id] = line[2]||"";
                  }else{
                    interest[id] = cateName;
                  }
@@ -113,10 +137,10 @@ return resu ;
 //生成简易excel（兴趣的）
 function creatEx(inpath,outpath){
   var datar = [];
-  var intere = getInterestData(0);
+  var intere = getInterestData(0)||"";
   var data = getData(inpath,"|");
   for(var x in data){
-     var tmp =[x,intere[x],data[x]];
+     var tmp =[x,intere[x]||"",data[x]];
      datar.push(tmp);
   }
   var buffer = xlsxW.build({worksheets: [ 
@@ -157,6 +181,9 @@ function getYemei(id){
      case "birthday" :{
       return yemei.concat(["出生年份","人数","%"]);
     }break;
+    case "gender" :{
+      return yemei.concat(["性别","人数","%"]);
+    }break;
     case "province" :{
       return yemei.concat(["省份","人数","%"]);
     }break;
@@ -169,11 +196,20 @@ function getYemei(id){
     case "interest2" :{
      return yemei.concat(["Interest ID","二级Interest","一级Interest","人数","%"]);
     }break;
+    case "xinterest2" :{
+      return yemei = ["交叉人群ID","人群1ID","人群1名称","人群2ID","人群2名称","交叉人群总数","Interest ID","Interest","人数","%"];  
+    }break;
+    case "xinterest1" :{
+     return yemei = ["交叉人群ID","人群1ID","人群1名称","人群2ID","人群2名称","交叉人群总数","Interest ID","二级Interest","一级Interest","人数","%"];
+    }break;
     case "car" :{
       return yemei.concat(["车型名称","售价","人数","%"]); 
     }break;
     case "domain" :{
       return yemei.concat(["域名","人数","%"]);
+    }break;
+    case "url" :{
+      return yemei.concat(["页面url","人数","%"]);
     }break;
    case "topfans" :{
       return yemei.concat(["UID","昵称","共同粉丝关注"]);
@@ -189,12 +225,17 @@ function getYemei(id){
 //每个分组的显示情况
 function getCell(id,line,data){
   //console.log(data);
-    var cells = [],inter={};
+    var cells = [],inter={},car ={};
     if(id.indexOf("interest")!=-1){
-      inter = getInterestData(0);
+      inter = getInterestData(0)||"";
    }
+    if(id.indexOf("car")!=-1){
+      car = getCarData();
+      //console.log(car);
+   }
+
     var zu =line.split(path.sep).pop().split("_")[0]||line ;
-    cells.push([zu,'','']);
+   
     var dataTmp = data.split("\n");
     var len = dataTmp.length;
     if(numRule[id]&&numRule[id]<len){
@@ -205,11 +246,25 @@ function getCell(id,line,data){
          
         var xxx = dataTmp[i].split("\t");            
         if(id == "interest1"){
-          xxx = [xxx[0],inter[xxx[0]],xxx[1]];
+          xxx = [xxx[0],inter[xxx[0]]||"",xxx[1]];
+     
+        }
+         if(id == "car"){
+          xxx = [xxx[0],car[xxx[0]],xxx[1]];
      
         }
         if(id == "interest2"){
-          xxx = [xxx[0],inter[xxx[0]],inter[xxx[0].substring(0,2)],xxx[1]];
+          xxx = [xxx[0],inter[xxx[0]]||"",inter[xxx[0].substring(0,2)]||"",xxx[1]];
+
+        }
+        if(id == "xinterest2"){
+          var s = zu.split("&");
+          xxx = [zu,s[0],"",s[1],"","",xxx[0],inter[xxx[0]]||"",xxx[1]];
+     
+        }
+        if(id == "xinterest1"){
+          var s = zu.split("&");
+          xxx = [zu,s[0],"",s[1],"","",xxx[0],inter[xxx[0]]||"",inter[xxx[0].substring(0,2)]||"",xxx[1]];
 
         }
         if(id == "birthday"){
@@ -217,10 +272,14 @@ function getCell(id,line,data){
                continue;
             }
         }
-        if(id=="interestDoc.data"||id=="topfans"){
+        if(id == "gender"){
+
+            xxx = [parseInt(xxx[0])==1?"男":"女",xxx[1]];
+        }
+        if(id=="interestDoc.data"||id=="topfans"||id == "xinterest2"||id == "xinterest1"||id == "result.data"){
             cells.push(xxx);
         }else{
-            xxx.unshift("","","");              
+          xxx.unshift(zu,"","");              
             cells.push(xxx);
         }
 
